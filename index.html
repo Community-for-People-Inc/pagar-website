@@ -9,6 +9,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/styles.css" />
+<style>
+  @keyframes kaFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @keyframes kaFly{0%{transform:translate(-24vw,42vh) rotate(-8deg) scale(.7);opacity:0}12%{opacity:1}28%{transform:translate(20vw,14vh) rotate(4deg) scale(1)}52%{transform:translate(50vw,40vh) rotate(-3deg) scale(1.05)}76%{transform:translate(80vw,12vh) rotate(5deg) scale(1)}92%{opacity:1}100%{transform:translate(122vw,36vh) rotate(-6deg) scale(.72);opacity:0}}
+  .herohome{display:grid;gap:32px}
+  @media(min-width:900px){.herohome{grid-template-columns:1.08fr .92fr;align-items:center}}
+  .herobird{position:relative;display:flex;justify-content:center;align-items:center;min-height:200px}
+  .herobird::before{content:"";position:absolute;width:76%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),rgba(255,255,255,0) 70%)}
+  .herobird svg{position:relative;width:min(360px,80%);height:auto;filter:drop-shadow(0 18px 38px rgba(0,0,0,.3));animation:kaFloat 6s ease-in-out infinite}
+  .flybird{position:fixed;top:0;left:0;width:118px;height:118px;z-index:70;pointer-events:none;opacity:0;animation:kaFly 5.6s cubic-bezier(.4,0,.6,1) .4s 1 forwards}
+  @media(prefers-reduced-motion:reduce){.herobird svg{animation:none}.flybird{display:none}}
+</style>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true">
@@ -26,6 +37,29 @@
     <g transform="translate(200,124) scale(2.9)"><path d="M0 0 C-9 -7 -9 9 0 2 C7 9 12 -9 0 0Z" fill="var(--ka-green)" stroke="var(--ka-green-deep)" stroke-width="1.1"></path><path d="M-2 1 L-11 -6 L-11 8Z" fill="var(--ka-green-deep)"></path><circle cx="4.4" cy="-0.4" r="1.6" fill="var(--ka-cream)"></circle><circle cx="4.8" cy="-0.4" r="0.8" fill="var(--ka-ink)"></circle></g>
   </symbol>
   <symbol id="okir" viewBox="0 0 100 40"><path d="M2 38 C2 14 22 4 40 14 C50 20 46 34 36 32 C28 30 30 20 38 22 M50 38 C50 12 74 2 92 16 C100 22 96 36 86 32" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"></path></symbol>
+  <symbol id="sarimanok-flutter" viewBox="0 0 240 240">
+    <rect x="60" y="205" width="120" height="9" fill="var(--ka-blue-deep)"></rect><rect x="60" y="205" width="120" height="4" fill="var(--ka-blue)"></rect>
+    <path d="M118 168 L104 205 M132 168 L146 205" stroke="var(--ka-blue-deep)" stroke-width="5" stroke-linecap="round" fill="none"></path>
+    <g transform="translate(98,158)"><g>
+      <animateTransform attributeName="transform" type="rotate" values="-5 0 0;6 0 0;-5 0 0" dur="1.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"></animateTransform>
+      <g transform="rotate(-74)"><path d="M0,0 C-17,-36 -13,-84 0,-112 C13,-84 17,-36 0,0Z" fill="var(--ka-green)"></path><path d="M0,-8 C-7,-40 -6,-74 0,-98" stroke="var(--ka-green-deep)" stroke-width="3" fill="none"></path></g>
+      <g transform="rotate(-54)"><path d="M0,0 C-18,-40 -14,-92 0,-124 C14,-92 18,-40 0,0Z" fill="var(--ka-blue)"></path><path d="M0,-8 C-8,-44 -7,-82 0,-108" stroke="var(--ka-blue-deep)" stroke-width="3" fill="none"></path></g>
+      <g transform="rotate(-34)"><path d="M0,0 C-18,-42 -14,-98 0,-132 C14,-98 18,-42 0,0Z" fill="var(--ka-red)"></path><path d="M0,-8 C-8,-46 -7,-88 0,-116" stroke="var(--ka-red-deep)" stroke-width="3" fill="none"></path></g>
+      <g transform="rotate(-13)"><path d="M0,0 C-16,-38 -12,-86 0,-116 C12,-86 16,-38 0,0Z" fill="var(--ka-green)"></path><path d="M0,-8 C-7,-42 -6,-78 0,-102" stroke="var(--ka-green-deep)" stroke-width="3" fill="none"></path></g>
+    </g></g>
+    <path d="M96 150 C92 118 112 96 142 100 C176 104 182 140 168 160 C152 182 108 184 96 150Z" fill="var(--ka-red)"></path>
+    <path d="M96 150 C92 118 112 96 142 100 C176 104 182 140 168 160 C152 182 108 184 96 150Z" fill="none" stroke="var(--ka-red-deep)" stroke-width="2.5"></path>
+    <g transform="translate(150,120)"><g>
+      <animateTransform attributeName="transform" type="rotate" values="-8 0 0;20 0 0;-8 0 0" dur="0.9s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.35 0 0.5 1;0.35 0 0.5 1"></animateTransform>
+      <path d="M0 0 C-30 2 -52 24 -60 54 C-42 46 -24 46 -10 38 C-24 36 -34 32 -20 26 C-6 22 2 12 0 0Z" fill="var(--ka-red-deep)"></path>
+      <path d="M-6 8 C-24 16 -40 32 -52 50" stroke="var(--ka-red)" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+    </g></g>
+    <path d="M158 108 C158 88 168 74 184 72 C200 70 208 82 204 94 C200 106 184 108 176 102 C170 98 172 90 178 90" fill="none" stroke="var(--ka-red)" stroke-width="15" stroke-linecap="round"></path>
+    <circle cx="192" cy="80" r="16" fill="var(--ka-red)"></circle><circle cx="192" cy="80" r="16" fill="none" stroke="var(--ka-red-deep)" stroke-width="2.5"></circle><circle cx="197" cy="77" r="3.4" fill="var(--ka-ink)"></circle>
+    <path d="M182 66 C176 50 188 40 196 48 M192 62 C188 44 202 36 208 48 M200 62 C200 46 214 44 216 58" fill="none" stroke="var(--ka-blue)" stroke-width="5" stroke-linecap="round"></path>
+    <path d="M206 80 L226 76 L206 88Z" fill="var(--ka-blue)"></path><path d="M206 86 C214 96 216 104 214 110" fill="none" stroke="var(--ka-green-deep)" stroke-width="3" stroke-linecap="round"></path>
+    <g transform="translate(200,124) scale(2.9)"><path d="M0 0 C-9 -7 -9 9 0 2 C7 9 12 -9 0 0Z" fill="var(--ka-green)" stroke="var(--ka-green-deep)" stroke-width="1.1"></path><path d="M-2 1 L-11 -6 L-11 8Z" fill="var(--ka-green-deep)"></path><path d="M-4 -2 C-1 -1 -1 3 -4 4" fill="none" stroke="var(--ka-green-deep)" stroke-width="0.8"></path><circle cx="4.4" cy="-0.4" r="1.6" fill="var(--ka-cream)"></circle><circle cx="4.8" cy="-0.4" r="0.8" fill="var(--ka-ink)"></circle></g>
+  </symbol>
 </svg>
 
 <header class="site">
@@ -34,6 +68,7 @@
     <nav class="main">
       <a class="navlink" href="index.html" data-en="Home" data-fil="Home">Home</a>
       <a class="navlink" href="about.html" data-en="About" data-fil="Tungkol">About</a>
+      <a class="navlink" href="about.html#journey" data-en="Our journey" data-fil="Paglalakbay">Our journey</a>
       <a class="navlink" href="coverage.html" data-en="Coverage" data-fil="Saklaw">Coverage</a>
       <a class="navlink" href="safety.html" data-en="Safety" data-fil="Kaligtasan">Safety</a>
       <a class="navlink" href="partners.html" data-en="Partners" data-fil="Partners">Partners</a>
@@ -48,8 +83,8 @@
   <!-- HERO (red) -->
   <section class="hero red">
     <div class="okir-bg" aria-hidden="true"><svg><use href="#okir"></use></svg><svg class="two"><use href="#okir"></use></svg></div>
-    <div class="wrap inner" style="display:grid;gap:36px">
-      <div>
+    <div class="wrap inner herohome">
+      <div class="herocontent">
         <span class="pill"><span class="dot"></span><span data-en="Coming soon to Marawi" data-fil="Malapit nang dumating sa Marawi">Coming soon to Marawi</span></span>
         <h1 class="archivo-black" style="margin-top:18px" data-en="One Pagar for the whole city." data-fil="Isang Pagar para sa buong siyudad.">One Pagar for the whole city.</h1>
         <p class="lead" data-en-html="Food, rides, parcels and the market — all in one app,<br><span class='highlight'>built by Maranaos for Marawi and all of Mindanao.</span>" data-fil-html="Pagkain, sakay, padala at palengke — nasa isang app,<br><span class='highlight'>gawa ng mga Maranao para sa Marawi at buong Mindanao.</span>">Food, rides, parcels and the market — all in one app,<br><span class="highlight">built by Maranaos for Marawi and all of Mindanao.</span></p>
@@ -70,6 +105,7 @@
           <div class="stat"><div class="n">₱0</div><div class="l" data-en="To sign up" data-fil="Para sumali">To sign up</div></div>
         </div>
       </div>
+      <div class="herobird" aria-hidden="true"><svg viewBox="0 0 240 240"><use href="#sarimanok-flutter"></use></svg></div>
     </div>
   </section>
 
@@ -95,7 +131,7 @@
         <div style="flex:1;min-width:260px">
           <div class="eyebrow" data-en="Our symbol" data-fil="Ang aming simbolo">Our symbol</div>
           <h2 class="sec" data-en="Built here. For here." data-fil="Gawa dito. Para dito.">Built here. For here.</h2>
-          <p class="lead" style="margin-top:12px" data-en="Our mark honors the Sarimanok — the legendary bird of the Maranao, a sign of good fortune. Pagar is built by Maranaos, and every ride and order helps a driver, cook or maker here in Marawi." data-fil="Ang aming simbolo ay parangal sa Sarimanok — ang maalamat na ibon ng mga Maranao, tanda ng suwerte. Gawa ng mga Maranao ang Pagar, at bawat sakay at order ay tumutulong sa driver, kusinero o gumagawa dito sa Marawi.">Our mark honors the Sarimanok — the legendary bird of the Maranao, a sign of good fortune. Pagar is built by Maranaos, and every ride and order helps a driver, cook or maker here in Marawi.</p>
+          <p class="lead" style="margin-top:12px" data-en="Our mark is the flying Sarimanok — engraved in Maranao culture, a symbol of luck and spirituality. Pagar is built by Maranaos, and every ride and order supports a driver, cook or maker here in Marawi." data-fil="Ang aming simbolo ay ang lumilipad na Sarimanok — nakaukit sa kultura ng Maranao, sagisag ng suwerte at espirituwalidad. Gawa ng mga Maranao ang Pagar, at bawat sakay at order ay tumutulong sa driver, kusinero o gumagawa dito sa Marawi.">Our mark is the flying Sarimanok — engraved in Maranao culture, a symbol of luck and spirituality. Pagar is built by Maranaos, and every ride and order supports a driver, cook or maker here in Marawi.</p>
           <p style="margin-top:14px"><a class="btn btn-ink" href="about.html" data-en="Read our story →" data-fil="Basahin ang kuwento →">Read our story →</a></p>
         </div>
       </div>
@@ -106,8 +142,8 @@
   <section class="block">
     <div class="wrap">
       <div class="eyebrow" data-en="Why we exist" data-fil="Bakit kami umiiral">Why we exist</div>
-      <h2 class="sec" style="max-width:20ch" data-en="Not aid — dignified income." data-fil="Hindi limos — dignified na kita.">Not aid — dignified income.</h2>
-      <p class="lead" style="margin-top:12px" data-en="Pagar was born as a new way to help Internally Displaced Persons rebuild: not aid, but honest work and dignified income — commission that funds jobs, mosques and education in the community." data-fil="Isinilang ang Pagar bilang bagong paraan para tulungan ang mga Internally Displaced Persons: hindi limos, kundi marangal na trabaho at kita — komisyon na pumopondo sa trabaho, mosque at edukasyon sa komunidad.">Pagar was born as a new way to help Internally Displaced Persons rebuild: not aid, but honest work and dignified income — commission that funds jobs, mosques and education in the community.</p>
+      <h2 class="sec" style="max-width:20ch" data-en="Dignified income." data-fil="Marangal na kita.">Dignified income.</h2>
+      <p class="lead" style="margin-top:12px" data-en="Every ride and order is honest work and dignified income — commission that stays in the community, funding local jobs, mosques and education." data-fil="Bawat sakay at order ay marangal na trabaho at kita — komisyong nananatili sa komunidad, pumopondo sa lokal na trabaho, mosque at edukasyon.">Every ride and order is honest work and dignified income — commission that stays in the community, funding local jobs, mosques and education.</p>
       <div class="grid c3 mt22">
         <div class="card"><div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h3 data-en="Halal, verified" data-fil="Halal, beripikado">Halal, verified</h3><p data-en="Halal kitchens and stores are checked and labeled, so you order with confidence." data-fil="Sinusuri at nilalabelan ang halal na kusina at tindahan, kaya panatag ka sa order.">Halal kitchens and stores are checked and labeled, so you order with confidence.</p></div>
         <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg></div><h3 data-en="Pay your way" data-fil="Bayad sa gusto mo">Pay your way</h3><p data-en="Cash on delivery, GCash, Maya and major e-wallets — choose at checkout." data-fil="Cash on delivery, GCash, Maya at major e-wallets — pili sa checkout.">Cash on delivery, GCash, Maya and major e-wallets — choose at checkout.</p></div>
