@@ -55,7 +55,7 @@ nav.main a.navlink[aria-current]{color:var(--ka-red)}
 .hero .okir-bg{position:absolute;inset:0;color:rgba(255,255,255,.06);pointer-events:none}
 .hero .okir-bg svg{position:absolute;width:720px;height:288px;left:-80px;top:-40px}
 .hero .okir-bg svg.two{left:auto;right:-120px;top:auto;bottom:-60px;transform:scaleX(-1)}
-.hero .inner{position:relative;padding:56px 0}
+.hero .inner{position:relative;padding:56px 20px}
 .hero h1{font-size:clamp(34px,7vw,64px)}
 .hero .lead{margin-top:18px;color:rgba(255,255,255,.85);max-width:42ch}
 .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
