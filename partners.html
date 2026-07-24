@@ -60,8 +60,9 @@
   .hero .okir-bg { position:absolute; inset:0; color:rgba(255,255,255,.05); pointer-events:none; }
   .hero .okir-bg svg { position:absolute; width:720px; height:288px; left:-80px; top:-40px; }
   .hero .okir-bg svg.two { left:auto; right:-120px; top:auto; bottom:-60px; transform:scaleX(-1); }
-  .herogrid { position:relative; display:grid; gap:34px; padding:52px 20px 56px; }
-  @media (min-width:960px){ .herogrid { grid-template-columns:1.05fr .95fr; align-items:start; gap:44px; } }
+  .herogrid { position:relative; display:grid; grid-template-columns:minmax(0,1fr); gap:34px; padding:52px 20px 56px; }
+  .herogrid > * { min-width:0; }
+  @media (min-width:960px){ .herogrid { grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); align-items:start; gap:44px; } }
   .roletabs { display:inline-flex; gap:0; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:13px; padding:5px; margin-bottom:24px; }
   .roletabs button { border:0; cursor:pointer; font-family:inherit; font-weight:800; font-size:14.5px; color:rgba(255,255,255,.72); padding:11px 18px; border-radius:9px; display:inline-flex; align-items:center; gap:8px; }
   .roletabs button[aria-selected="true"][data-role="driver"] { background:var(--ka-blue); color:#fff; }
@@ -69,7 +70,7 @@
   @media (max-width:560px){ .roletabs { display:flex; width:100%; } .roletabs button { flex:1; justify-content:center; padding:10px 8px; font-size:13px; } }
   .hero h1 { font-size:clamp(38px,7.5vw,70px); }
   .hero .lead { margin-top:18px; font-size:clamp(16px,2.3vw,19px); color:rgba(255,255,255,.82); max-width:40ch; }
-  .stats { display:flex; gap:0; margin-top:30px; }
+  .stats { display:flex; flex-wrap:wrap; gap:0; margin-top:30px; }
   .stats .stat { padding-right:26px; margin-right:26px; border-right:1px solid rgba(255,255,255,.18); }
   .stats .stat:last-child { border-right:0; }
   .stats .n { font-weight:900; font-size:30px; letter-spacing:-.02em; }
