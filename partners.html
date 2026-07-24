@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  PAGAR — Partners / Recruitment (clean rebuild that PRESERVES marketing's identity:
+  Sarimanok logo, okir motif, Archivo, red-dominant palette, hard-offset shadows).
+  Self-contained; only external ref is Google Fonts (Archivo) via display=swap (non-blocking).
+
+  DEPLOY CONFIG (bottom of file):
+    API_BASE          — app API origin (e.g. "https://api.pagar.ph"). "" => DEMO (simulate, sends nothing).
+    TURNSTILE_SITEKEY — Cloudflare Turnstile site key. "" => no captcha widget (server allows if unset).
+  On submit: POST JSON to {API_BASE}/api/recruit per docs/recruitment-api.md.
+-->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Partner with Pagar — Drive or sell in Marawi</title>
+<meta name="description" content="Be a Pagar Hero or bring your business online in Marawi. Apply fully online — ₱0 to join, weekly cash-out, insured trips. Built by Maranaos for Marawi." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    /* marketing's palette (kept verbatim so the Sarimanok logo renders as designed) */
+    --ka-bg:#f3f2f2; --ka-cream:#f8f4f4; --ka-ink:#201e1d; --ka-ink-soft:#5b5654;
+    --ka-line:#e7e2e0; --ka-blue:#0058a1; --ka-blue-deep:#003f74;
+    --ka-green:#0eb046; --ka-green-deep:#0a7a34; --ka-red:#ee0000; --ka-red-deep:#c00000;
+    --sh: 6px 6px 0 rgba(32,30,29,.9);
+    --sh-sm: 4px 4px 0 rgba(32,30,29,.9);
+    --maxw: 1120px;
+    font-synthesis: none;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+  body { font-family:"Archivo", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--ka-ink); background:var(--ka-cream); line-height:1.5; -webkit-font-smoothing:antialiased; }
+  svg.sprite { position:absolute; width:0; height:0; overflow:hidden; }
+  .wrap { width:100%; max-width:var(--maxw); margin:0 auto; padding:0 20px; }
+  a { color:inherit; }
+  .archivo-black { font-weight:900; letter-spacing:-.02em; line-height:.98; text-wrap:balance; }
+  .eyebrow { text-transform:uppercase; letter-spacing:.14em; font-size:12px; font-weight:800; color:var(--ka-red); }
+
+  /* header */
+  header.site { position:sticky; top:0; z-index:50; background:var(--ka-cream); border-bottom:1px solid var(--ka-line); }
+  .bar { display:flex; align-items:center; gap:14px; height:64px; }
+  .brand { display:flex; align-items:center; gap:11px; text-decoration:none; }
+  .brand .word { font-weight:800; font-size:23px; letter-spacing:-.02em; color:var(--ka-ink); }
+  .brand .seg { color:var(--ka-red); font-weight:800; font-size:12px; letter-spacing:.14em; padding-left:14px; border-left:1px solid var(--ka-line); }
+  nav.main { margin-left:auto; display:flex; align-items:center; gap:22px; }
+  nav.main a.navlink { text-decoration:none; color:var(--ka-ink); font-weight:600; font-size:14.5px; }
+  nav.main a.navlink[aria-current] { color:var(--ka-red); }
+  .applybtn { background:var(--ka-red); color:#fff; text-decoration:none; font-weight:800; font-size:14px; padding:11px 18px; border-radius:11px; box-shadow:var(--sh-sm); }
+  .langtoggle { display:inline-flex; border:2px solid var(--ka-ink); border-radius:10px; overflow:hidden; }
+  .langtoggle button { border:0; background:#fff; padding:7px 11px; font-weight:800; font-size:12px; cursor:pointer; color:var(--ka-ink); font-family:inherit; }
+  .langtoggle button[aria-pressed="true"] { background:var(--ka-ink); color:#fff; }
+  @media (max-width:900px){ nav.main .navlink, .brand .seg { display:none; } }
+
+  /* hero (dark) */
+  .hero { position:relative; background:var(--ka-ink); color:#fff; overflow:hidden; }
+  .hero .okir-bg { position:absolute; inset:0; color:rgba(255,255,255,.05); pointer-events:none; }
+  .hero .okir-bg svg { position:absolute; width:720px; height:288px; left:-80px; top:-40px; }
+  .hero .okir-bg svg.two { left:auto; right:-120px; top:auto; bottom:-60px; transform:scaleX(-1); }
+  .herogrid { position:relative; display:grid; gap:34px; padding:40px 0 56px; }
+  @media (min-width:960px){ .herogrid { grid-template-columns:1.05fr .95fr; align-items:start; gap:44px; } }
+  .roletabs { display:inline-flex; gap:0; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:13px; padding:5px; margin-bottom:24px; }
+  .roletabs button { border:0; cursor:pointer; font-family:inherit; font-weight:800; font-size:14.5px; color:rgba(255,255,255,.72); padding:11px 18px; border-radius:9px; display:inline-flex; align-items:center; gap:8px; }
+  .roletabs button[aria-selected="true"][data-role="driver"] { background:var(--ka-blue); color:#fff; }
+  .roletabs button[aria-selected="true"][data-role="merchant"] { background:var(--ka-green-deep); color:#fff; }
+  .hero h1 { font-size:clamp(38px,7.5vw,70px); }
+  .hero .lead { margin-top:18px; font-size:clamp(16px,2.3vw,19px); color:rgba(255,255,255,.82); max-width:40ch; }
+  .stats { display:flex; gap:0; margin-top:30px; }
+  .stats .stat { padding-right:26px; margin-right:26px; border-right:1px solid rgba(255,255,255,.18); }
+  .stats .stat:last-child { border-right:0; }
+  .stats .n { font-weight:900; font-size:30px; letter-spacing:-.02em; }
+  .stats .l { text-transform:uppercase; letter-spacing:.1em; font-size:11px; color:rgba(255,255,255,.66); font-weight:700; margin-top:2px; }
+  .salam { margin-top:30px; display:flex; gap:14px; align-items:center; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:16px 18px; max-width:440px; }
+  .salam svg { width:34px; height:34px; flex:0 0 auto; }
+  .salam p { font-size:14px; color:rgba(255,255,255,.85); }
+
+  /* form card */
+  .formcard { background:#fff; color:var(--ka-ink); border-radius:18px; box-shadow:var(--sh); overflow:hidden; }
+  .formhead { display:flex; align-items:center; justify-content:space-between; padding:20px 22px 0; }
+  .formhead h2 { font-weight:900; font-size:22px; letter-spacing:-.01em; }
+  .formhead .stepof { font-size:12px; font-weight:800; letter-spacing:.06em; color:var(--ka-ink-soft); }
+  .progress { height:8px; background:var(--ka-line); border-radius:99px; margin:14px 22px 0; overflow:hidden; }
+  .progress > i { display:block; height:100%; background:var(--ka-red); transition:width .3s ease; }
+  .formbody { padding:18px 22px 24px; }
+  .field { margin-bottom:14px; }
+  .field label { display:block; text-transform:uppercase; letter-spacing:.06em; font-size:11.5px; font-weight:800; color:var(--ka-ink-soft); margin-bottom:6px; }
+  .field input, .field select { width:100%; font-family:inherit; font-size:16px; color:var(--ka-ink); border:2px solid var(--ka-line); border-radius:11px; padding:12px 13px; background:#fff; outline:none; }
+  .field input:focus, .field select:focus { border-color:var(--ka-ink); }
+  .field.err input, .field.err select { border-color:var(--ka-red); }
+  .field .errmsg { display:none; color:var(--ka-red-deep); font-size:12px; margin-top:5px; font-weight:600; }
+  .field.err .errmsg { display:block; }
+  .row2 { display:grid; gap:12px; }
+  @media (min-width:480px){ .row2 { grid-template-columns:1fr 1fr; } }
+  .reqmini { list-style:none; display:grid; gap:10px; }
+  .reqmini li { display:flex; gap:11px; align-items:flex-start; }
+  .reqmini .tick { flex:0 0 auto; width:24px; height:24px; border-radius:7px; background:var(--ka-green); display:grid; place-items:center; }
+  .reqmini .tick svg { width:14px; height:14px; color:#fff; }
+  .reqmini b { display:block; font-size:14px; } .reqmini span { color:var(--ka-ink-soft); font-size:12.5px; }
+  .docnote { margin-top:14px; background:var(--ka-cream); border:1px solid var(--ka-line); border-radius:11px; padding:12px 14px; font-size:13px; color:var(--ka-ink-soft); }
+  .agree { display:flex; gap:11px; align-items:flex-start; margin-top:16px; font-size:13.5px; color:var(--ka-ink-soft); }
+  .agree input { width:20px; height:20px; margin-top:1px; flex:0 0 auto; accent-color:var(--ka-red); }
+  .review { border:1px solid var(--ka-line); border-radius:12px; overflow:hidden; }
+  .review div { display:flex; justify-content:space-between; gap:14px; padding:11px 14px; font-size:14px; }
+  .review div:nth-child(odd){ background:var(--ka-cream); }
+  .review b { color:var(--ka-ink-soft); font-weight:700; text-transform:uppercase; letter-spacing:.04em; font-size:11.5px; }
+  .cf { margin-top:14px; }
+  .actions { display:flex; gap:10px; margin-top:18px; }
+  .btn { border:0; cursor:pointer; font-family:inherit; font-weight:800; font-size:15px; padding:14px 20px; border-radius:12px; }
+  .btn-red { background:var(--ka-red); color:#fff; flex:1; box-shadow:var(--sh-sm); }
+  .btn-red:disabled { opacity:.55; cursor:not-allowed; box-shadow:none; }
+  .btn-ghost { background:#fff; color:var(--ka-ink); border:2px solid var(--ka-line); }
+  .donewrap { text-align:center; padding:26px 8px; }
+  .donewrap .big { width:66px; height:66px; border-radius:99px; background:var(--ka-green); display:grid; place-items:center; margin:0 auto 14px; }
+  .donewrap .big svg { width:32px; height:32px; color:#fff; }
+  .donewrap h2 { font-weight:900; font-size:23px; }
+  .donewrap .ref { display:inline-block; margin-top:14px; font-weight:800; letter-spacing:.08em; background:var(--ka-cream); border:1px dashed var(--ka-ink); border-radius:10px; padding:9px 15px; }
+
+  /* light sections */
+  section.block { padding:52px 0; }
+  section.light { background:var(--ka-cream); }
+  h2.sec { font-weight:900; font-size:clamp(26px,4.4vw,40px); letter-spacing:-.02em; margin-top:8px; }
+  .grid { display:grid; gap:16px; }
+  @media (min-width:640px){ .grid.c2{grid-template-columns:1fr 1fr;} .grid.c4{grid-template-columns:repeat(4,1fr);} }
+  .card { background:#fff; border:1px solid var(--ka-line); border-radius:16px; padding:20px; box-shadow:var(--sh); }
+  .card .ic { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; margin-bottom:12px; background:#eaf2fb; color:var(--ka-blue); }
+  .roleview[data-role="merchant"] .card .ic { background:#e7f6ec; color:var(--ka-green-deep); }
+  .card .ic svg { width:23px; height:23px; }
+  .card h3 { font-weight:800; font-size:17px; margin-bottom:3px; }
+  .card p { color:var(--ka-ink-soft); font-size:14px; }
+  ol.steps { list-style:none; counter-reset:s; display:grid; gap:14px; }
+  @media (min-width:760px){ ol.steps{grid-template-columns:repeat(4,1fr);} }
+  ol.steps li { counter-increment:s; background:#fff; border:1px solid var(--ka-line); border-radius:16px; padding:18px; box-shadow:var(--sh-sm); }
+  ol.steps li::before { content:counter(s); display:grid; place-items:center; width:32px; height:32px; border-radius:99px; background:var(--ka-ink); color:#fff; font-weight:900; font-size:15px; margin-bottom:11px; }
+  ol.steps li h4 { font-weight:800; font-size:15.5px; } ol.steps li p { color:var(--ka-ink-soft); font-size:13.5px; margin-top:2px; }
+  ul.reqs { list-style:none; display:grid; gap:12px; } @media (min-width:640px){ ul.reqs{grid-template-columns:1fr 1fr;} }
+  ul.reqs li { display:flex; gap:13px; align-items:flex-start; background:#fff; border:1px solid var(--ka-line); border-radius:12px; padding:14px 16px; box-shadow:var(--sh-sm); }
+  ul.reqs .tick { flex:0 0 auto; width:26px; height:26px; border-radius:8px; background:var(--ka-green); display:grid; place-items:center; }
+  ul.reqs .tick svg { width:15px; height:15px; color:#fff; }
+  ul.reqs b { display:block; font-size:15px; font-weight:800; } ul.reqs span { color:var(--ka-ink-soft); font-size:13px; }
+  .applyrow { margin-top:22px; }
+  .bigcta { display:inline-block; background:var(--ka-red); color:#fff; text-decoration:none; font-weight:800; font-size:16px; padding:15px 26px; border-radius:13px; box-shadow:var(--sh); border:0; cursor:pointer; font-family:inherit; }
+  .note { margin-top:16px; background:#fff7e6; border:1px solid #f3ddad; color:#7a5b12; border-radius:12px; padding:13px 15px; font-size:14px; }
+  /* testimonials */
+  .tgrid { display:grid; gap:18px; } @media (min-width:720px){ .tgrid{grid-template-columns:1fr 1fr;} }
+  .tcard { position:relative; background:#fff; border:1px solid var(--ka-line); border-radius:16px; padding:24px; box-shadow:var(--sh); overflow:hidden; }
+  .tcard .okir-wm { position:absolute; right:-30px; bottom:-24px; width:220px; color:rgba(32,30,29,.05); pointer-events:none; }
+  .tcard .qm { font-family:Archivo; font-weight:900; font-size:44px; line-height:.6; color:var(--ka-red); }
+  .tcard p { font-size:18px; font-weight:600; margin:8px 0 16px; text-wrap:pretty; }
+  .tcard .who { display:flex; align-items:center; gap:10px; }
+  .tcard .who svg { width:28px; height:28px; }
+  .tcard .who b { font-weight:800; font-size:14.5px; display:block; } .tcard .who span { color:var(--ka-ink-soft); font-size:13px; }
+  /* faq */
+  details.faq { background:#fff; border:1px solid var(--ka-line); border-radius:12px; padding:2px 18px; margin-bottom:10px; box-shadow:var(--sh-sm); }
+  details.faq summary { cursor:pointer; list-style:none; font-weight:800; font-size:15.5px; padding:15px 0; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq .chev{ color:var(--ka-red); transition:transform .2s; font-size:14px; }
+  details.faq[open] .chev{ transform:rotate(180deg); }
+  details.faq p { padding:0 0 16px; color:var(--ka-ink-soft); font-size:14.5px; }
+  /* footer */
+  footer.site { background:var(--ka-ink); color:rgba(255,255,255,.7); padding:36px 0; font-size:14px; }
+  footer.site .row { display:flex; flex-wrap:wrap; gap:16px 34px; align-items:center; }
+  footer.site .word { color:#fff; font-weight:800; font-size:20px; letter-spacing:-.02em; }
+  footer.site a { color:rgba(255,255,255,.7); text-decoration:none; } footer.site a:hover{ color:#fff; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+
+<!-- ===== SVG sprite: Sarimanok (Maranao bird) + okir motif — reused verbatim from marketing's site ===== -->
+<svg class="sprite" aria-hidden="true">
+  <symbol id="sarimanok" viewBox="0 0 240 240">
+    <rect x="60" y="205" width="120" height="9" fill="var(--ka-blue-deep)"></rect>
+    <rect x="60" y="205" width="120" height="4" fill="var(--ka-blue)"></rect>
+    <path d="M118 168 L104 205 M132 168 L146 205" stroke="var(--ka-blue-deep)" stroke-width="5" stroke-linecap="round" fill="none"></path>
+    <g transform="translate(98,158)">
+      <g transform="rotate(-74)"><path d="M0,0 C-17,-36 -13,-84 0,-112 C13,-84 17,-36 0,0Z" fill="var(--ka-green)"></path></g>
+      <g transform="rotate(-54)"><path d="M0,0 C-18,-40 -14,-92 0,-124 C14,-92 18,-40 0,0Z" fill="var(--ka-blue)"></path></g>
+      <g transform="rotate(-34)"><path d="M0,0 C-18,-42 -14,-98 0,-132 C14,-98 18,-42 0,0Z" fill="var(--ka-red)"></path></g>
+      <g transform="rotate(-13)"><path d="M0,0 C-16,-38 -12,-86 0,-116 C12,-86 16,-38 0,0Z" fill="var(--ka-green)"></path></g>
+    </g>
+    <path d="M96 150 C92 118 112 96 142 100 C176 104 182 140 168 160 C152 182 108 184 96 150Z" fill="var(--ka-red)"></path>
+    <path d="M96 150 C92 118 112 96 142 100 C176 104 182 140 168 160 C152 182 108 184 96 150Z" fill="none" stroke="var(--ka-red-deep)" stroke-width="2.5"></path>
+    <path d="M150 152 C132 152 126 134 140 126 C152 120 164 130 158 142 C154 150 144 148 146 140" fill="none" stroke="var(--ka-blue)" stroke-width="5" stroke-linecap="round"></path>
+    <path d="M158 108 C158 88 168 74 184 72 C200 70 208 82 204 94 C200 106 184 108 176 102 C170 98 172 90 178 90" fill="none" stroke="var(--ka-red)" stroke-width="15" stroke-linecap="round"></path>
+    <circle cx="192" cy="80" r="16" fill="var(--ka-red)"></circle>
+    <circle cx="192" cy="80" r="16" fill="none" stroke="var(--ka-red-deep)" stroke-width="2.5"></circle>
+    <circle cx="197" cy="77" r="3.4" fill="var(--ka-ink)"></circle>
+    <path d="M182 66 C176 50 188 40 196 48 M192 62 C188 44 202 36 208 48 M200 62 C200 46 214 44 216 58" fill="none" stroke="var(--ka-blue)" stroke-width="5" stroke-linecap="round"></path>
+    <path d="M206 80 L226 76 L206 88Z" fill="var(--ka-blue)"></path>
+    <path d="M206 86 C214 96 216 104 214 110" fill="none" stroke="var(--ka-green-deep)" stroke-width="3" stroke-linecap="round"></path>
+    <g transform="translate(200,124) scale(2.9)">
+      <path d="M0 0 C-9 -7 -9 9 0 2 C7 9 12 -9 0 0Z" fill="var(--ka-green)" stroke="var(--ka-green-deep)" stroke-width="1.1"></path>
+      <path d="M-2 1 L-11 -6 L-11 8Z" fill="var(--ka-green-deep)"></path>
+      <circle cx="4.4" cy="-0.4" r="1.6" fill="var(--ka-cream)"></circle>
+      <circle cx="4.8" cy="-0.4" r="0.8" fill="var(--ka-ink)"></circle>
+    </g>
+  </symbol>
+  <symbol id="sarimanok-solid" viewBox="0 0 240 240">
+    <g fill="currentColor">
+      <g transform="translate(98,158)">
+        <path transform="rotate(-74)" d="M0,0 C-17,-36 -13,-84 0,-112 C13,-84 17,-36 0,0Z"></path>
+        <path transform="rotate(-54)" d="M0,0 C-18,-40 -14,-92 0,-124 C14,-92 18,-40 0,0Z"></path>
+        <path transform="rotate(-34)" d="M0,0 C-18,-42 -14,-98 0,-132 C14,-98 18,-42 0,0Z"></path>
+        <path transform="rotate(-13)" d="M0,0 C-16,-38 -12,-86 0,-116 C12,-86 16,-38 0,0Z"></path>
+      </g>
+      <path d="M96 150 C92 118 112 96 142 100 C176 104 182 140 168 160 C152 182 108 184 96 150Z"></path>
+      <path d="M158 108 C158 88 168 74 184 72 C200 70 208 82 204 94 C200 106 184 108 176 102 C170 98 172 90 178 90" fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round"></path>
+      <circle cx="192" cy="80" r="16"></circle>
+      <path d="M182 66 C176 50 188 40 196 48 M192 62 C188 44 202 36 208 48 M200 62 C200 46 214 44 216 58" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
+      <path d="M206 80 L228 76 L206 88Z"></path>
+      <path d="M206 86 C214 96 216 104 214 110" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+      <g transform="translate(200,124) scale(2.9)"><path d="M0 0 C-9 -7 -9 9 0 2 C7 9 12 -9 0 0Z"></path><path d="M-2 1 L-11 -6 L-11 8Z"></path></g>
+    </g>
+  </symbol>
+  <symbol id="okir" viewBox="0 0 100 40">
+    <path d="M2 38 C2 14 22 4 40 14 C50 20 46 34 36 32 C28 30 30 20 38 22 M50 38 C50 12 74 2 92 16 C100 22 96 36 86 32" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"></path>
+  </symbol>
+</svg>
+
+<header class="site">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <svg width="38" height="38" aria-label="Pagar"><use href="#sarimanok"></use></svg>
+      <span class="word">Pagar</span><span class="seg" data-i18n="segPartners">PARTNERS</span>
+    </a>
+    <nav class="main">
+      <a class="navlink" href="about.html" data-i18n="navAbout">About</a>
+      <a class="navlink" href="coverage.html" data-i18n="navCoverage">Coverage</a>
+      <a class="navlink" href="safety.html" data-i18n="navSafety">Safety</a>
+      <a class="navlink" href="partners.html" aria-current="page" data-i18n="navPartners">Partners</a>
+      <a class="navlink" href="help.html" data-i18n="navHelp">Help</a>
+      <div class="langtoggle" role="group" aria-label="Language">
+        <button data-lang="en" aria-pressed="true">EN</button>
+        <button data-lang="fil" aria-pressed="false">FIL</button>
+      </div>
+      <a class="applybtn" href="#apply" data-i18n="applyNow">Apply now →</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="okir-bg" aria-hidden="true"><svg><use href="#okir"></use></svg><svg class="two"><use href="#okir"></use></svg></div>
+    <div class="wrap herogrid">
+      <div>
+        <div class="roletabs" role="tablist" aria-label="Choose how to partner">
+          <button data-role="driver" role="tab" aria-selected="true" data-i18n="tabDriver">🦸 Apply as a Hero</button>
+          <button data-role="merchant" role="tab" aria-selected="false" data-i18n="tabMerchant">🏪 Merchant &amp; Seller</button>
+        </div>
+        <h1 class="archivo-black" data-i18n="heroTitle">Be a Pagar Hero. Drive, deliver, earn.</h1>
+        <p class="lead" data-i18n="heroLead">Ride drivers and delivery riders keep Marawi moving — that makes you a hero. Turn your motorcycle, tricycle or car into income on your own schedule. No boss, no quota, apply fully online.</p>
+        <div class="stats" data-stats></div>
+        <div class="salam">
+          <svg viewBox="0 0 240 240" aria-hidden="true"><use href="#sarimanok"></use></svg>
+          <p data-i18n="salam">Assalamu alaykum. Pagar is built by Maranaos — we onboard you personally, in your language.</p>
+        </div>
+      </div>
+
+      <!-- FORM CARD -->
+      <div class="formcard" id="apply">
+        <div class="formhead"><h2 data-form-title>About you</h2><span class="stepof" data-stepof>Step 1 of 4</span></div>
+        <div class="progress"><i style="width:25%"></i></div>
+        <form class="formbody" id="applyForm" novalidate>
+          <div class="step" data-step="1"><div id="fieldsHost"></div></div>
+          <div class="step hidden" data-step="2"><div id="fieldsHost2"></div></div>
+          <div class="step hidden" data-step="3">
+            <p style="font-size:14px;color:var(--ka-ink-soft);margin-bottom:14px" data-i18n="docsIntro">Get these ready — you’ll upload them securely inside the app during onboarding, not here.</p>
+            <ul class="reqmini" data-reqmini></ul>
+            <label class="agree"><input type="checkbox" id="agree" /><span data-i18n="agree">I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.</span></label>
+          </div>
+          <div class="step hidden" data-step="4">
+            <div class="review" data-review></div>
+            <div class="cf" id="turnstileSlot"></div>
+          </div>
+          <div class="step hidden" data-step="done">
+            <div class="donewrap">
+              <div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <h2 data-i18n="okH">Application received!</h2>
+              <p style="color:var(--ka-ink-soft);margin-top:6px" data-i18n="okP">We’ll call this number to help you finish onboarding — in your language.</p>
+              <div class="ref">REF <span id="refNo">—</span></div>
+            </div>
+          </div>
+          <div class="actions" id="formActions">
+            <button type="button" class="btn btn-ghost hidden" id="backBtn" data-i18n="back">Back</button>
+            <button type="button" class="btn btn-red" id="nextBtn" data-i18n="next">Continue →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="block">
+    <div class="wrap roleview" data-role="driver">
+      <div class="eyebrow" data-i18n="drvBenEy">Why drive with Pagar</div>
+      <h2 class="sec" data-i18n="drvBenH">Your hours. Your earnings.</h2>
+      <div class="grid c4" style="margin-top:22px" data-benefits="driver"></div>
+    </div>
+    <div class="wrap roleview hidden" data-role="merchant">
+      <div class="eyebrow" data-i18n="mchBenEy">Why sell on Pagar</div>
+      <h2 class="sec" data-i18n="mchBenH">Everything you need to sell more.</h2>
+      <div class="grid c4" style="margin-top:22px" data-benefits="merchant"></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="block light">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="howEy">How it works</div>
+      <h2 class="sec" data-i18n="howH">Live in four steps.</h2>
+      <ol class="steps" style="margin-top:22px" data-steps></ol>
+    </div>
+  </section>
+
+  <!-- REQUIREMENTS -->
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="reqEy">What you need</div>
+      <h2 class="sec" data-reqh>What you need to start</h2>
+      <ul class="reqs" style="margin-top:22px" data-reqs></ul>
+      <div class="note" data-i18n="reqNote">Missing something? Apply anyway and we’ll tell you exactly what to fix — our Marawi onboarding team will guide you.</div>
+      <div class="applyrow"><button class="bigcta" type="button" data-scrollapply data-i18n="startApp">Start your application →</button></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="block light">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="fromPartners">From our partners</div>
+      <div class="tgrid" style="margin-top:22px" data-testi></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="sec" data-faqh>Driver questions, answered.</h2>
+      <div style="margin-top:22px" data-faq></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap row">
+    <span class="word">Pagar</span>
+    <span data-i18n="footTag">Built by Maranaos for Marawi and all of Mindanao.</span>
+    <span style="margin-left:auto">
+      <a href="help.html#privacy" data-i18n="footPrivacy">Privacy</a> ·
+      <a href="help.html#terms" data-i18n="footTerms">Terms</a> ·
+      <a href="mailto:marketing@pagarexpress.com">marketing@pagarexpress.com</a> ·
+      <a href="index.html">pagarexpress.com</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+/* ============ CONFIG (set on deploy) ============ */
+var API_BASE = "";            // "" => DEMO (simulate). e.g. "https://api.pagar.ph"
+var TURNSTILE_SITEKEY = "";   // "" => skip captcha widget
+
+/* ============ icons ============ */
+var IC = {
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  cash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>',
+  route:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8 6h6a4 4 0 0 1 0 8H10a4 4 0 0 0 0 8"/></svg>',
+  cart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h2l2.4 12h9.2L21 8H7"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>',
+  mega:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v2l12 5V6L3 11z"/><path d="M15 8a4 4 0 0 1 0 8"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+  tick:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>'
+};
+
+/* ============ i18n ============ */
+var T = {
+  en: {
+    segPartners:"PARTNERS", navAbout:"About", navCoverage:"Coverage", navSafety:"Safety", navPartners:"Partners", navHelp:"Help", applyNow:"Apply now →",
+    tabDriver:"🦸 Apply as a Hero", tabMerchant:"🏪 Merchant & Seller",
+    salam:"Assalamu alaykum. Pagar is built by Maranaos — we onboard you personally, in your language.",
+    howEy:"How it works", howH:"Live in four steps.",
+    reqEy:"What you need", reqNote:"Missing something? Apply anyway and we’ll tell you exactly what to fix — our Marawi onboarding team will guide you.",
+    startApp:"Start your application →", fromPartners:"From our partners",
+    back:"Back", next:"Continue →", submit:"Submit application ✓",
+    docsIntro:"Get these ready — you’ll upload them securely inside the app during onboarding, not here.",
+    agree:"I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.",
+    okH:"Application received!", okP:"We’ll call this number to help you finish onboarding — in your language.",
+    footTag:"Built by Maranaos for Marawi and all of Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
+    heroTitle:"Be a Pagar Hero. Drive, deliver, earn.",
+    heroLead:"Ride drivers and delivery riders keep Marawi moving — that makes you a hero. Turn your motorcycle, tricycle or car into income on your own schedule. No boss, no quota, apply fully online.",
+    drvBenEy:"Why drive with Pagar", drvBenH:"Your hours. Your earnings.",
+    mchBenEy:"Why sell on Pagar", mchBenH:"Everything you need to sell more.",
+    stepAbout:"About you", stepVehicle:"Your vehicle", stepBiz:"Your business", stepDocs:"Prepare documents", stepReview:"Review & submit",
+    reqDrvH:"What you need to start", reqMchH:"What you need to start",
+    faqDrvH:"Driver questions, answered.", faqMchH:"Merchant questions, answered.",
+    reqFix:"This is required.", phoneFix:"Enter a valid PH mobile (09XX XXX XXXX).", agreeFix:"Please confirm the box to continue."
+  },
+  fil: {
+    segPartners:"PARTNERS", navAbout:"Tungkol", navCoverage:"Saklaw", navSafety:"Kaligtasan", navPartners:"Partners", navHelp:"Tulong", applyNow:"Mag-apply →",
+    tabDriver:"🦸 Maging Hero", tabMerchant:"🏪 Merchant at Seller",
+    salam:"Assalamu alaykum. Ang Pagar ay gawa ng mga Maranao — personal ka naming ino-onboard, sa wika mo.",
+    howEy:"Paano gumagana", howH:"Live sa apat na hakbang.",
+    reqEy:"Ano ang kailangan", reqNote:"May kulang? Mag-apply pa rin at sasabihin namin kung ano ang aayusin — gagabayan ka ng aming Marawi onboarding team.",
+    startApp:"Simulan ang aplikasyon →", fromPartners:"Mula sa aming partners",
+    back:"Bumalik", next:"Magpatuloy →", submit:"Isumite ✓",
+    docsIntro:"Ihanda ang mga ito — i-a-upload nang ligtas sa loob ng app habang nag-o-onboard, hindi dito.",
+    agree:"Kinukumpirma kong tama ang detalye ko at pumapayag akong kontakin ng Pagar onboarding team. Sang-ayon ako sa Privacy Policy at Terms.",
+    okH:"Natanggap ang aplikasyon!", okP:"Tatawagan namin ang numerong ito para tulungan kang tapusin ang onboarding — sa wika mo.",
+    footTag:"Gawa ng mga Maranao para sa Marawi at buong Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
+    heroTitle:"Maging Pagar Hero. Magmaneho, maghatid, kumita.",
+    heroLead:"Ang mga driver at rider ang nagpapagalaw sa Marawi — kaya isa kang bayani. Gawing kita ang motor, tricycle o kotse mo sa sarili mong oras. Walang amo, walang quota, mag-apply online.",
+    drvBenEy:"Bakit magmaneho sa Pagar", drvBenH:"Ikaw ang bahala sa oras.",
+    mchBenEy:"Bakit magbenta sa Pagar", mchBenH:"Lahat ng kailangan para makabenta.",
+    stepAbout:"Tungkol sa iyo", stepVehicle:"Iyong sasakyan", stepBiz:"Iyong negosyo", stepDocs:"Ihanda ang dokumento", stepReview:"Suriin at isumite",
+    reqDrvH:"Ano ang kailangan para makasimula", reqMchH:"Ano ang kailangan para makasimula",
+    faqDrvH:"Mga tanong ng driver, sagot na.", faqMchH:"Mga tanong ng merchant, sagot na.",
+    reqFix:"Kailangan ito.", phoneFix:"Gumamit ng wastong PH mobile (09XX XXX XXXX).", agreeFix:"Pakikumpirma ang kahon para magpatuloy."
+  }
+};
+
+/* ============ role data ============ */
+var DATA = {
+  driver: {
+    stats:[{n:"₱0",l:{en:"Joining fee",fil:"Bayad sa pagsali"}},{n:{en:"Weekly",fil:"Lingguhan"},l:{en:"Cash-out",fil:"Cash-out"}},{n:{en:"Your own",fil:"Sarili mong"},l:{en:"Hours",fil:"Oras"}}],
+    benefits:[
+      {ic:"clock",h:{en:"Your own hours",fil:"Sarili mong oras"},p:{en:"Go online whenever you want. No boss and no daily quota.",fil:"Mag-online kahit kailan. Walang amo, walang quota."}},
+      {ic:"cash",h:{en:"Fast payouts",fil:"Mabilis na payout"},p:{en:"Daily settlement to your bank or GCash — no weekly wait.",fil:"Araw-araw na settlement sa bank o GCash."}},
+      {ic:"shield",h:{en:"Insured trips",fil:"Insured na biyahe"},p:{en:"Every booking is covered by accident and trip insurance.",fil:"Bawat booking ay may insurance."}},
+      {ic:"route",h:{en:"Smart routes",fil:"Matalinong ruta"},p:{en:"Dispatch that knows Marawi’s streets, gates and barangays.",fil:"Dispatch na kabisado ang Marawi."}}
+    ],
+    steps:[
+      {h:{en:"Fill the form",fil:"Punan ang form"},p:{en:"Your details and vehicle — about 5 minutes.",fil:"Detalye at sasakyan — mga 5 minuto."}},
+      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"License, OR/CR, clearance and a valid ID.",fil:"Lisensya, OR/CR, clearance at ID."}},
+      {h:{en:"Quick orientation",fil:"Maikling oryentasyon"},p:{en:"Short online onboarding and app setup.",fil:"Maikling onboarding at app setup."}},
+      {h:{en:"Start earning",fil:"Simulan ang kita"},p:{en:"Accept your first booking and get paid.",fil:"Tanggapin ang unang booking at kumita."}}
+    ],
+    reqs:[
+      {b:{en:"Driver’s license",fil:"Lisensya"},s:{en:"Non-professional or professional.",fil:"Non-pro o professional."}},
+      {b:{en:"Vehicle OR / CR",fil:"OR / CR ng sasakyan"},s:{en:"Official receipt and certificate of registration.",fil:"OR at CR."}},
+      {b:{en:"NBI or police clearance",fil:"NBI o police clearance"},s:{en:"Issued within the last 6 months.",fil:"Sa nakaraang 6 buwan."}},
+      {b:{en:"Valid government ID",fil:"Valid na government ID"},s:{en:"Any primary government ID.",fil:"Kahit anong primary ID."}},
+      {b:{en:"A roadworthy vehicle",fil:"Sasakyang gumagana"},s:{en:"Motorcycle, tricycle, sedan or car.",fil:"Motor, tricycle, sedan o kotse."}}
+    ],
+    faqs:[
+      {q:{en:"Can I drive part-time?",fil:"Pwede part-time?"},a:{en:"Absolutely. You choose exactly when to go online — full-time or a few hours a week.",fil:"Oo. Ikaw ang pipili kung kailan mag-online."}},
+      {q:{en:"When do I get paid?",fil:"Kailan ako babayaran?"},a:{en:"Daily settlement straight to your bank or GCash, with no quota to hit.",fil:"Araw-araw sa bank o GCash, walang quota."}},
+      {q:{en:"What vehicles can I use?",fil:"Anong sasakyan?"},a:{en:"Motorcycle, tricycle, sedan or car — as long as the papers are complete and valid.",fil:"Motor, tricycle, sedan o kotse — basta kumpleto ang papeles."}},
+      {q:{en:"Is there a joining fee?",fil:"May bayad sa pagsali?"},a:{en:"None. Signing up to drive with Pagar is completely free.",fil:"Wala. Libre ang pagsali."}},
+      {q:{en:"What if I don’t have all documents yet?",fil:"Paano kung kulang?"},a:{en:"Apply anyway. Our Marawi onboarding team will help you complete what’s missing.",fil:"Mag-apply pa rin. Tutulungan ka namin."}}
+    ],
+    testi:[
+      {q:{en:"I drive around my class schedule at MSU and still earn enough for the week.",fil:"Nagmamaneho ako sa paligid ng klase ko sa MSU at sapat pa rin ang kita."},b:"Abdul R.",r:{en:"Motorcycle partner",fil:"Motorcycle partner"}},
+      {q:{en:"Dispatch actually knows the barangays here. Less time lost, more trips.",fil:"Kabisado talaga ng dispatch ang mga barangay dito. Mas kaunting oras na nasasayang, mas maraming biyahe."},b:"Jamal S.",r:{en:"Tricycle partner",fil:"Tricycle partner"}}
+    ],
+    fields:[
+      {step:1,k:"name",type:"text",label:{en:"Full name",fil:"Buong pangalan"},ph:{en:"As written on your ID",fil:"Tulad ng nasa ID"},req:true},
+      {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
+      {step:1,k:"city",type:"text",label:{en:"City / area",fil:"Lungsod / lugar"},ph:"Marawi City",req:true},
+      {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
+      {step:2,k:"vehType",type:"select",label:{en:"Vehicle type",fil:"Uri ng sasakyan"},opts:["Motorcycle","Tricycle","Sedan","Car"],req:true},
+      {step:2,k:"plate",type:"text",label:{en:"Plate number",fil:"Plate number"},ph:"ABC 1234",req:true},
+      {step:2,k:"vehYear",type:"text",label:{en:"Vehicle year",fil:"Taon ng sasakyan"},ph:"2020",req:false}
+    ]
+  },
+  merchant: {
+    stats:[{n:"₱0",l:{en:"To sign up",fil:"Para sumali"}},{n:{en:"Daily",fil:"Araw-araw"},l:{en:"Payouts",fil:"Payout"}},{n:{en:"2–3 days",fil:"2–3 araw"},l:{en:"To go live",fil:"Bago mag-live"}}],
+    benefits:[
+      {ic:"cart",h:{en:"More orders",fil:"Mas maraming order"},p:{en:"Get in front of thousands searching for food and goods every day.",fil:"Makita ka ng libo araw-araw."}},
+      {ic:"cash",h:{en:"Fast payouts",fil:"Mabilis na payout"},p:{en:"Daily settlement to your bank or GCash. Low, clear commission.",fil:"Araw-araw. Mababa, malinaw na komisyon."}},
+      {ic:"mega",h:{en:"Free marketing",fil:"Libreng marketing"},p:{en:"Featured listings, discounts and Ramadan campaigns at no extra cost.",fil:"Featured listings at campaigns nang libre."}},
+      {ic:"grid",h:{en:"One dashboard",fil:"Isang dashboard"},p:{en:"Manage orders, menu, hours and payouts from the Merchant app.",fil:"Pamahalaan lahat sa Merchant app."}}
+    ],
+    steps:[
+      {h:{en:"Fill the form",fil:"Punan ang form"},p:{en:"Business and contact details — about 5 minutes.",fil:"Detalye ng negosyo — mga 5 minuto."}},
+      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"BIR 2303, menu or catalog, and payout details.",fil:"BIR 2303, menu at payout details."}},
+      {h:{en:"Set up your store",fil:"I-set up ang tindahan"},p:{en:"Add menu, photos and hours with our team’s help.",fil:"Idagdag ang menu at litrato kasama kami."}},
+      {h:{en:"Receive orders",fil:"Tumanggap ng order"},p:{en:"Usually within a few days.",fil:"Kadalasan sa loob ng ilang araw."}}
+    ],
+    reqs:[
+      {b:{en:"Business or barangay permit",fil:"Business o barangay permit"},s:{en:"Proof your business operates locally.",fil:"Patunay na lokal ang negosyo."}},
+      {b:{en:"BIR 2303 form",fil:"BIR 2303"},s:{en:"Certificate of registration.",fil:"Certificate of registration."}},
+      {b:{en:"Menu or product catalog",fil:"Menu o katalogo"},s:{en:"With current prices.",fil:"May presyo."}},
+      {b:{en:"Valid government ID",fil:"Valid na ID"},s:{en:"Of the owner or authorized contact.",fil:"Ng may-ari o contact."}},
+      {b:{en:"Bank / GCash account",fil:"Bank / GCash"},s:{en:"Where we send your daily payouts.",fil:"Para sa payout."}}
+    ],
+    faqs:[
+      {q:{en:"Can marketplace sellers join?",fil:"Pwede ang sellers?"},a:{en:"Yes — restaurants, home kitchens, grocers and sellers of local crafts and goods are all welcome.",fil:"Oo — restaurant, home kitchen, grocery at lokal na produkto."}},
+      {q:{en:"How long until I go live?",fil:"Gaano katagal mag-live?"},a:{en:"Once your documents are complete, most partners are live within 2–3 working days.",fil:"Kapag kumpleto, live sa loob ng 2–3 araw."}},
+      {q:{en:"How much does it cost to join?",fil:"Magkano ang pagsali?"},a:{en:"Signing up is free at launch. We use a low, transparent commission per order to cover delivery, support and marketing.",fil:"Libre ang pagsali. Mababa at malinaw na komisyon kada order."}}
+    ],
+    testi:[
+      {q:{en:"Pagar brought our palapa to the whole city. Orders doubled in our first month.",fil:"Dinala ng Pagar ang palapa namin sa buong siyudad. Dumoble ang order sa unang buwan."},b:"Bai Farida",r:{en:"Owner, Palapa ni Bai",fil:"May-ari, Palapa ni Bai"}},
+      {q:{en:"Setting up my store took one afternoon with their team. Payouts arrive on time, every day.",fil:"Isang hapon lang ang setup kasama ang team nila. On time ang payout araw-araw."},b:"Ranao Grill",r:{en:"Restaurant partner",fil:"Restaurant partner"}}
+    ],
+    fields:[
+      {step:1,k:"name",type:"text",label:{en:"Contact person",fil:"Contact person"},ph:{en:"Owner or authorized contact",fil:"May-ari o contact"},req:true},
+      {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
+      {step:1,k:"city",type:"text",label:{en:"City / area",fil:"Lungsod / lugar"},ph:"Marawi City",req:true},
+      {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
+      {step:2,k:"bizName",type:"text",label:{en:"Business name",fil:"Pangalan ng negosyo"},ph:"e.g. Palapa ni Bai",req:true},
+      {step:2,k:"bizType",type:"select",label:{en:"Business type",fil:"Uri ng negosyo"},opts:["Restaurant / food","Home kitchen","Grocery / store","Crafts / goods"],req:true},
+      {step:2,k:"address",type:"text",label:{en:"Business address",fil:"Address ng negosyo"},ph:{en:"Street, barangay, landmark",fil:"Kalye, barangay, landmark"},req:true}
+    ]
+  }
+};
+
+/* ============ state + helpers ============ */
+var lang="en", role="driver", step=1, form={}, submitting=false;
+function t(k){ return (T[lang]&&T[lang][k])||T.en[k]||""; }
+function tx(o){ return o==null?"":(typeof o==="string"?o:(o[lang]||o.en)); }
+function $(s,r){ return (r||document).querySelector(s); }
+function $all(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];}); }
+
+function applyI18n(){
+  $all("[data-i18n]").forEach(function(el){ el.textContent=t(el.getAttribute("data-i18n")); });
+  document.documentElement.lang = lang==="fil"?"fil":"en";
+}
+function tickHtml(){ return '<span class="tick">'+IC.tick+'</span>'; }
+
+function renderRole(){
+  var d=DATA[role];
+  // stats
+  $("[data-stats]").innerHTML = d.stats.map(function(s){ return '<div class="stat"><div class="n">'+tx(s.n)+'</div><div class="l">'+tx(s.l)+'</div></div>'; }).join("");
+  // benefits (both containers exist; fill the active role's)
+  var bw=$('[data-benefits="'+role+'"]');
+  if(bw) bw.innerHTML=d.benefits.map(function(b){ return '<div class="card"><div class="ic">'+IC[b.ic]+'</div><h3>'+tx(b.h)+'</h3><p>'+tx(b.p)+'</p></div>'; }).join("");
+  // steps
+  $("[data-steps]").innerHTML=d.steps.map(function(s){ return '<li><h4>'+tx(s.h)+'</h4><p>'+tx(s.p)+'</p></li>'; }).join("");
+  // reqs
+  $("[data-reqs]").innerHTML=d.reqs.map(function(r){ return '<li>'+tickHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
+  $("[data-reqh]").textContent = t(role==="driver"?"reqDrvH":"reqMchH");
+  // testimonials
+  $("[data-testi]").innerHTML=d.testi.map(function(tt){
+    return '<div class="tcard"><svg class="okir-wm" viewBox="0 0 100 40"><use href="#okir"></use></svg><div class="qm">&ldquo;</div><p>'+tx(tt.q)+'</p><div class="who"><svg viewBox="0 0 240 240"><use href="#sarimanok"></use></svg><span><b>'+esc(tt.b)+'</b><span>'+tx(tt.r)+'</span></span></div></div>';
+  }).join("");
+  // faq
+  $("[data-faq]").innerHTML=d.faqs.map(function(f){ return '<details class="faq"><summary>'+tx(f.q)+'<span class="chev">▾</span></summary><p>'+tx(f.a)+'</p></details>'; }).join("");
+  $("[data-faqh]").textContent=t(role==="driver"?"faqDrvH":"faqMchH");
+  // reqmini (form step 3)
+  $("[data-reqmini]").innerHTML=d.reqs.map(function(r){ return '<li>'+tickHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
+  // role views visibility
+  $all(".roleview").forEach(function(v){ v.classList.toggle("hidden", v.getAttribute("data-role")!==role); });
+}
+
+function fieldHtml(f){
+  var lab=tx(f.label), ph=f.ph?tx(f.ph):"", v=form[f.k]||"";
+  var input;
+  if(f.type==="select"){ input='<select data-k="'+f.k+'"><option value="">—</option>'+f.opts.map(function(o){return '<option'+(v===o?' selected':'')+'>'+o+'</option>';}).join("")+'</select>'; }
+  else { input='<input type="'+f.type+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+' />'; }
+  return '<div class="field" data-field="'+f.k+'"><label>'+esc(lab)+'</label>'+input+'<div class="errmsg">'+t("reqFix")+'</div></div>';
+}
+function renderFields(){
+  var s1=DATA[role].fields.filter(function(f){return f.step===1;});
+  var s2=DATA[role].fields.filter(function(f){return f.step===2;});
+  $("#fieldsHost").innerHTML=s1.map(fieldHtml).join("");
+  $("#fieldsHost2").innerHTML=s2.map(fieldHtml).join("");
+  $all("#applyForm [data-k]").forEach(function(el){
+    var ev=el.tagName==="SELECT"?"change":"input";
+    el.addEventListener(ev,function(){ form[el.getAttribute("data-k")]=el.value; var fl=el.closest(".field"); if(fl) fl.classList.remove("err"); });
+  });
+}
+
+function stepTitle(){
+  if(step===1) return t("stepAbout");
+  if(step===2) return role==="driver"?t("stepVehicle"):t("stepBiz");
+  if(step===3) return t("stepDocs");
+  if(step===4) return t("stepReview");
+  return "";
+}
+function showStep(){
+  $all("#applyForm .step").forEach(function(s){ s.classList.add("hidden"); });
+  var cur = step==="done" ? $('.step[data-step="done"]') : $('.step[data-step="'+step+'"]');
+  if(cur) cur.classList.remove("hidden");
+  var pct = step==="done"?100:(step/4*100);
+  $(".progress > i").style.width=pct+"%";
+  if(step===4) buildReview();
+  var ft=$("[data-form-title]"), so=$("[data-stepof]");
+  if(step==="done"){ ft.textContent=""; so.textContent=""; $("#formActions").classList.add("hidden"); $(".progress").classList.add("hidden"); return; }
+  $(".progress").classList.remove("hidden"); $("#formActions").classList.remove("hidden");
+  ft.textContent=stepTitle();
+  so.textContent=(lang==="fil"?"Hakbang ":"Step ")+step+(lang==="fil"?" ng 4":" of 4");
+  var back=$("#backBtn"), next=$("#nextBtn");
+  back.classList.toggle("hidden", step===1);
+  next.textContent = step===4 ? t("submit") : t("next");
+  next.disabled = submitting;
+}
+function buildReview(){
+  var labels={}; DATA[role].fields.forEach(function(f){ labels[f.k]=tx(f.label); });
+  var rows=DATA[role].fields.map(function(f){return f.k;}).filter(function(k){return form[k];})
+    .map(function(k){ return '<div><b>'+esc(labels[k])+'</b><span>'+esc(form[k])+'</span></div>'; });
+  $("[data-review]").innerHTML=rows.join("")||'<div><b>—</b><span>—</span></div>';
+}
+
+function looksLikePhone(v){ var d=(v||"").replace(/[^\d]/g,""); return /^(09\d{9}|639\d{9}|9\d{9})$/.test(d); }
+function validateStep(n){
+  var ok=true;
+  DATA[role].fields.filter(function(f){return f.step===n;}).forEach(function(f){
+    var el=$('[data-field="'+f.k+'"]'); if(!el) return;
+    var val=(form[f.k]||"").trim(), bad=false;
+    if(f.req&&!val) bad=true;
+    if(f.phone&&val&&!looksLikePhone(val)){ bad=true; el.querySelector(".errmsg").textContent=t("phoneFix"); }
+    else el.querySelector(".errmsg").textContent=t("reqFix");
+    el.classList.toggle("err",bad); if(bad) ok=false;
+  });
+  return ok;
+}
+
+function apiRole(){ if(role==="driver") return "driver"; var b=(form.bizType||"").toLowerCase(); return (b.indexOf("restaurant")>=0||b.indexOf("food")>=0||b.indexOf("kitchen")>=0)?"restaurant":"merchant"; }
+function turnstileToken(){ try{ return (window.turnstile&&$("#turnstileSlot"))?window.turnstile.getResponse($("#turnstileSlot")):""; }catch(e){ return ""; } }
+function buildPayload(){
+  var p={ role:apiRole(), fullName:form.name||"", phone:form.mobile||"", city:form.city||"", email:form.email||"", source:"website" };
+  if(role==="driver"){ p.vehicleType=form.vehType||""; p.plateNumber=form.plate||""; p.vehicleYear=form.vehYear||""; }
+  else { p.businessName=form.bizName||""; p.businessType=form.bizType||""; p.address=form.address||""; }
+  p.captchaToken=turnstileToken(); return p;
+}
+function refFromId(id){ return "PGR-"+String(id).padStart(5,"0"); }
+function done(ref){ step="done"; $("#refNo").textContent=ref; showStep(); try{ $("#apply").scrollIntoView({behavior:"smooth",block:"center"}); }catch(e){} }
+function fail(msg){ submitting=false; $("#nextBtn").disabled=false; alert(msg); }
+function submitApp(){
+  if(submitting) return; submitting=true; $("#nextBtn").disabled=true;
+  var payload=buildPayload();
+  if(!API_BASE){ window.setTimeout(function(){ done("PGR-DEMO"+String((payload.phone||"0").replace(/\D/g,"").slice(-4)||"0000")); },500); return; }
+  fetch(API_BASE.replace(/\/$/,"")+"/api/recruit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
+    .then(function(res){ if(res.ok||res.j.status){ done(res.j.reference!=null?refFromId(res.j.reference):"PGR-RECEIVED"); } else { fail(res.j.error||"Something went wrong. Please try again."); } })
+    .catch(function(){ fail(lang==="fil"?"Walang koneksyon. Subukan ulit.":"Network problem. Please try again."); });
+}
+
+function goNext(){
+  if(step===1){ if(!validateStep(1)) return; step=2; }
+  else if(step===2){ if(!validateStep(2)) return; step=3; }
+  else if(step===3){ if(!$("#agree").checked){ alert(t("agreeFix")); return; } step=4; }
+  else if(step===4){ submitApp(); return; }
+  showStep();
+}
+function goBack(){ if(step>1&&step!=="done"){ step=step-1; showStep(); } }
+
+function setRole(r){ role=r; step=1; form={}; submitting=false;
+  $all('.roletabs button').forEach(function(b){ b.setAttribute("aria-selected", b.getAttribute("data-role")===r?"true":"false"); });
+  renderRole(); renderFields(); showStep();
+}
+function setLang(l){ lang=l;
+  $all('.langtoggle button').forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-lang")===l?"true":"false"); });
+  applyI18n(); renderRole(); renderFields(); showStep();
+}
+
+function init(){
+  applyI18n(); renderRole(); renderFields(); showStep();
+  $all('.roletabs button').forEach(function(b){ b.addEventListener("click",function(){ setRole(b.getAttribute("data-role")); }); });
+  $all('.langtoggle button').forEach(function(b){ b.addEventListener("click",function(){ setLang(b.getAttribute("data-lang")); }); });
+  $("#nextBtn").addEventListener("click",goNext);
+  $("#backBtn").addEventListener("click",goBack);
+  $all("[data-scrollapply]").forEach(function(b){ b.addEventListener("click",function(){ $("#apply").scrollIntoView({behavior:"smooth",block:"start"}); }); });
+  if(TURNSTILE_SITEKEY){ var s=document.createElement("script"); s.src="https://challenges.cloudflare.com/turnstile/v0/api.js"; s.async=true; s.defer=true;
+    s.onload=function(){ try{ window.turnstile.render("#turnstileSlot",{sitekey:TURNSTILE_SITEKEY}); }catch(e){} }; document.head.appendChild(s); }
+}
+if(document.readyState!=="loading") init(); else document.addEventListener("DOMContentLoaded",init);
+</script>
+</body>
+</html>
