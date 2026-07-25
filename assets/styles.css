@@ -4,10 +4,10 @@
    red-dominant palette, hard offset shadows. Used by every page.
    =========================================================================== */
 :root{
-  --ka-bg:#f3f2f2; --ka-cream:#f8f4f4; --ka-ink:#201e1d; --ka-ink-soft:#5b5654;
+  --ka-bg:#f3f2f2; --ka-cream:#f8f4f4; --ka-ink:#17233a; --ka-ink-soft:#5b5654; --ka-forest:#124a28; --ka-gold:#a06a00;
   --ka-line:#e7e2e0; --ka-blue:#0058a1; --ka-blue-deep:#003f74;
   --ka-green:#0eb046; --ka-green-deep:#0a7a34; --ka-red:#ee0000; --ka-red-deep:#c00000;
-  --sh:6px 6px 0 rgba(32,30,29,.9); --sh-sm:4px 4px 0 rgba(32,30,29,.9);
+  --sh:6px 6px 0 rgba(17,29,45,.85); --sh-sm:4px 4px 0 rgba(17,29,45,.85);
   --maxw:1120px; font-synthesis:none;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -38,19 +38,19 @@ nav.main a.navlink[aria-current]{color:var(--ka-red)}
 .applybtn{background:var(--ka-red);color:#fff;text-decoration:none;font-weight:800;font-size:14px;padding:11px 18px;border-radius:11px;box-shadow:var(--sh-sm)}
 .langtoggle{display:inline-flex;border:2px solid var(--ka-ink);border-radius:10px;overflow:hidden}
 .langtoggle button{border:0;background:#fff;padding:7px 11px;font-weight:800;font-size:12px;cursor:pointer;color:var(--ka-ink);font-family:inherit}
-.langtoggle button[aria-pressed="true"]{background:var(--ka-ink);color:#fff}
+.langtoggle button[aria-pressed="true"]{background:var(--ka-forest);color:#fff}
 @media (max-width:900px){nav.main .navlink,.brand .seg{display:none}}
 
 /* buttons */
 .btn{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:15px;padding:14px 20px;border-radius:12px;text-decoration:none;display:inline-block}
 .btn-red{background:var(--ka-red);color:#fff;box-shadow:var(--sh-sm)}
-.btn-ink{background:var(--ka-ink);color:#fff}
+.btn-ink{background:var(--ka-forest);color:#fff}
 .btn-ghost{background:#fff;color:var(--ka-ink);border:2px solid var(--ka-line)}
 .bigcta{display:inline-block;background:var(--ka-red);color:#fff;text-decoration:none;font-weight:800;font-size:16px;padding:15px 26px;border-radius:13px;box-shadow:var(--sh);border:0;cursor:pointer;font-family:inherit}
 
 /* hero variants */
 .hero{position:relative;overflow:hidden}
-.hero.ink{background:var(--ka-ink);color:#fff}
+.hero.ink{background:var(--ka-forest);color:#fff}
 .hero.red{background:var(--ka-red);color:#fff}
 .hero .okir-bg{position:absolute;inset:0;color:rgba(255,255,255,.06);pointer-events:none}
 .hero .okir-bg svg{position:absolute;width:720px;height:288px;left:-80px;top:-40px}
@@ -61,8 +61,8 @@ nav.main a.navlink[aria-current]{color:var(--ka-red)}
 .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
 .pill .dot{width:8px;height:8px;border-radius:99px;background:#fff;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.highlight{background:var(--ka-ink);color:#fff;padding:2px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-.hero.red .highlight{background:var(--ka-ink)}
+.highlight{background:var(--ka-forest);color:#fff;padding:2px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hero.red .highlight{background:var(--ka-forest)}
 
 /* stat row */
 .stats{display:flex;gap:0;margin-top:30px;flex-wrap:wrap}
@@ -86,13 +86,13 @@ section.white{background:#fff}
 .card p{color:var(--ka-ink-soft);font-size:14px}
 .svc{display:flex;flex-direction:column;gap:8px;border-radius:16px;padding:22px;color:#fff;min-height:132px;box-shadow:var(--sh);justify-content:space-between}
 .svc .em{font-size:26px} .svc b{font-weight:800;font-size:18px} .svc span{font-size:13px;opacity:.9}
-.svc.food{background:var(--ka-red)} .svc.ride{background:var(--ka-green-deep)} .svc.package{background:var(--ka-blue)} .svc.market{background:var(--ka-ink)}
+.svc.food{background:var(--ka-red)} .svc.ride{background:var(--ka-green-deep)} .svc.package{background:var(--ka-blue)} .svc.market{background:var(--ka-gold)}
 
 /* steps / reqs / list ticks */
 ol.steps{list-style:none;counter-reset:s;display:grid;gap:14px}
 @media (min-width:760px){ol.steps{grid-template-columns:repeat(4,1fr)}}
 ol.steps li{counter-increment:s;background:#fff;border:1px solid var(--ka-line);border-radius:16px;padding:18px;box-shadow:var(--sh-sm)}
-ol.steps li::before{content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:99px;background:var(--ka-ink);color:#fff;font-weight:900;font-size:15px;margin-bottom:11px}
+ol.steps li::before{content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:99px;background:var(--ka-forest);color:#fff;font-weight:900;font-size:15px;margin-bottom:11px}
 ol.steps li h4{font-weight:800;font-size:15.5px} ol.steps li p{color:var(--ka-ink-soft);font-size:13.5px;margin-top:2px}
 ul.reqs{list-style:none;display:grid;gap:12px} @media (min-width:640px){ul.reqs{grid-template-columns:1fr 1fr}}
 ul.reqs li,ul.checks li{display:flex;gap:13px;align-items:flex-start;background:#fff;border:1px solid var(--ka-line);border-radius:12px;padding:14px 16px;box-shadow:var(--sh-sm)}
@@ -104,7 +104,7 @@ ul.reqs b,ul.checks b{display:block;font-size:15px;font-weight:800} ul.reqs span
 /* testimonials */
 .tgrid{display:grid;gap:18px} @media (min-width:720px){.tgrid{grid-template-columns:1fr 1fr}}
 .tcard{position:relative;background:#fff;border:1px solid var(--ka-line);border-radius:16px;padding:24px;box-shadow:var(--sh);overflow:hidden}
-.tcard .okir-wm{position:absolute;right:-30px;bottom:-24px;width:220px;color:rgba(32,30,29,.05);pointer-events:none}
+.tcard .okir-wm{position:absolute;right:-30px;bottom:-24px;width:220px;color:rgba(18,74,40,.06);pointer-events:none}
 .tcard .qm{font-weight:900;font-size:44px;line-height:.6;color:var(--ka-red)}
 .tcard p{font-size:18px;font-weight:600;margin:8px 0 16px;text-wrap:pretty}
 .tcard .who{display:flex;align-items:center;gap:10px}
@@ -126,7 +126,7 @@ details.faq p{padding:0 0 16px;color:var(--ka-ink-soft);font-size:14.5px}
 .okmsg{margin-top:12px;font-weight:700}
 
 /* footer */
-footer.site{background:var(--ka-ink);color:rgba(255,255,255,.7);padding:40px 0;font-size:14px}
+footer.site{background:var(--ka-forest);color:rgba(255,255,255,.7);padding:40px 0;font-size:14px}
 footer.site .cols{display:grid;gap:22px 40px;grid-template-columns:1fr}
 @media (min-width:720px){footer.site .cols{grid-template-columns:1.4fr 1fr 1fr}}
 footer.site .word{color:#fff;font-weight:800;font-size:22px;letter-spacing:-.02em}
