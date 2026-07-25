@@ -4,7 +4,7 @@
    red-dominant palette, hard offset shadows. Used by every page.
    =========================================================================== */
 :root{
-  --ka-bg:#f3f2f2; --ka-cream:#f8f4f4; --ka-ink:#17233a; --ka-ink-soft:#5b5654; --ka-forest:#124a28; --ka-gold:#a06a00;
+  --ka-bg:#f3f2f2; --ka-cream:#f8f4f4; --ka-ink:#17233a; --ka-ink-soft:#5b5654; --ka-forest:#124a28; --ka-gold:#f4b60e;
   --ka-line:#e7e2e0; --ka-blue:#0058a1; --ka-blue-deep:#003f74;
   --ka-green:#0eb046; --ka-green-deep:#0a7a34; --ka-red:#ee0000; --ka-red-deep:#c00000;
   --sh:6px 6px 0 rgba(17,29,45,.85); --sh-sm:4px 4px 0 rgba(17,29,45,.85);
@@ -86,7 +86,7 @@ section.white{background:#fff}
 .card p{color:var(--ka-ink-soft);font-size:14px}
 .svc{display:flex;flex-direction:column;gap:8px;border-radius:16px;padding:22px;color:#fff;min-height:132px;box-shadow:var(--sh);justify-content:space-between}
 .svc .em{font-size:26px} .svc b{font-weight:800;font-size:18px} .svc span{font-size:13px;opacity:.9}
-.svc.food{background:var(--ka-red)} .svc.ride{background:var(--ka-green-deep)} .svc.package{background:var(--ka-blue)} .svc.market{background:var(--ka-gold)}
+.svc.food{background:var(--ka-red)} .svc.ride{background:var(--ka-green-deep)} .svc.package{background:var(--ka-blue)} .svc.market{background:var(--ka-gold);color:var(--ka-ink)}
 
 /* steps / reqs / list ticks */
 ol.steps{list-style:none;counter-reset:s;display:grid;gap:14px}
