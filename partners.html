@@ -357,8 +357,17 @@
 
 <script>
 /* ============ CONFIG (set on deploy) ============ */
-var API_BASE = "";            // "" => DEMO (simulate). e.g. "https://api.pagar.ph"
-var TURNSTILE_SITEKEY = "";   // "" => skip captcha widget
+/* The PAGAR API host. Applications POST to {API_BASE}/api/recruit and land in the recruitment
+   queue for review. LEAVING THIS EMPTY IS NOT A SAFE DEFAULT: "" means DEMO mode, where the form
+   shows the applicant a PGR-DEMO reference and a "received" message while sending nothing at all —
+   a driver who applies is told yes and silently dropped. Only set it back to "" for a local mockup
+   nobody can reach. */
+var API_BASE = "https://delivery-app-ub1c.onrender.com";
+/* Cloudflare Turnstile site key. Still "" — the owner has to create the Turnstile site and set the
+   matching TURNSTILE_SECRET_KEY on the server. The form works without it (the server allows through
+   when its secret is unset), but until both halves are set this endpoint has no bot protection
+   beyond rate limiting. */
+var TURNSTILE_SITEKEY = "";
 
 /* ============ icons ============ */
 var IC = {
