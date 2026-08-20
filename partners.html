@@ -324,8 +324,8 @@
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
-  <section class="block light">
+  <!-- TESTIMONIALS — hidden while there are none to show; see the render guard below. -->
+  <section class="block light" id="testimonials" hidden>
     <div class="wrap">
       <div class="eyebrow" data-i18n="fromPartners">From our partners</div>
       <div class="tgrid" style="margin-top:22px" data-testi></div>
@@ -457,10 +457,7 @@ var DATA = {
       {q:{en:"Is there a joining fee?",fil:"May bayad sa pagsali?"},a:{en:"None. Signing up to drive with Pagar is completely free.",fil:"Wala. Libre ang pagsali."}},
       {q:{en:"What if I don’t have all documents yet?",fil:"Paano kung kulang?"},a:{en:"Apply anyway. Our Marawi onboarding team will help you complete what’s missing.",fil:"Mag-apply pa rin. Tutulungan ka namin."}}
     ],
-    testi:[
-      {q:{en:"I drive around my class schedule at MSU and still earn enough for the week.",fil:"Nagmamaneho ako sa paligid ng klase ko sa MSU at sapat pa rin ang kita."},b:"Abdul R.",r:{en:"Motorcycle partner",fil:"Motorcycle partner"}},
-      {q:{en:"Dispatch actually knows the barangays here. Less time lost, more trips.",fil:"Kabisado talaga ng dispatch ang mga barangay dito. Mas kaunting oras na nasasayang, mas maraming biyahe."},b:"Jamal S.",r:{en:"Tricycle partner",fil:"Tricycle partner"}}
-    ],
+    testi:[],
     fields:[
       {step:1,k:"name",type:"text",label:{en:"Full name",fil:"Buong pangalan"},ph:{en:"As written on your ID",fil:"Tulad ng nasa ID"},req:true},
       {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
@@ -497,10 +494,7 @@ var DATA = {
       {q:{en:"How long until I go live?",fil:"Gaano katagal mag-live?"},a:{en:"Once your documents are complete, most partners are live within 2–3 working days.",fil:"Kapag kumpleto, live sa loob ng 2–3 araw."}},
       {q:{en:"How much does it cost to join?",fil:"Magkano ang pagsali?"},a:{en:"Signing up is free at launch. We use a low, transparent commission per order to cover delivery, support and marketing.",fil:"Libre ang pagsali. Mababa at malinaw na komisyon kada order."}}
     ],
-    testi:[
-      {q:{en:"Pagar brought our palapa to the whole city. Orders doubled in our first month.",fil:"Dinala ng Pagar ang palapa namin sa buong siyudad. Dumoble ang order sa unang buwan."},b:"Bai Farida",r:{en:"Owner, Palapa ni Bai",fil:"May-ari, Palapa ni Bai"}},
-      {q:{en:"Setting up my store took one afternoon with their team. Payouts arrive on time, every day.",fil:"Isang hapon lang ang setup kasama ang team nila. On time ang payout araw-araw."},b:"Ranao Grill",r:{en:"Restaurant partner",fil:"Restaurant partner"}}
-    ],
+    testi:[],
     fields:[
       {step:1,k:"name",type:"text",label:{en:"Contact person",fil:"Contact person"},ph:{en:"Owner or authorized contact",fil:"May-ari o contact"},req:true},
       {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
@@ -540,6 +534,12 @@ function renderRole(){
   $("[data-reqs]").innerHTML=d.reqs.map(function(r){ return '<li>'+tickHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
   $("[data-reqh]").textContent = t(role==="driver"?"reqDrvH":"reqMchH");
   // testimonials
+  // Hidden unless there is something real to quote. The four names that used to sit here were
+  // placeholder copy — invented partners with invented figures ("orders doubled in our first
+  // month") on a service that has not opened. Add real, consented quotes to `testi` and the
+  // section reappears on its own.
+  var testiSection=document.getElementById("testimonials");
+  if(testiSection){ if(d.testi.length){ testiSection.removeAttribute("hidden"); } else { testiSection.setAttribute("hidden",""); } }
   $("[data-testi]").innerHTML=d.testi.map(function(tt){
     return '<div class="tcard"><svg class="okir-wm" viewBox="0 0 100 40"><use href="#okir"></use></svg><div class="qm">&ldquo;</div><p>'+tx(tt.q)+'</p><div class="who"><svg viewBox="0 0 240 240"><use href="#sarimanok"></use></svg><span><b>'+esc(tt.b)+'</b><span>'+tx(tt.r)+'</span></span></div></div>';
   }).join("");
