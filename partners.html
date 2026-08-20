@@ -15,7 +15,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Partner with Pagar — Drive or sell in Marawi</title>
-<meta name="description" content="Be a Pagar Hero or bring your business online in Marawi. Apply fully online — ₱0 to join, weekly cash-out. Built by Maranaos for Marawi." />
+<meta name="description" content="Be a Pagar Hero or bring your business online in Marawi. Apply fully online — ₱0 to join, paid straight to your bank or GCash. Built by Maranaos for Marawi." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -430,10 +430,10 @@ var T = {
 /* ============ role data ============ */
 var DATA = {
   driver: {
-    stats:[{n:"₱0",l:{en:"Joining fee",fil:"Bayad sa pagsali"}},{n:{en:"Weekly",fil:"Lingguhan"},l:{en:"Cash-out",fil:"Cash-out"}},{n:{en:"Your own",fil:"Sarili mong"},l:{en:"Hours",fil:"Oras"}}],
+    stats:[{n:"₱0",l:{en:"Joining fee",fil:"Bayad sa pagsali"}},{n:{en:"No quota",fil:"Walang quota"},l:{en:"To earn",fil:"Para kumita"}},{n:{en:"Your own",fil:"Sarili mong"},l:{en:"Hours",fil:"Oras"}}],
     benefits:[
       {ic:"clock",h:{en:"Your own hours",fil:"Sarili mong oras"},p:{en:"Go online whenever you want. No boss and no daily quota.",fil:"Mag-online kahit kailan. Walang amo, walang quota."}},
-      {ic:"cash",h:{en:"Fast payouts",fil:"Mabilis na payout"},p:{en:"Daily settlement to your bank or GCash — no weekly wait.",fil:"Araw-araw na settlement sa bank o GCash."}},
+      {ic:"cash",h:{en:"Paid to your account",fil:"Bayad sa account mo"},p:{en:"Earnings settle straight to your bank or GCash account. Timing follows our payment provider's schedule.",fil:"Diretso sa bank o GCash account mo. Ang timing ay ayon sa schedule ng payment provider namin."}},
       {ic:"shield",h:{en:"Insurance coming soon",fil:"Insurance, malapit na"},p:{en:"We are in talks with providers to cover trips. Not in place yet, and nothing is charged for it.",fil:"Kausap namin ang mga provider para masaklaw ang biyahe. Wala pa ito ngayon, at walang bayad para dito."}},
       {ic:"route",h:{en:"Smart routes",fil:"Matalinong ruta"},p:{en:"Dispatch that knows Marawi’s streets, gates and barangays.",fil:"Dispatch na kabisado ang Marawi."}}
     ],
@@ -452,7 +452,7 @@ var DATA = {
     ],
     faqs:[
       {q:{en:"Can I drive part-time?",fil:"Pwede part-time?"},a:{en:"Absolutely. You choose exactly when to go online — full-time or a few hours a week.",fil:"Oo. Ikaw ang pipili kung kailan mag-online."}},
-      {q:{en:"When do I get paid?",fil:"Kailan ako babayaran?"},a:{en:"Daily settlement straight to your bank or GCash, with no quota to hit.",fil:"Araw-araw sa bank o GCash, walang quota."}},
+      {q:{en:"When do I get paid?",fil:"Kailan ako babayaran?"},a:{en:"Straight to your bank or GCash account, with no quota to hit. Settlement timing follows our payment provider's schedule, so we do not promise a particular day.",fil:"Diretso sa bank o GCash account mo, walang quota. Ang timing ng settlement ay ayon sa schedule ng payment provider namin, kaya wala kaming ipinapangakong tiyak na araw."}},
       {q:{en:"What vehicles can I use?",fil:"Anong sasakyan?"},a:{en:"Motorcycle, tricycle, sedan or car — as long as the papers are complete and valid.",fil:"Motor, tricycle, sedan o kotse — basta kumpleto ang papeles."}},
       {q:{en:"Is there a joining fee?",fil:"May bayad sa pagsali?"},a:{en:"None. Signing up to drive with Pagar is completely free.",fil:"Wala. Libre ang pagsali."}},
       {q:{en:"What if I don’t have all documents yet?",fil:"Paano kung kulang?"},a:{en:"Apply anyway. Our Marawi onboarding team will help you complete what’s missing.",fil:"Mag-apply pa rin. Tutulungan ka namin."}}
@@ -472,10 +472,10 @@ var DATA = {
     ]
   },
   merchant: {
-    stats:[{n:"₱0",l:{en:"To sign up",fil:"Para sumali"}},{n:{en:"Daily",fil:"Araw-araw"},l:{en:"Payouts",fil:"Payout"}},{n:{en:"2–3 days",fil:"2–3 araw"},l:{en:"To go live",fil:"Bago mag-live"}}],
+    stats:[{n:"₱0",l:{en:"To sign up",fil:"Para sumali"}},{n:{en:"Direct",fil:"Diretso"},l:{en:"To your bank or GCash",fil:"Sa bank o GCash"}},{n:{en:"2–3 days",fil:"2–3 araw"},l:{en:"To go live",fil:"Bago mag-live"}}],
     benefits:[
       {ic:"cart",h:{en:"More orders",fil:"Mas maraming order"},p:{en:"Get in front of thousands searching for food and goods every day.",fil:"Makita ka ng libo araw-araw."}},
-      {ic:"cash",h:{en:"Fast payouts",fil:"Mabilis na payout"},p:{en:"Daily settlement to your bank or GCash. Low, clear commission.",fil:"Araw-araw. Mababa, malinaw na komisyon."}},
+      {ic:"cash",h:{en:"Paid to your account",fil:"Bayad sa account mo"},p:{en:"Settlement goes straight to your bank or GCash account, net of a clear commission. Timing follows our payment provider's schedule.",fil:"Diretso sa bank o GCash account mo, bawas ang malinaw na komisyon. Ang timing ay ayon sa schedule ng payment provider namin."}},
       {ic:"mega",h:{en:"Free marketing",fil:"Libreng marketing"},p:{en:"Featured listings, discounts and Ramadan campaigns at no extra cost.",fil:"Featured listings at campaigns nang libre."}},
       {ic:"grid",h:{en:"One dashboard",fil:"Isang dashboard"},p:{en:"Manage orders, menu, hours and payouts from the Merchant app.",fil:"Pamahalaan lahat sa Merchant app."}}
     ],
@@ -490,7 +490,7 @@ var DATA = {
       {b:{en:"BIR 2303 form",fil:"BIR 2303"},s:{en:"Certificate of registration.",fil:"Certificate of registration."}},
       {b:{en:"Menu or product catalog",fil:"Menu o katalogo"},s:{en:"With current prices.",fil:"May presyo."}},
       {b:{en:"Valid government ID",fil:"Valid na ID"},s:{en:"Of the owner or authorized contact.",fil:"Ng may-ari o contact."}},
-      {b:{en:"Bank / GCash account",fil:"Bank / GCash"},s:{en:"Where we send your daily payouts.",fil:"Para sa payout."}}
+      {b:{en:"Bank / GCash account",fil:"Bank / GCash"},s:{en:"Where we send your payouts.",fil:"Para sa payout."}}
     ],
     faqs:[
       {q:{en:"Can marketplace sellers join?",fil:"Pwede ang sellers?"},a:{en:"Yes — restaurants, home kitchens, grocers and sellers of local crafts and goods are all welcome.",fil:"Oo — restaurant, home kitchen, grocery at lokal na produkto."}},
