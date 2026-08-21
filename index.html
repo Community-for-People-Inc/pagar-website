@@ -118,14 +118,20 @@
     </div>
   </section>
 
-  <!-- THE MARAWI FILM — directly under the hero, so it is the first thing after the claim and the
-       signup form. 960x720 H.264, ~9 MB, transcoded from the 1440x1080 scored master; the 2880x2160
-       master is 115 MB, over GitHub's per-file limit and unloadable on a Marawi connection.
-       Muted is what lets it start on its own; it plays once and holds on its last frame. -->
+  <!-- THE CURRENT FILM — directly under the hero, so it is the first thing after the claim and the
+       signup form. Muted is what lets it start on its own; it plays once and holds on its last frame.
+
+       ROTATION: the filenames are deliberately generic. To run a new film, overwrite
+       assets/film-current.mp4 and assets/film-current.jpg and push — no edit to this page. Pages
+       serves assets with max-age=600, so it is live within ten minutes, and the page on the CFPI
+       site points at these same two URLs, so one upload changes both sites.
+
+       Keep the web copy around 960x720 / ~9 MB. The 2880x2160 masters are 77-115 MB: over GitHub's
+       100 MB per-file hard limit, and unloadable on a Marawi connection. Those are for billboards. -->
   <section class="block light" style="padding-top:28px;padding-bottom:28px">
     <div class="wrap" style="max-width:860px">
       <div style="position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--ka-ink);background:#000;box-shadow:0 18px 40px rgba(0,0,0,.18)">
-        <video id="marawiFilm" src="assets/pagar-marawi-dusk.mp4" poster="assets/pagar-marawi-dusk-poster.jpg"
+        <video id="marawiFilm" src="assets/film-current.mp4" poster="assets/film-current.jpg"
                width="960" height="720" playsinline controls preload="metadata"
                style="display:block;width:100%;height:auto"
                aria-label="Pagar in Marawi at dusk — food, rides, parcels and the market"></video>
