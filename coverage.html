@@ -6,6 +6,21 @@
 <meta name="robots" content="noindex, nofollow" />
 <title>Coverage — Pagar starts in Marawi, rising across Mindanao</title>
 <meta name="description" content="Pagar goes live first across Marawi and its barangays, then rolls out to Iligan, Cagayan de Oro, Cotabato and beyond. Tell us where to go next." />
+<!--
+  Canonical + social cards. No page on this site had either: a share of any Pagar page
+  rendered as a bare URL with no title, description or image, which for a launch being
+  promoted on Facebook is the difference between a post that reads as a product and one
+  that reads as a link someone pasted.
+-->
+<link rel="canonical" href="https://community-for-people-inc.github.io/pagar-website/coverage.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PAGAR EXPRESS" />
+<meta property="og:url" content="https://community-for-people-inc.github.io/pagar-website/coverage.html" />
+<meta property="og:title" content="Coverage — Pagar starts in Marawi, rising across Mindanao" />
+<meta property="og:description" content="Pagar goes live first across Marawi and its barangays, then rolls out to Iligan, Cagayan de Oro, Cotabato and beyond. Tell us where to go next." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Coverage — Pagar starts in Marawi, rising across Mindanao" />
+<meta name="twitter:description" content="Pagar goes live first across Marawi and its barangays, then rolls out to Iligan, Cagayan de Oro, Cotabato and beyond. Tell us where to go next." />
 <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/styles.css" />
@@ -127,14 +142,20 @@
   <div class="wrap cols">
     <div><div class="brand" style="margin-bottom:10px"><svg width="34" height="34" aria-label="Pagar"><use href="#sarimanok"></use></svg><span class="word">Pagar</span></div><p style="max-width:32ch" data-en="Built by Maranaos for Marawi and all of Mindanao." data-fil="Gawa ng mga Maranao para sa Marawi at buong Mindanao.">Built by Maranaos for Marawi and all of Mindanao.</p></div>
     <div><h5 data-en="Company" data-fil="Kompanya">Company</h5><a href="about.html" data-en="About" data-fil="Tungkol">About</a><a href="coverage.html" data-en="Coverage" data-fil="Saklaw">Coverage</a><a href="partners.html" data-en="Partner with us" data-fil="Maging partner">Partner with us</a></div>
-    <div><h5 data-en="Support" data-fil="Suporta">Support</h5><a href="safety.html" data-en="Safety" data-fil="Kaligtasan">Safety</a><a href="help.html" data-en="Help & Legal" data-fil="Tulong at Legal">Help &amp; Legal</a><a href="mailto:marketing@pagarexpress.com">marketing@pagarexpress.com</a></div>
+    <div><h5 data-en="Support" data-fil="Suporta">Support</h5><a href="safety.html" data-en="Safety" data-fil="Kaligtasan">Safety</a><a href="help.html" data-en="Help & Legal" data-fil="Tulong at Legal">Help &amp; Legal</a><a href="mailto:marketing@communityforpeople.org?subject=PAGAR%20EXPRESS%20enquiry">marketing@communityforpeople.org</a></div>
   </div>
   <div class="wrap legal"><span>© 2026 Pagar · Community For People Inc</span></div>
 </footer>
 <script src="assets/pagar.js"></script>
 <script>
-/* City-interest capture — set CITY_ENDPOINT to persist; "" => graceful ack (no data stored). */
+/* City-interest capture.
+   Same defect as the homepage waitlist: an empty endpoint acknowledged the request and threw the
+   city and contact away, while the copy above the form says "We use this only to gauge demand and
+   notify you at launch." Neither gauging nor notifying was possible — nothing was kept.
+   With no city-interest table to POST to, an empty endpoint now hands the details to the
+   visitor's mail app addressed to a mailbox that is read. Set CITY_ENDPOINT when one exists. */
 var CITY_ENDPOINT = "";
+var CITY_MAILBOX = "marketing@communityforpeople.org";
 (function(){
   var f=document.getElementById('cityForm');
   function ph(){ var fil=(window.PagarLang&&window.PagarLang.get()==="fil");
@@ -145,7 +166,18 @@ var CITY_ENDPOINT = "";
     if(!city){ document.getElementById('cFine').textContent=(window.PagarLang&&window.PagarLang.get()==="fil")?"Pakilagay ang siyudad.":"Please enter your city."; return; }
     var ok=(window.PagarLang&&window.PagarLang.get()==="fil")?"Salamat! Naitala na ang "+city+".":"Thanks! We've counted "+city+" in.";
     function ack(){ f.innerHTML='<p class="okmsg" style="color:#fff">'+ok+'</p>'; }
-    if(!CITY_ENDPOINT){ ack(); return; }
+    function handoff(){
+      var fil=(window.PagarLang&&window.PagarLang.get()==="fil");
+      var subject="PAGAR EXPRESS — bring Pagar to "+city;
+      var body=(fil?"Gusto ko pong dumating ang Pagar sa lugar namin.":"I would like Pagar to come to my area.")
+        +"\n\n"+(fil?"Lungsod":"City")+": "+city+"\nContact: "+contact+"\n";
+      window.location.href="mailto:"+CITY_MAILBOX+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+      f.innerHTML='<p class="okmsg" style="color:#fff">'
+        +(fil?"Bubuksan namin ang email app mo na may nakalagay na detalye — i-send lang."
+             :"We have opened your email app with your details filled in — send it and we will count your city.")
+        +'</p>';
+    }
+    if(!CITY_ENDPOINT){ handoff(); return; }
     fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city:city,contact:contact,source:"coverage"})}).then(ack).catch(ack);
   });
 })();

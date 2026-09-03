@@ -6,6 +6,21 @@
 <meta name="robots" content="noindex, nofollow" />
 <title>Pagar — one app for Marawi. Food, rides, parcels, market.</title>
 <meta name="description" content="The local super-app for Marawi and Mindanao — food, rides, parcels and the market in one app. Built by Maranaos. Coming soon — join the waitlist." />
+<!--
+  Canonical + social cards. No page on this site had either: a share of any Pagar page
+  rendered as a bare URL with no title, description or image, which for a launch being
+  promoted on Facebook is the difference between a post that reads as a product and one
+  that reads as a link someone pasted.
+-->
+<link rel="canonical" href="https://community-for-people-inc.github.io/pagar-website/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PAGAR EXPRESS" />
+<meta property="og:url" content="https://community-for-people-inc.github.io/pagar-website/" />
+<meta property="og:title" content="Pagar — one app for Marawi. Food, rides, parcels, market." />
+<meta property="og:description" content="The local super-app for Marawi and Mindanao — food, rides, parcels and the market in one app. Built by Maranaos. Coming soon — join the waitlist." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Pagar — one app for Marawi. Food, rides, parcels, market." />
+<meta name="twitter:description" content="The local super-app for Marawi and Mindanao — food, rides, parcels and the market in one app. Built by Maranaos. Coming soon — join the waitlist." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -226,7 +241,7 @@
       <h5 data-en="Support" data-fil="Suporta">Support</h5>
       <a href="safety.html" data-en="Safety" data-fil="Kaligtasan">Safety</a>
       <a href="help.html" data-en="Help & Legal" data-fil="Tulong at Legal">Help &amp; Legal</a>
-      <a href="mailto:marketing@pagarexpress.com">marketing@pagarexpress.com</a>
+      <a href="mailto:marketing@communityforpeople.org?subject=PAGAR%20EXPRESS%20enquiry">marketing@communityforpeople.org</a>
     </div>
   </div>
   <div class="wrap legal"><span>© 2026 Pagar · Community For People Inc</span></div>
@@ -253,9 +268,17 @@
 </script>
 
 <script>
-/* Waitlist — placeholder capture. Set WAITLIST_ENDPOINT to a real endpoint to persist;
-   "" => graceful acknowledgement only (no data stored). Flagged: needs a waitlist backend. */
+/* Waitlist.
+   WAITLIST_ENDPOINT was "" and the handler answered an empty endpoint by showing "Thank you!
+   We'll message you when we launch in your area." and then discarding the name and contact.
+   Every signup since this page went up was lost, and the person was told the opposite.
+   There is no waitlist table in the app API to point at — only /api/recruit, which is for
+   drivers and merchants, not customers. Rather than keep a promise nobody can keep, an empty
+   endpoint now hands the details to the visitor's mail app, addressed to a mailbox that is
+   actually read. One more click for them, and it delivers, which is the right way round.
+   Set WAITLIST_ENDPOINT when a real one exists and this path stops being used. */
 var WAITLIST_ENDPOINT = "";
+var WAITLIST_MAILBOX = "marketing@communityforpeople.org";
 (function(){
   var f=document.getElementById('waitForm');
   // localized placeholders
@@ -268,7 +291,18 @@ var WAITLIST_ENDPOINT = "";
     if(!name||!contact){ document.getElementById('wFine').textContent = (window.PagarLang&&window.PagarLang.get()==="fil")?"Pakilagay ang pangalan at contact.":"Please add your name and contact."; return; }
     var ok=(window.PagarLang&&window.PagarLang.get()==="fil")?"Salamat! Aabisuhan ka namin pag-launch sa lugar mo.":"Thank you! We’ll message you when we launch in your area.";
     function ack(){ f.innerHTML='<p class="okmsg" style="color:#fff">'+ok+'</p>'; }
-    if(!WAITLIST_ENDPOINT){ ack(); return; }
+    function handoff(){
+      var fil=(window.PagarLang&&window.PagarLang.get()==="fil");
+      var subject="PAGAR EXPRESS waitlist — "+name;
+      var body=(fil?"Gusto kong malaman kapag bumukas ang Pagar sa lugar ko.":"I would like to know when Pagar opens in my area.")
+        +"\n\n"+(fil?"Pangalan":"Name")+": "+name+"\nContact: "+contact+"\n";
+      window.location.href="mailto:"+WAITLIST_MAILBOX+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+      f.innerHTML='<p class="okmsg" style="color:#fff">'
+        +(fil?"Bubuksan namin ang email app mo na may nakalagay na detalye — i-send lang para maisama ka."
+             :"We have opened your email app with your details filled in — send it and you are on the list.")
+        +'</p>';
+    }
+    if(!WAITLIST_ENDPOINT){ handoff(); return; }
     fetch(WAITLIST_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,contact:contact,source:"waitlist"})}).then(ack).catch(ack);
   });
 })();

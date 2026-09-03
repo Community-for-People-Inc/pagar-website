@@ -1,2 +1,7 @@
+# The whole site was Disallow: / — every page blocked from every search engine, left over from when
+# it was still being built. For a product launching in October and actively recruiting drivers,
+# restaurants and sellers, that meant nobody could find any of it by searching.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://community-for-people-inc.github.io/pagar-website/sitemap.xml
