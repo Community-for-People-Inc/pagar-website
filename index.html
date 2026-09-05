@@ -277,7 +277,7 @@
    endpoint now hands the details to the visitor's mail app, addressed to a mailbox that is
    actually read. One more click for them, and it delivers, which is the right way round.
    Set WAITLIST_ENDPOINT when a real one exists and this path stops being used. */
-var WAITLIST_ENDPOINT = "";
+var WAITLIST_ENDPOINT = "https://communityforpeople.org/api/pagar-signup";
 var WAITLIST_MAILBOX = "marketing@communityforpeople.org";
 (function(){
   var f=document.getElementById('waitForm');
@@ -303,7 +303,9 @@ var WAITLIST_MAILBOX = "marketing@communityforpeople.org";
         +'</p>';
     }
     if(!WAITLIST_ENDPOINT){ handoff(); return; }
-    fetch(WAITLIST_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,contact:contact,source:"waitlist"})}).then(ack).catch(ack);
+    fetch(WAITLIST_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"waitlist",name:name,contact:contact})})
+        .then(function(r){ if(!r.ok) throw new Error("bad status"); ack(); })
+        .catch(function(){ handoff(); });
   });
 })();
 </script>

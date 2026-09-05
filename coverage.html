@@ -154,7 +154,7 @@
    notify you at launch." Neither gauging nor notifying was possible — nothing was kept.
    With no city-interest table to POST to, an empty endpoint now hands the details to the
    visitor's mail app addressed to a mailbox that is read. Set CITY_ENDPOINT when one exists. */
-var CITY_ENDPOINT = "";
+var CITY_ENDPOINT = "https://communityforpeople.org/api/pagar-signup";
 var CITY_MAILBOX = "marketing@communityforpeople.org";
 (function(){
   var f=document.getElementById('cityForm');
@@ -178,7 +178,9 @@ var CITY_MAILBOX = "marketing@communityforpeople.org";
         +'</p>';
     }
     if(!CITY_ENDPOINT){ handoff(); return; }
-    fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city:city,contact:contact,source:"coverage"})}).then(ack).catch(ack);
+    fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"coverage",city:city,contact:contact})})
+        .then(function(r){ if(!r.ok) throw new Error("bad status"); ack(); })
+        .catch(function(){ handoff(); });
   });
 })();
 </script>
