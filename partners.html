@@ -451,6 +451,8 @@ var T = {
     okH:"Application received!", okP:"We’ll call this number to help you finish onboarding — in your language.",
     footTag:"Built by Maranaos for Marawi and all of Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
     heroTitle:"Be a Pagar Hero. Drive, deliver, earn.",
+    heroTitleM:"Sell on Pagar. Reach more of Marawi.",
+    heroLeadM:"Restaurants, home kitchens, grocers and sellers of local goods — put what you sell in front of thousands searching every day. No joining fee, payouts straight to your bank or GCash, and we set your store up with you.",
     heroLead:"Ride drivers and delivery riders keep Marawi moving — that makes you a hero. Turn your motorcycle, tricycle or car into income on your own schedule. No boss, no quota, apply fully online.",
     drvBenEy:"Why drive with Pagar", drvBenH:"Your hours. Your earnings.",
     mchBenEy:"Why sell on Pagar", mchBenH:"Everything you need to sell more.",
@@ -476,6 +478,8 @@ var T = {
     okH:"Natanggap ang aplikasyon!", okP:"Tatawagan namin ang numerong ito para tulungan kang tapusin ang onboarding — sa wika mo.",
     footTag:"Gawa ng mga Maranao para sa Marawi at buong Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
     heroTitle:"Maging Pagar Hero. Magmaneho, maghatid, kumita.",
+    heroTitleM:"Magbenta sa Pagar. Maabot ang buong Marawi.",
+    heroLeadM:"Restaurant, home kitchen, grocery at mga nagtitinda ng lokal na produkto — ipakita ang paninda mo sa libo-libong naghahanap araw-araw. Walang bayad sa pagsali, diretso sa bank o GCash ang bayad, at tutulungan ka naming i-set up ang tindahan mo.",
     heroLead:"Ang mga driver at rider ang nagpapagalaw sa Marawi — kaya isa kang bayani. Gawing kita ang motor, tricycle o kotse mo sa sarili mong oras. Walang amo, walang quota, mag-apply online.",
     drvBenEy:"Bakit magmaneho sa Pagar", drvBenH:"Ikaw ang bahala sa oras.",
     mchBenEy:"Bakit magbenta sa Pagar", mchBenH:"Lahat ng kailangan para makabenta.",
@@ -628,6 +632,13 @@ function renderRole(){
   $("[data-faqh]").textContent=t(role==="driver"?"faqDrvH":"faqMchH");
   // reqmini (form step 3)
   $("[data-reqmini]").innerHTML=d.reqs.map(function(r){ return '<li>'+tickHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
+  /* Hero copy is role-specific. It used to come from applyI18n alone, which is language-scoped
+     only — so picking "Merchant & Seller" left "Be a Pagar Hero. Drive, deliver, earn." and a lead
+     about turning your motorcycle into income sitting above the merchant form. */
+  var hT=$('[data-i18n="heroTitle"]'), hL=$('[data-i18n="heroLead"]');
+  if(hT) hT.textContent = t(role==="merchant" ? "heroTitleM" : "heroTitle");
+  if(hL) hL.textContent = t(role==="merchant" ? "heroLeadM" : "heroLead");
+
   // app-route CTA: a real button once there is somewhere to send people, honest text until then
   var cta=$("[data-approute-cta]");
   if(cta) cta.innerHTML = APP_DOWNLOAD_URL
