@@ -109,6 +109,15 @@
   .field.err input, .field.err select { border-color:var(--ka-red); }
   .field .errmsg { display:none; color:var(--ka-red-deep); font-size:12px; margin-top:5px; font-weight:600; }
   .field.err .errmsg { display:block; }
+  .field .hint { margin-top:6px; font-size:12.5px; color:var(--ka-ink-soft); line-height:1.45; }
+  .field .opts { display:flex; flex-wrap:wrap; gap:8px; }
+  .field .opts.col { flex-direction:column; }
+  .field .opts .opt { display:flex; gap:10px; align-items:center; margin:0; border:2px solid var(--ka-line); border-radius:11px; padding:11px 13px; background:#fff; cursor:pointer;
+    font-size:15px; font-weight:600; text-transform:none; letter-spacing:0; color:var(--ka-ink); line-height:1.3; }
+  .field .opts:not(.col) .opt { flex:1 1 0; min-width:104px; }
+  .field .opts .opt input { width:19px; height:19px; flex:0 0 auto; margin:0; padding:0; border:0; border-radius:0; accent-color:var(--ka-red); }
+  .field .opts .opt.on { border-color:var(--ka-ink); background:var(--ka-cream); }
+  .field.err .opts .opt { border-color:var(--ka-red); }
   .row2 { display:grid; gap:12px; }
   @media (min-width:480px){ .row2 { grid-template-columns:1fr 1fr; } }
   .reqmini { list-style:none; display:grid; gap:10px; }
@@ -282,6 +291,7 @@
           <div class="step hidden" data-step="3">
             <p style="font-size:14px;color:var(--ka-ink-soft);margin-bottom:14px" data-i18n="docsIntro">Get these ready — you’ll upload them securely inside the app during onboarding, not here.</p>
             <ul class="reqmini" data-reqmini></ul>
+            <div id="fieldsHost3" style="margin-top:18px"></div>
             <label class="agree"><input type="checkbox" id="agree" /><span data-i18n="agree">I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.</span></label>
           </div>
           <div class="step hidden" data-step="4">
@@ -449,6 +459,11 @@ var T = {
 };
 
 /* ============ role data ============ */
+/* Cities we actually serve. coverage.html is the source of truth for this list — Marawi is
+   live; Iligan / Cagayan de Oro / Cotabato are "where to next" and are deliberately NOT here.
+   Adding a city = adding one string, and both role forms pick it up. */
+var CITIES = ["Marawi City"];
+
 var DATA = {
   driver: {
     stats:[{n:"₱0",l:{en:"Joining fee",fil:"Bayad sa pagsali"}},{n:{en:"No quota",fil:"Walang quota"},l:{en:"To earn",fil:"Para kumita"}},{n:{en:"Your own",fil:"Sarili mong"},l:{en:"Hours",fil:"Oras"}}],
@@ -482,7 +497,7 @@ var DATA = {
     fields:[
       {step:1,k:"name",type:"text",label:{en:"Full name",fil:"Buong pangalan"},ph:{en:"As written on your ID",fil:"Tulad ng nasa ID"},req:true},
       {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
-      {step:1,k:"city",type:"text",label:{en:"City / area",fil:"Lungsod / lugar"},ph:"Marawi City",req:true},
+      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"We’re live in Marawi City for now — more cities soon.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
       {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
       {step:2,k:"vehType",type:"select",label:{en:"Vehicle type",fil:"Uri ng sasakyan"},opts:["Motorcycle","Tricycle","Sedan","Car"],req:true},
       {step:2,k:"plate",type:"text",label:{en:"Plate number",fil:"Plate number"},ph:"ABC 1234",req:true},
@@ -519,11 +534,27 @@ var DATA = {
     fields:[
       {step:1,k:"name",type:"text",label:{en:"Contact person",fil:"Contact person"},ph:{en:"Owner or authorized contact",fil:"May-ari o contact"},req:true},
       {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
-      {step:1,k:"city",type:"text",label:{en:"City / area",fil:"Lungsod / lugar"},ph:"Marawi City",req:true},
+      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"We’re live in Marawi City for now — more cities soon.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
       {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
       {step:2,k:"bizName",type:"text",label:{en:"Business name",fil:"Pangalan ng negosyo"},ph:"e.g. Palapa ni Bai",req:true},
       {step:2,k:"bizType",type:"select",label:{en:"Business type",fil:"Uri ng negosyo"},opts:["Restaurant / food","Home kitchen","Grocery / store","Crafts / goods"],req:true},
-      {step:2,k:"address",type:"text",label:{en:"Business address",fil:"Address ng negosyo"},ph:{en:"Street, barangay, landmark",fil:"Kalye, barangay, landmark"},req:true}
+      {step:2,k:"partnership",type:"select",label:{en:"What do you want to sell?",fil:"Ano ang ibebenta mo?"},opts:[
+        {en:"Food delivery",fil:"Pagkain (delivery)"},{en:"Goods and groceries",fil:"Grocery at paninda"},{en:"Both",fil:"Pareho"}],req:true},
+      {step:2,k:"outlets",type:"select",label:{en:"Number of branches",fil:"Ilang branch"},opts:["1","2–5","6–10","10+"],req:true},
+      {step:2,k:"legalType",type:"select",label:{en:"How is the business registered?",fil:"Paano nakarehistro ang negosyo?"},opts:[
+        {en:"Sole Proprietor",fil:"Sole Proprietor"},{en:"Company / Partnership",fil:"Kumpanya / Partnership"},
+        {en:"Cooperative",fil:"Kooperatiba"},{en:"NGO / Foundation",fil:"NGO / Foundation"},
+        {en:"Not registered yet",fil:"Hindi pa nakarehistro"}],req:true},
+      {step:2,k:"address",type:"text",label:{en:"Business address",fil:"Address ng negosyo"},ph:{en:"Street, barangay, landmark",fil:"Kalye, barangay, landmark"},req:true},
+      {step:2,k:"ownDelivery",type:"yesno",label:{en:"Do you have your own delivery riders?",fil:"May sarili ka bang rider?"},req:true},
+      {step:2,k:"franchise",type:"yesno",label:{en:"Is this a franchise branch?",fil:"Franchise ba ito?"},req:true},
+      {step:3,k:"docs",type:"checks",label:{en:"Which of these do you already have?",fil:"Alin dito ang meron ka na?"},opts:[
+        {en:"DTI registration",fil:"DTI registration"},{en:"BIR 2303",fil:"BIR 2303"},
+        {en:"Business or barangay permit",fil:"Business o barangay permit"},
+        {en:"Menu or price list",fil:"Menu o listahan ng presyo"},
+        {en:"None yet",fil:"Wala pa",excl:true}],
+        hint:{en:"Tick what you have today. Missing papers do not stop your application — our Marawi team helps you finish them.",
+              fil:"I-tsek ang meron ka. Hindi hadlang ang kulang — tutulungan ka ng team namin sa Marawi."},req:true}
     ]
   }
 };
@@ -573,21 +604,71 @@ function renderRole(){
   $all(".roleview").forEach(function(v){ v.classList.toggle("hidden", v.getAttribute("data-role")!==role); });
 }
 
+function optVal(o){ return typeof o==="string"?o:(o.en||""); }
+function optLab(o){ return typeof o==="string"?o:tx(o); }
+var YESNO=[{en:"Yes",fil:"Oo"},{en:"No",fil:"Hindi"}];
 function fieldHtml(f){
   var lab=tx(f.label), ph=f.ph?tx(f.ph):"", v=form[f.k]||"";
   var input;
-  if(f.type==="select"){ input='<select data-k="'+f.k+'"><option value="">—</option>'+f.opts.map(function(o){return '<option'+(v===o?' selected':'')+'>'+o+'</option>';}).join("")+'</select>'; }
+  if(f.type==="select"){
+    input='<select data-k="'+f.k+'"><option value="">\u2014</option>'+f.opts.map(function(o){
+      var ov=optVal(o);
+      return '<option value="'+esc(ov)+'"'+(v===ov?' selected':'')+'>'+esc(optLab(o))+'</option>';
+    }).join("")+'</select>';
+  }
+  /* yesno / checks store a plain string in `form`, exactly like every other field, so validation,
+     the step-4 review and buildPayload need no special case. `value` is always the EN string —
+     switching language must not change what the API receives. */
+  else if(f.type==="yesno"){
+    input='<div class="opts">'+YESNO.map(function(o){
+      var on=v===o.en;
+      return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+f.k+'" data-k="'+f.k+'" data-opt value="'+o.en+'"'+(on?' checked':'')+' /><span>'+esc(tx(o))+'</span></label>';
+    }).join("")+'</div>';
+  }
+  else if(f.type==="checks"){
+    var sel=v?v.split(", "):[];
+    input='<div class="opts col">'+f.opts.map(function(o){
+      var ov=optVal(o), on=sel.indexOf(ov)>=0;
+      return '<label class="opt'+(on?' on':'')+'"><input type="checkbox" data-k="'+f.k+'" data-opt'+(o.excl?' data-excl':'')+' value="'+esc(ov)+'"'+(on?' checked':'')+' /><span>'+esc(optLab(o))+'</span></label>';
+    }).join("")+'</div>';
+  }
   else { input='<input type="'+f.type+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+' />'; }
-  return '<div class="field" data-field="'+f.k+'"><label>'+esc(lab)+'</label>'+input+'<div class="errmsg">'+t("reqFix")+'</div></div>';
+  var hint=f.hint?'<div class="hint">'+esc(tx(f.hint))+'</div>':"";
+  return '<div class="field" data-field="'+f.k+'"><label>'+esc(lab)+'</label>'+input+hint+'<div class="errmsg">'+t("reqFix")+'</div></div>';
 }
 function renderFields(){
-  var s1=DATA[role].fields.filter(function(f){return f.step===1;});
-  var s2=DATA[role].fields.filter(function(f){return f.step===2;});
-  $("#fieldsHost").innerHTML=s1.map(fieldHtml).join("");
-  $("#fieldsHost2").innerHTML=s2.map(fieldHtml).join("");
+  /* A required select with exactly one option answers itself — while we serve one city, making
+     the applicant open a one-item dropdown is friction with no information in it. */
+  DATA[role].fields.forEach(function(f){
+    if(f.type==="select"&&f.req&&f.opts&&f.opts.length===1&&!form[f.k]) form[f.k]=optVal(f.opts[0]);
+  });
+  function ofStep(n){ return DATA[role].fields.filter(function(f){return f.step===n;}); }
+  $("#fieldsHost").innerHTML=ofStep(1).map(fieldHtml).join("");
+  $("#fieldsHost2").innerHTML=ofStep(2).map(fieldHtml).join("");
+  var h3=$("#fieldsHost3"); if(h3) h3.innerHTML=ofStep(3).map(fieldHtml).join("");
   $all("#applyForm [data-k]").forEach(function(el){
+    if(el.hasAttribute("data-opt")) return;
     var ev=el.tagName==="SELECT"?"change":"input";
     el.addEventListener(ev,function(){ form[el.getAttribute("data-k")]=el.value; var fl=el.closest(".field"); if(fl) fl.classList.remove("err"); });
+  });
+  $all("#applyForm [data-opt]").forEach(function(el){
+    el.addEventListener("change",function(){
+      var k=el.getAttribute("data-k"), fl=el.closest(".field");
+      if(el.type==="checkbox"){
+        /* "None yet" is an escape hatch, not a document — ticking it clears the rest, and ticking
+           a real one clears it. Without this a recruiter gets "BIR 2303, None yet". */
+        var boxes=$all('[data-k="'+k+'"][data-opt]');
+        if(el.checked){
+          if(el.hasAttribute("data-excl")) boxes.forEach(function(x){ if(x!==el) x.checked=false; });
+          else boxes.forEach(function(x){ if(x.hasAttribute("data-excl")) x.checked=false; });
+        }
+        form[k]=boxes.filter(function(x){return x.checked;}).map(function(x){return x.value;}).join(", ");
+      } else { form[k]=el.value; }
+      if(fl){
+        fl.classList.remove("err");
+        $all(".opt",fl).forEach(function(l){ var i=l.querySelector("input"); l.classList.toggle("on", !!(i&&i.checked)); });
+      }
+    });
   });
 }
 
@@ -641,7 +722,14 @@ function turnstileToken(){ try{ return (window.turnstile&&$("#turnstileSlot"))?w
 function buildPayload(){
   var p={ role:apiRole(), fullName:form.name||"", phone:form.mobile||"", city:form.city||"", email:form.email||"", source:"website" };
   if(role==="driver"){ p.vehicleType=form.vehType||""; p.plateNumber=form.plate||""; p.vehicleYear=form.vehYear||""; }
-  else { p.businessName=form.bizName||""; p.businessType=form.bizType||""; p.address=form.address||""; }
+  else {
+    p.businessName=form.bizName||""; p.businessType=form.bizType||""; p.address=form.address||"";
+    /* Qualification answers. /api/recruit keeps every key it does not recognise as an opaque JSON
+       payload on the application row (server/api/recruitment-api.ts), so these need no API change —
+       but they are what a recruiter reads before picking up the phone, so the names are for humans. */
+    p.sells=form.partnership||""; p.branches=form.outlets||""; p.registrationType=form.legalType||"";
+    p.hasOwnRiders=form.ownDelivery||""; p.isFranchise=form.franchise||""; p.documentsOnHand=form.docs||"";
+  }
   p.captchaToken=turnstileToken(); return p;
 }
 function refFromId(id){ return "PGR-"+String(id).padStart(5,"0"); }
