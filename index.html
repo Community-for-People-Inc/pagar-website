@@ -33,7 +33,7 @@
   .herobird{position:relative;display:flex;justify-content:center;align-items:center;min-height:200px}
   .herobird::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(430px,92%);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle, #fbebab 0%, #fbebab 47%, rgba(251,235,171,.45) 61%, rgba(251,235,171,0) 72%)}
   .herobird svg{position:relative;width:min(360px,80%);height:auto;filter:drop-shadow(0 18px 38px rgba(0,0,0,.3));animation:kaFloat 6s ease-in-out infinite}
-  .flybird{position:fixed;top:0;left:0;width:118px;height:118px;z-index:70;pointer-events:none;opacity:0;animation:kaFly 5.6s cubic-bezier(.4,0,.6,1) .4s 1 forwards}
+  .flybird{position:fixed;top:0;left:0;width:118px;height:118px;z-index:70;pointer-events:none;opacity:0;animation:kaFly 5.6s cubic-bezier(.4,0,.6,1) .4s infinite}
   /* Mobile: lift the Sarimanok to the top as a centered, fully-visible focal graphic
      (otherwise it strands below a tall hero and only its top edge shows) */
   @media(max-width:899px){
@@ -85,6 +85,8 @@
     <g transform="translate(200,124) scale(2.9)"><path d="M0 0 C-9 -7 -9 9 0 2 C7 9 12 -9 0 0Z" fill="var(--ka-green)" stroke="var(--ka-green-deep)" stroke-width="1.1"></path><path d="M-2 1 L-11 -6 L-11 8Z" fill="var(--ka-green-deep)"></path><path d="M-4 -2 C-1 -1 -1 3 -4 4" fill="none" stroke="var(--ka-green-deep)" stroke-width="0.8"></path><circle cx="4.4" cy="-0.4" r="1.6" fill="var(--ka-cream)"></circle><circle cx="4.8" cy="-0.4" r="0.8" fill="var(--ka-ink)"></circle></g>
   </symbol>
 </svg>
+
+<div class="flybird" aria-hidden="true"><svg viewBox="0 0 240 240"><use href="#sarimanok-flutter"></use></svg></div>
 
 <header class="site">
   <div class="wrap bar">
