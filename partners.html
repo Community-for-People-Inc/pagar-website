@@ -124,6 +124,9 @@
   .reqmini li { display:flex; gap:11px; align-items:flex-start; }
   .reqmini .tick { flex:0 0 auto; width:24px; height:24px; border-radius:7px; background:var(--ka-green); display:grid; place-items:center; }
   .reqmini .tick svg { width:14px; height:14px; color:#fff; }
+  /* Step 3 asks for an upload, so it must not look already ticked. A dashed, empty box reads as "to do". */
+  .reqmini .upmark { flex:0 0 auto; width:24px; height:24px; border-radius:7px; border:2px dashed var(--ka-ink-soft); display:grid; place-items:center; }
+  .reqmini .upmark svg { width:13px; height:13px; color:var(--ka-ink-soft); }
   .reqmini b { display:block; font-size:14px; } .reqmini span { color:var(--ka-ink-soft); font-size:12.5px; }
   .docnote { margin-top:14px; background:var(--ka-cream); border:1px solid var(--ka-line); border-radius:11px; padding:12px 14px; font-size:13px; color:var(--ka-ink-soft); }
   .agree { display:flex; gap:11px; align-items:flex-start; margin-top:16px; font-size:13.5px; color:var(--ka-ink-soft); }
@@ -301,7 +304,7 @@
           <div class="step" data-step="1"><div id="fieldsHost"></div></div>
           <div class="step hidden" data-step="2"><div id="fieldsHost2"></div></div>
           <div class="step hidden" data-step="3">
-            <p style="font-size:14px;color:var(--ka-ink-soft);margin-bottom:14px" data-i18n="docsIntro">Get these ready — you’ll upload them securely inside the app during onboarding, not here.</p>
+            <p style="font-size:14px;color:var(--ka-ink-soft);margin-bottom:14px" data-i18n="docsIntro">You’ll upload each of these in the app after you apply — have them ready to photograph. This form doesn’t take files.</p>
             <ul class="reqmini" data-reqmini></ul>
             <div id="fieldsHost3" style="margin-top:18px"></div>
             <label class="agree"><input type="checkbox" id="agree" /><span data-i18n="agree">I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.</span></label>
@@ -446,7 +449,7 @@ var T = {
     reqEy:"What you need", reqNote:"Missing something? Apply anyway and we’ll tell you exactly what to fix — our Marawi onboarding team will guide you.",
     startApp:"Start your application →", fromPartners:"From our partners",
     back:"Back", next:"Continue →", submit:"Submit application ✓",
-    docsIntro:"Get these ready — you’ll upload them securely inside the app during onboarding, not here.",
+    docsIntro:"You’ll upload each of these in the app after you apply — have them ready to photograph. This form doesn’t take files.",
     agree:"I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.",
     okH:"Application received!", okP:"We’ll call this number to help you finish onboarding — in your language.",
     footTag:"Built by Maranaos for Marawi and all of Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
@@ -473,7 +476,7 @@ var T = {
     appRouteP:"Pwede kang mag-apply sa loob nito. Buksan ang Profile, tapos pindutin ang Restaurant o Seller — doon na rin ang pag-upload ng dokumento, kaya mas mabilis kung may account ka na.",
     appRouteNoLink:"Wala pa? Punan ang form sa ibaba at ite-text namin ang link.",
     appRouteBtn:"I-download ang app",
-    docsIntro:"Ihanda ang mga ito — i-a-upload nang ligtas sa loob ng app habang nag-o-onboard, hindi dito.",
+    docsIntro:"I-upload mo ang bawat isa sa loob ng app pagkatapos mag-apply — ihanda na para makunan ng larawan. Hindi tumatanggap ng file ang form na ito.",
     agree:"Kinukumpirma kong tama ang detalye ko at pumapayag akong kontakin ng Pagar onboarding team. Sang-ayon ako sa Privacy Policy at Terms.",
     okH:"Natanggap ang aplikasyon!", okP:"Tatawagan namin ang numerong ito para tulungan kang tapusin ang onboarding — sa wika mo.",
     footTag:"Gawa ng mga Maranao para sa Marawi at buong Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
@@ -604,6 +607,7 @@ function applyI18n(){
   document.documentElement.lang = lang==="fil"?"fil":"en";
 }
 function tickHtml(){ return '<span class="tick">'+IC.tick+'</span>'; }
+function upmarkHtml(){ return '<span class="upmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 16V5M7 10l5-5 5 5M5 19h14"/></svg></span>'; }
 
 function renderRole(){
   var d=DATA[role];
@@ -630,8 +634,8 @@ function renderRole(){
   // faq
   $("[data-faq]").innerHTML=d.faqs.map(function(f){ return '<details class="faq"><summary>'+tx(f.q)+'<span class="chev">▾</span></summary><p>'+tx(f.a)+'</p></details>'; }).join("");
   $("[data-faqh]").textContent=t(role==="driver"?"faqDrvH":"faqMchH");
-  // reqmini (form step 3)
-  $("[data-reqmini]").innerHTML=d.reqs.map(function(r){ return '<li>'+tickHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
+  // reqmini (form step 3). Empty upload boxes, not ticks: nothing has been handed over on this form yet.
+  $("[data-reqmini]").innerHTML=d.reqs.map(function(r){ return '<li>'+upmarkHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
   /* Hero copy is role-specific. It used to come from applyI18n alone, which is language-scoped
      only — so picking "Merchant & Seller" left "Be a Pagar Hero. Drive, deliver, earn." and a lead
      about turning your motorcycle into income sitting above the merchant form. */
