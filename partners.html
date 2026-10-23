@@ -389,7 +389,7 @@
     <span style="margin-left:auto">
       <a href="help.html#privacy" data-i18n="footPrivacy">Privacy</a> ·
       <a href="help.html#terms" data-i18n="footTerms">Terms</a> ·
-      <a href="mailto:marketing@communityforpeople.org?subject=PAGAR%20EXPRESS%20enquiry">marketing@communityforpeople.org</a> ·
+      <a href="mailto:support@pagarexpress.com?subject=PAGAR%20EXPRESS%20enquiry">support@pagarexpress.com</a> ·
       <a href="index.html">PAGAR EXPRESS</a>
     </span>
   </div>
@@ -510,15 +510,15 @@ var DATA = {
     ],
     steps:[
       {h:{en:"Fill the form",fil:"Punan ang form"},p:{en:"Your details and vehicle — about 5 minutes.",fil:"Detalye at sasakyan — mga 5 minuto."}},
-      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"License, OR/CR, clearance and a valid ID.",fil:"Lisensya, OR/CR, clearance at ID."}},
+      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"License, OR/CR, and NBI and medical clearances.",fil:"Lisensya, OR/CR, NBI at medical clearance."}},
       {h:{en:"Quick orientation",fil:"Maikling oryentasyon"},p:{en:"Short online onboarding and app setup.",fil:"Maikling onboarding at app setup."}},
       {h:{en:"Start earning",fil:"Simulan ang kita"},p:{en:"Accept your first booking and get paid.",fil:"Tanggapin ang unang booking at kumita."}}
     ],
     reqs:[
-      {b:{en:"Driver’s license",fil:"Lisensya"},s:{en:"Non-professional or professional.",fil:"Non-pro o professional."}},
+      {b:{en:"Professional driver’s license",fil:"Professional na lisensya"},s:{en:"A non-professional license is for private driving only.",fil:"Pang-pribadong pagmamaneho lang ang non-pro."}},
       {b:{en:"Vehicle OR / CR",fil:"OR / CR ng sasakyan"},s:{en:"Official receipt and certificate of registration.",fil:"OR at CR."}},
-      {b:{en:"NBI or police clearance",fil:"NBI o police clearance"},s:{en:"Issued within the last 6 months.",fil:"Sa nakaraang 6 buwan."}},
-      {b:{en:"Valid government ID",fil:"Valid na government ID"},s:{en:"Any primary government ID.",fil:"Kahit anong primary ID."}},
+      {b:{en:"NBI clearance",fil:"NBI clearance"},s:{en:"Issued within the last 6 months.",fil:"Sa nakaraang 6 buwan."}},
+      {b:{en:"Medical clearance",fil:"Medical clearance"},s:{en:"Required for every driver and rider.",fil:"Kailangan ng bawat driver at rider."}},
       {b:{en:"A roadworthy vehicle",fil:"Sasakyang gumagana"},s:{en:"Motorcycle, tricycle, sedan or car.",fil:"Motor, tricycle, sedan o kotse."}}
     ],
     faqs:[
@@ -532,7 +532,7 @@ var DATA = {
     fields:[
       {step:1,k:"name",type:"text",label:{en:"Full name",fil:"Buong pangalan"},ph:{en:"As written on your ID",fil:"Tulad ng nasa ID"},req:true},
       {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
-      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"We’re live in Marawi City for now — more cities soon.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
+      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"Pagar starts in Marawi City, with more cities to follow.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
       {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
       {step:2,k:"vehType",type:"select",label:{en:"Vehicle type",fil:"Uri ng sasakyan"},opts:["Motorcycle","Tricycle","Sedan","Car"],req:true},
       {step:2,k:"plate",type:"text",label:{en:"Plate number",fil:"Plate number"},ph:"ABC 1234",req:true},
@@ -549,15 +549,15 @@ var DATA = {
     ],
     steps:[
       {h:{en:"Fill the form",fil:"Punan ang form"},p:{en:"Business and contact details — about 5 minutes.",fil:"Detalye ng negosyo — mga 5 minuto."}},
-      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"BIR 2303, menu or catalog, and payout details.",fil:"BIR 2303, menu at payout details."}},
+      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"Business permit, DTI or SEC registration, the owner’s ID and your menu.",fil:"Business permit, DTI o SEC, ID ng may-ari at menu."}},
       {h:{en:"Set up your store",fil:"I-set up ang tindahan"},p:{en:"Add menu, photos and hours with our team’s help.",fil:"Idagdag ang menu at litrato kasama kami."}},
       {h:{en:"Receive orders",fil:"Tumanggap ng order"},p:{en:"Usually within a few days.",fil:"Kadalasan sa loob ng ilang araw."}}
     ],
     reqs:[
       {b:{en:"Business or barangay permit",fil:"Business o barangay permit"},s:{en:"Proof your business operates locally.",fil:"Patunay na lokal ang negosyo."}},
-      {b:{en:"BIR 2303 form",fil:"BIR 2303"},s:{en:"Certificate of registration.",fil:"Certificate of registration."}},
+      {b:{en:"DTI or SEC registration",fil:"DTI o SEC registration"},s:{en:"SEC for a corporation. BIR 2303 is optional.",fil:"SEC para sa korporasyon. Opsyonal ang BIR 2303."}},
       {b:{en:"Menu or product catalog",fil:"Menu o katalogo"},s:{en:"With current prices.",fil:"May presyo."}},
-      {b:{en:"Valid government ID",fil:"Valid na ID"},s:{en:"Of the owner or authorized contact.",fil:"Ng may-ari o contact."}},
+      {b:{en:"Valid government ID",fil:"Valid na ID"},s:{en:"Of the owner.",fil:"Ng may-ari."}},
       {b:{en:"Bank / GCash account",fil:"Bank / GCash"},s:{en:"Where we send your payouts.",fil:"Para sa payout."}}
     ],
     faqs:[
@@ -569,7 +569,7 @@ var DATA = {
     fields:[
       {step:1,k:"name",type:"text",label:{en:"Contact person",fil:"Contact person"},ph:{en:"Owner or authorized contact",fil:"May-ari o contact"},req:true},
       {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
-      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"We’re live in Marawi City for now — more cities soon.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
+      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"Pagar starts in Marawi City, with more cities to follow.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
       {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
       {step:2,k:"bizName",type:"text",label:{en:"Business name",fil:"Pangalan ng negosyo"},ph:"e.g. Palapa ni Bai",req:true},
       {step:2,k:"bizType",type:"select",label:{en:"Business type",fil:"Uri ng negosyo"},opts:["Restaurant / food","Home kitchen","Grocery / store","Crafts / goods"],req:true},
