@@ -146,6 +146,15 @@
   .donewrap .big svg { width:32px; height:32px; color:#fff; }
   .donewrap h2 { font-weight:900; font-size:23px; }
   .donewrap .ref { display:inline-block; margin-top:14px; font-weight:800; letter-spacing:.08em; background:var(--ka-cream); border:1px dashed var(--ka-ink); border-radius:10px; padding:9px 15px; }
+  /* The app's own questions (28 Oct): day/month/year boxes, the religion note, and the map pin. */
+  .dmy { display:grid; grid-template-columns:1fr 1fr 1.4fr; gap:8px; }
+  .field .whybox { margin-top:10px; background:var(--ka-cream); border:1px solid var(--ka-line); border-radius:11px; padding:11px 13px; font-size:12.5px; color:var(--ka-ink-soft); line-height:1.5; }
+  .field .whybox b { display:block; color:var(--ka-ink); margin-bottom:4px; }
+  .field .whybox p + p { margin-top:6px; }
+  .mapbox { height:260px; border:2px solid var(--ka-line); border-radius:11px; overflow:hidden; background:var(--ka-cream); }
+  .field.err .mapbox { border-color:var(--ka-red); }
+  .mapbar { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-top:8px; font-size:12.5px; color:var(--ka-ink-soft); }
+  .mapbar button { border:2px solid var(--ka-ink); background:#fff; color:var(--ka-ink); font-family:inherit; font-weight:800; font-size:13px; padding:8px 12px; border-radius:10px; cursor:pointer; }
 
   /* light sections */
   section.block { padding:52px 0; }
@@ -299,17 +308,16 @@
       <!-- FORM CARD -->
       <div class="formcard" id="apply">
         <div class="formhead"><h2 data-form-title>About you</h2><span class="stepof" data-stepof>Step 1 of 4</span></div>
-        <div class="progress"><i style="width:25%"></i></div>
+        <div class="progress"><i style="width:20%"></i></div>
         <form class="formbody" id="applyForm" novalidate>
-          <div class="step" data-step="1"><div id="fieldsHost"></div></div>
-          <div class="step hidden" data-step="2"><div id="fieldsHost2"></div></div>
-          <div class="step hidden" data-step="3">
-            <p style="font-size:14px;color:var(--ka-ink-soft);margin-bottom:14px" data-i18n="docsIntro">You’ll upload each of these in the app after you apply — have them ready to photograph. This form doesn’t take files.</p>
+          <!-- The question steps are generated from DATA[role].fields (renderFields): the app's own questions. -->
+          <div id="stepsHost"></div>
+          <div class="step hidden" data-step="docs">
+            <p style="font-size:14px;color:var(--ka-ink-soft);margin-bottom:14px" data-i18n="docsIntro">Once we approve this, you finish in the app: upload these there. This form doesn’t take files, photos or bank details.</p>
             <ul class="reqmini" data-reqmini></ul>
-            <div id="fieldsHost3" style="margin-top:18px"></div>
             <label class="agree"><input type="checkbox" id="agree" /><span data-i18n="agree">I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.</span></label>
           </div>
-          <div class="step hidden" data-step="4">
+          <div class="step hidden" data-step="review">
             <div class="review" data-review></div>
             <div class="cf" id="turnstileSlot"></div>
           </div>
@@ -449,7 +457,7 @@ var T = {
     reqEy:"What you need", reqNote:"Missing something? Apply anyway and we’ll tell you exactly what to fix — our Marawi onboarding team will guide you.",
     startApp:"Start your application →", fromPartners:"From our partners",
     back:"Back", next:"Continue →", submit:"Submit application ✓",
-    docsIntro:"You’ll upload each of these in the app after you apply — have them ready to photograph. This form doesn’t take files.",
+    docsIntro:"Once we approve this, you finish in the app: upload these there. This form doesn’t take files, photos or bank details.",
     agree:"I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.",
     okH:"Application received!", okP:"We’ll call this number to help you finish onboarding — in your language.",
     footTag:"Built by Maranaos for Marawi and all of Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
@@ -462,7 +470,17 @@ var T = {
     stepAbout:"About you", stepVehicle:"Your vehicle", stepBiz:"Your business", stepDocs:"Prepare documents", stepReview:"Review & submit",
     reqDrvH:"What you need to start", reqMchH:"What you need to start",
     faqDrvH:"Driver questions, answered.", faqMchH:"Merchant questions, answered.",
-    reqFix:"This is required.", phoneFix:"Enter a valid PH mobile (09XX XXX XXXX).", agreeFix:"Please confirm the box to continue."
+    reqFix:"This is required.", phoneFix:"Enter a valid PH mobile (09XX XXX XXXX).", agreeFix:"Please confirm the box to continue.",
+    stepPersonal:"Personal information", stepLicence:"Driver’s licence",
+    dd:"DD", mm:"MM", yyyy:"YYYY", emailFix:"Enter a valid email address.", dateFix:"Enter a real date: day, month and a 4-digit year.",
+    ageFix:"You must be at least 18 years old.", licExpiredFix:"This licence has expired.",
+    licFarFix:"A driver’s licence is valid for 10 years at most. Check the expiry printed on the licence.",
+    notProFix:"PAGAR drivers need a professional driver’s licence. A non-professional licence is for private driving only.",
+    yearFix:"Vehicle year must be between 1990 and this year.", shortFix:"Use at least 2 characters.",
+    pinFixR:"Pin your restaurant on the map. Riders go there to collect orders, and delivery fees are worked out from it.",
+    pinFixS:"Pin your store on the map. Riders are sent there to collect orders.",
+    useLoc:"📍 Use my current location", locating:"Finding you…", locFail:"Couldn’t read your location. Drag the pin instead.",
+    pinNone:"Tap the map or drag the pin onto the place.", pinAt:"Pinned at", mapFail:"The map didn’t load. Check your connection and reload the page."
   },
   fil: {
     segPartners:"PARTNERS", navAbout:"Tungkol", navCoverage:"Saklaw", navSafety:"Kaligtasan", navPartners:"Partners", navHelp:"Tulong", applyNow:"Mag-apply →",
@@ -476,7 +494,7 @@ var T = {
     appRouteP:"Pwede kang mag-apply sa loob nito. Buksan ang Profile, tapos pindutin ang Restaurant o Seller — doon na rin ang pag-upload ng dokumento, kaya mas mabilis kung may account ka na.",
     appRouteNoLink:"Wala pa? Punan ang form sa ibaba at ite-text namin ang link.",
     appRouteBtn:"I-download ang app",
-    docsIntro:"I-upload mo ang bawat isa sa loob ng app pagkatapos mag-apply — ihanda na para makunan ng larawan. Hindi tumatanggap ng file ang form na ito.",
+    docsIntro:"Kapag naaprubahan, tatapusin mo ito sa loob ng app: doon mo i-upload ang mga ito. Hindi tumatanggap ang form na ito ng file, larawan o detalye ng bangko.",
     agree:"Kinukumpirma kong tama ang detalye ko at pumapayag akong kontakin ng Pagar onboarding team. Sang-ayon ako sa Privacy Policy at Terms.",
     okH:"Natanggap ang aplikasyon!", okP:"Tatawagan namin ang numerong ito para tulungan kang tapusin ang onboarding — sa wika mo.",
     footTag:"Gawa ng mga Maranao para sa Marawi at buong Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
@@ -489,15 +507,49 @@ var T = {
     stepAbout:"Tungkol sa iyo", stepVehicle:"Iyong sasakyan", stepBiz:"Iyong negosyo", stepDocs:"Ihanda ang dokumento", stepReview:"Suriin at isumite",
     reqDrvH:"Ano ang kailangan para makasimula", reqMchH:"Ano ang kailangan para makasimula",
     faqDrvH:"Mga tanong ng driver, sagot na.", faqMchH:"Mga tanong ng merchant, sagot na.",
-    reqFix:"Kailangan ito.", phoneFix:"Gumamit ng wastong PH mobile (09XX XXX XXXX).", agreeFix:"Pakikumpirma ang kahon para magpatuloy."
+    reqFix:"Kailangan ito.", phoneFix:"Gumamit ng wastong PH mobile (09XX XXX XXXX).", agreeFix:"Pakikumpirma ang kahon para magpatuloy.",
+    stepPersonal:"Personal na impormasyon", stepLicence:"Lisensya sa pagmamaneho",
+    dd:"Araw", mm:"Buwan", yyyy:"Taon", emailFix:"Maglagay ng wastong email.", dateFix:"Maglagay ng totoong petsa: araw, buwan at taon (4 na numero).",
+    ageFix:"Kailangang 18 taong gulang ka o higit pa.", licExpiredFix:"Expired na ang lisensyang ito.",
+    licFarFix:"Hanggang 10 taon lang ang bisa ng lisensya. Tingnan ang expiry na nakalimbag sa lisensya.",
+    notProFix:"Kailangan ng professional driver’s license ang mga PAGAR driver. Pang-pribadong pagmamaneho lang ang non-professional.",
+    yearFix:"Dapat nasa pagitan ng 1990 at ngayong taon ang taon ng sasakyan.", shortFix:"Hindi bababa sa 2 letra.",
+    pinFixR:"I-pin ang restawran mo sa mapa. Dito pupunta ang rider para kunin ang order, at dito rin kinukuwenta ang delivery fee.",
+    pinFixS:"I-pin ang tindahan mo sa mapa. Dito pupunta ang rider para kunin ang order.",
+    useLoc:"📍 Gamitin ang lokasyon ko ngayon", locating:"Hinahanap ka…", locFail:"Hindi mabasa ang lokasyon mo. I-drag na lang ang pin.",
+    pinNone:"Pindutin ang mapa o i-drag ang pin sa mismong lugar.", pinAt:"Naka-pin sa", mapFail:"Hindi nag-load ang mapa. Tingnan ang koneksyon at i-reload ang page."
   }
 };
 
 /* ============ role data ============ */
-/* Cities we actually serve. coverage.html is the source of truth for this list — Marawi is
-   live; Iligan / Cagayan de Oro / Cotabato are "where to next" and are deliberately NOT here.
-   Adding a city = adding one string, and both role forms pick it up. */
-var CITIES = ["Marawi City"];
+/* The app's own choice lists, values and English labels word for word (RIDE_VEHICLE_NAMES,
+   RELIGION_OPTIONS, CUISINE_TYPES). The value is what the API receives, in any language. */
+var VEHICLES = [{v:"motorcycle",en:"Habal-habal",fil:"Habal-habal"},{v:"tricycle_2pax",en:"Tricycle, 2 passengers",fil:"Tricycle, 2 pasahero"},
+  {v:"tricycle_3pax",en:"Tricycle, 3 passengers",fil:"Tricycle, 3 pasahero"},{v:"car_4seater",en:"Car, 4 passengers",fil:"Kotse, 4 pasahero"},
+  {v:"car_6seater",en:"Car, 6 passengers",fil:"Kotse, 6 pasahero"}];
+var RELIGIONS = [{v:"roman_catholic",en:"Roman Catholic",fil:"Romano Katoliko"},{v:"islam",en:"Islam",fil:"Islam"},
+  {v:"iglesia_ni_cristo",en:"Iglesia ni Cristo",fil:"Iglesia ni Cristo"},{v:"evangelical",en:"Evangelical",fil:"Ebanghelikal"},
+  {v:"aglipayan",en:"Aglipayan",fil:"Aglipayan"},{v:"other_christian",en:"Other Christian",fil:"Ibang Kristiyano"},
+  {v:"buddhist",en:"Buddhist",fil:"Budista"},{v:"hindu",en:"Hindu",fil:"Hindu"},{v:"none",en:"None",fil:"Wala"},
+  {v:"other",en:"Other",fil:"Iba pa"},{v:"prefer_not_to_say",en:"Prefer not to say",fil:"Ayaw kong sabihin"}];
+var CUISINES = [{v:"Filipino",en:"Filipino",fil:"Filipino"},{v:"Halal",en:"Halal",fil:"Halal"},{v:"Fast Food",en:"Fast Food",fil:"Fast food"},
+  {v:"Grill/BBQ",en:"Grill/BBQ",fil:"Ihaw/BBQ"},{v:"Cafe",en:"Cafe",fil:"Kapihan"},{v:"Bakery",en:"Bakery",fil:"Panaderya"},
+  {v:"Seafood",en:"Seafood",fil:"Pagkaing-dagat"},{v:"Other",en:"Other",fil:"Iba pa"}];
+/* The app's "Why we ask" box beside religion; only "when you finish in the app" differs (the defaults are set then). */
+var WHY = { h:{en:"Why we ask",fil:"Bakit namin tinatanong"}, p:[
+  {en:"Some riders would rather not carry orders containing alcohol or pork. If you tell us your religion is Islam, we set that for you when you finish in the app, and those orders are not offered to you. You can change it yourself at any time, from your profile. Turning those orders off is only for riders who told us — saying you will carry them is open to everyone.",
+   fil:"May mga rider na mas gustong hindi magdala ng order na may alak o baboy. Kapag sinabi mong Islam ang relihiyon mo, itatakda namin iyon pagkatapos mo sa app, at hindi na iaalok sa iyo ang mga order na iyon. Mababago mo ito anumang oras sa iyong profile. Para lang sa mga rider na nagsabi sa amin ang pag-off ng mga order na iyon — bukas sa lahat ang pagsasabing dadalhin mo ang mga ito."},
+  {en:"This is the only thing we use it for. It does not affect your pay, your ratings, how many jobs you are offered, or whether your application is approved. Leaving it blank is fine, and you can delete your answer at any time from your profile — that also turns those orders back on, and we will say so before you confirm.",
+   fil:"Ito lang ang gamit namin dito. Hindi nito naaapektuhan ang kita mo, ang rating mo, kung ilang trabaho ang iaalok sa iyo, o kung maaaprubahan ang aplikasyon mo. Ayos lang na iwanang blangko, at mabubura mo ang sagot mo anumang oras sa iyong profile — ibabalik din nito ang mga order na iyon, at sasabihin namin bago ka magkumpirma."}
+]};
+
+/* Dates as the app reads them: Marawi's calendar day (UTC+8), and the app schema's expiry rule. */
+function marawiToday(){ return new Date(Date.now()+8*3600000).toISOString().slice(0,10); }
+function ageOn(iso){ var d=marawiToday(), a=+d.slice(0,4)-+iso.slice(0,4); if(d.slice(5)<iso.slice(5)) a--; return a; }
+function licenceExpiryFix(v){
+  if(!(new Date(v)>new Date())) return "licExpiredFix";
+  var d=marawiToday(); return v>((+d.slice(0,4)+10)+d.slice(4))?"licFarFix":null;
+}
 
 var DATA = {
   driver: {
@@ -509,35 +561,67 @@ var DATA = {
       {ic:"route",h:{en:"Smart routes",fil:"Matalinong ruta"},p:{en:"Dispatch that knows Marawi’s streets, gates and barangays.",fil:"Dispatch na kabisado ang Marawi."}}
     ],
     steps:[
-      {h:{en:"Fill the form",fil:"Punan ang form"},p:{en:"Your details and vehicle — about 5 minutes.",fil:"Detalye at sasakyan — mga 5 minuto."}},
-      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"License, OR/CR, clearance and a valid ID.",fil:"Lisensya, OR/CR, clearance at ID."}},
+      {h:{en:"Fill the form",fil:"Punan ang form"},p:{en:"Your details, licence and vehicle — about 10 minutes.",fil:"Detalye, lisensya at sasakyan — mga 10 minuto."}},
+      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"In the app: licence, OR/CR, NBI and medical clearance, photos.",fil:"Sa app: lisensya, OR/CR, NBI at medical clearance, mga larawan."}},
       {h:{en:"Quick orientation",fil:"Maikling oryentasyon"},p:{en:"Short online onboarding and app setup.",fil:"Maikling onboarding at app setup."}},
       {h:{en:"Start earning",fil:"Simulan ang kita"},p:{en:"Accept your first booking and get paid.",fil:"Tanggapin ang unang booking at kumita."}}
     ],
     reqs:[
-      {b:{en:"Driver’s license",fil:"Lisensya"},s:{en:"Non-professional or professional.",fil:"Non-pro o professional."}},
+      {b:{en:"Professional driver’s licence",fil:"Professional na lisensya"},s:{en:"The LTO requires one to drive for pay.",fil:"Kailangan ito ng LTO para magmaneho nang may bayad."}},
       {b:{en:"Vehicle OR / CR",fil:"OR / CR ng sasakyan"},s:{en:"Official receipt and certificate of registration.",fil:"OR at CR."}},
-      {b:{en:"NBI or police clearance",fil:"NBI o police clearance"},s:{en:"Issued within the last 6 months.",fil:"Sa nakaraang 6 buwan."}},
-      {b:{en:"Valid government ID",fil:"Valid na government ID"},s:{en:"Any primary government ID.",fil:"Kahit anong primary ID."}},
-      {b:{en:"A roadworthy vehicle",fil:"Sasakyang gumagana"},s:{en:"Motorcycle, tricycle, sedan or car.",fil:"Motor, tricycle, sedan o kotse."}}
+      {b:{en:"NBI and medical clearance",fil:"NBI at medical clearance"},s:{en:"A police or barangay clearance helps too (optional).",fil:"Makakatulong din ang police o barangay clearance (opsyonal)."}},
+      {b:{en:"Photos",fil:"Mga larawan"},s:{en:"Your vehicle, front and side, and a profile photo of you.",fil:"Ng sasakyan, harap at gilid, at isang larawan mo."}},
+      {b:{en:"A vehicle Pagar offers",fil:"Sasakyang tinatanggap ng Pagar"},s:{en:"Habal-habal, a tricycle for 2 or 3 passengers, or a car for 4 or 6.",fil:"Habal-habal, tricycle para sa 2 o 3 pasahero, o kotse para sa 4 o 6."}}
     ],
     faqs:[
       {q:{en:"Can I drive part-time?",fil:"Pwede part-time?"},a:{en:"Absolutely. You choose exactly when to go online — full-time or a few hours a week.",fil:"Oo. Ikaw ang pipili kung kailan mag-online."}},
       {q:{en:"When do I get paid?",fil:"Kailan ako babayaran?"},a:{en:"Straight to your bank or GCash account, with no quota to hit. Settlement timing follows our payment provider's schedule, so we do not promise a particular day.",fil:"Diretso sa bank o GCash account mo, walang quota. Ang timing ng settlement ay ayon sa schedule ng payment provider namin, kaya wala kaming ipinapangakong tiyak na araw."}},
-      {q:{en:"What vehicles can I use?",fil:"Anong sasakyan?"},a:{en:"Motorcycle, tricycle, sedan or car — as long as the papers are complete and valid.",fil:"Motor, tricycle, sedan o kotse — basta kumpleto ang papeles."}},
+      {q:{en:"What vehicles can I use?",fil:"Anong sasakyan?"},a:{en:"A motorcycle for habal-habal, a tricycle for 2 or 3 passengers, or a car for 4 or 6 — as long as the papers are complete and valid.",fil:"Motor (habal-habal), tricycle para sa 2 o 3 pasahero, o kotse para sa 4 o 6 — basta kumpleto at valid ang papeles."}},
       {q:{en:"Is there a joining fee?",fil:"May bayad sa pagsali?"},a:{en:"None. Signing up to drive with Pagar is completely free.",fil:"Wala. Libre ang pagsali."}},
       {q:{en:"What if I don’t have all documents yet?",fil:"Paano kung kulang?"},a:{en:"Apply anyway. Our Marawi onboarding team will help you complete what’s missing.",fil:"Mag-apply pa rin. Tutulungan ka namin."}}
     ],
     testi:[],
+    /* The app's driver application (app/(driver)/driver-onboarding.tsx), word for word and in its
+       order, minus photos, documents and payout. Keys are the app's own, so approval copies them in. */
     fields:[
-      {step:1,k:"name",type:"text",label:{en:"Full name",fil:"Buong pangalan"},ph:{en:"As written on your ID",fil:"Tulad ng nasa ID"},req:true},
-      {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
-      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"We’re live in Marawi City for now — more cities soon.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
-      {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
-      {step:2,k:"vehType",type:"select",label:{en:"Vehicle type",fil:"Uri ng sasakyan"},opts:["Motorcycle","Tricycle","Sedan","Car"],req:true},
-      {step:2,k:"plate",type:"text",label:{en:"Plate number",fil:"Plate number"},ph:"ABC 1234",req:true},
-      {step:2,k:"vehYear",type:"text",label:{en:"Vehicle year",fil:"Taon ng sasakyan"},ph:"2020",req:false}
-    ]
+      {step:1,k:"firstName",type:"text",label:{en:"First name",fil:"Pangalan"},ph:"Juan",req:true},
+      {step:1,k:"middleName",type:"text",label:{en:"Middle name (optional)",fil:"Gitnang pangalan (opsyonal)"},ph:"Santos",req:false},
+      {step:1,k:"lastName",type:"text",label:{en:"Last name",fil:"Apelyido"},ph:"Dela Cruz",req:true},
+      {step:1,k:"dateOfBirth",type:"dmy",label:{en:"Date of birth (18+)",fil:"Petsa ng kapanganakan (18+)"},hint:{en:"Day, month, year — e.g. 23 04 1990",fil:"Araw, buwan, taon — hal. 23 04 1990"},req:true,check:function(v){ return ageOn(v)<18?"ageFix":null; }},
+      {step:1,k:"gender",type:"choice",label:{en:"Gender",fil:"Kasarian"},opts:[{v:"male",en:"Male",fil:"Lalaki"},{v:"female",en:"Female",fil:"Babae"},{v:"prefer_not_to_say",en:"Other",fil:"Iba"}],req:true},
+      {step:1,k:"nationality",type:"text",label:{en:"Nationality",fil:"Nasyonalidad"},ph:"Filipino",req:true},
+      {step:1,k:"religion",type:"choice",label:{en:"Religion (optional)",fil:"Relihiyon (opsyonal)"},opts:RELIGIONS,why:true,req:false},
+      {step:1,k:"addressLine1",type:"text",label:{en:"Address (house/unit, street)",fil:"Address (bahay/unit, kalye)"},ph:"123 Main Street",req:true},
+      {step:1,k:"province",type:"suggest",suggest:"provinces",label:{en:"Province",fil:"Probinsya"},ph:"Lanao del Sur",req:true},
+      {step:1,k:"city",type:"suggest",suggest:"cities",label:{en:"City",fil:"Lungsod"},ph:"Marawi City",hint:{en:"We’re live in Marawi City for now — more cities soon.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
+      {step:1,k:"barangay",type:"suggest",suggest:"barangays",label:{en:"Barangay",fil:"Barangay"},ph:{en:"Barangay name",fil:"Pangalan ng barangay"},req:true},
+      {step:1,k:"zipCode",type:"text",numeric:true,label:{en:"ZIP code",fil:"ZIP code"},ph:"9700",req:true},
+      {step:1,k:"mobileNumber",type:"tel",label:{en:"Mobile number",fil:"Numero ng mobile"},ph:"0917 123 4567",hint:{en:"You’ll sign in to the app with this number.",fil:"Ito ang gagamitin mo sa pag-sign in sa app."},req:true,phone:true},
+      {step:1,k:"email",type:"email",label:{en:"Email",fil:"Email"},ph:"juan@example.com",req:true,email:true},
+      {step:1,k:"emergencyContactName",type:"text",label:{en:"Emergency contact name",fil:"Pangalan ng emergency contact"},ph:"Maria Dela Cruz",req:true},
+      {step:1,k:"emergencyContactNumber",type:"tel",label:{en:"Emergency contact number",fil:"Numero ng emergency contact"},ph:"0917 123 4567",req:true,phone:true},
+      {step:2,k:"licenseType",type:"choice",label:{en:"Licence type",fil:"Uri ng lisensya"},opts:[{v:"professional",en:"Professional",fil:"Professional"},{v:"non_professional",en:"Non-professional",fil:"Non-professional"}],hint:{en:"The LTO requires a professional licence to drive for pay.",fil:"Kailangan ng LTO ang professional na lisensya para magmaneho nang may bayad."},req:true,check:function(v){ return v==="non_professional"?"notProFix":null; }},
+      {step:2,k:"driversLicenseNumber",type:"text",label:{en:"Driver’s licence number",fil:"Numero ng lisensya"},ph:"D12-34-567890",req:true},
+      {step:2,k:"licenseExpirationDate",type:"dmy",label:{en:"Licence expiry date",fil:"Petsa ng expiry ng lisensya"},hint:{en:"Day, month, year — as printed on the licence",fil:"Araw, buwan, taon — ayon sa nakalimbag sa lisensya"},req:true,check:licenceExpiryFix},
+      {step:2,k:"licenseRestrictions",type:"text",label:{en:"Licence restrictions (optional)",fil:"Restriction ng lisensya (opsyonal)"},ph:{en:"e.g. Corrective lenses",fil:"hal. Corrective lenses"},req:false},
+      {step:3,k:"vehicleMake",type:"text",label:{en:"Vehicle make",fil:"Brand ng sasakyan"},ph:"Toyota",req:true},
+      {step:3,k:"vehicleModel",type:"text",label:{en:"Vehicle model",fil:"Modelo ng sasakyan"},ph:"Avanza",req:true},
+      {step:3,k:"vehicleYear",type:"text",numeric:true,label:{en:"Vehicle year",fil:"Taon ng sasakyan"},ph:"2020",req:true,check:function(v){ var y=parseInt(v,10); return (isNaN(y)||y<1990||y>new Date().getFullYear())?"yearFix":null; }},
+      {step:3,k:"vehicleColor",type:"text",label:{en:"Vehicle colour",fil:"Kulay ng sasakyan"},ph:{en:"White",fil:"Puti"},req:true},
+      {step:3,k:"vehicleType",type:"choice",col:true,label:{en:"What do you drive?",fil:"Ano ang minamaneho mo?"},opts:VEHICLES,hint:{en:"Jobs are matched on this — pick the vehicle you will be using.",fil:"Dito ibinabatay ang mga trabaho — piliin ang sasakyang gagamitin mo."},req:true},
+      {step:3,k:"vehiclePlate",type:"text",label:{en:"Licence plate",fil:"Plate number"},ph:"ABC 1234",req:true}
+    ],
+    /* What the app asks for after approval (form's last step). */
+    docs:{ driver:[
+      {b:{en:"Professional driver’s licence, front and back",fil:"Professional na lisensya, harap at likod"}},
+      {b:{en:"NBI clearance, and the date it is valid until",fil:"NBI clearance, at kung hanggang kailan ito valid"}},
+      {b:{en:"Medical clearance",fil:"Medical clearance"}},
+      {b:{en:"Vehicle OR/CR, and when the registration expires",fil:"OR/CR ng sasakyan, at kung kailan mag-e-expire ang rehistro"}},
+      {b:{en:"Photos of your vehicle, front and side",fil:"Larawan ng sasakyan, harap at gilid"}},
+      {b:{en:"A profile photo",fil:"Larawan mo para sa profile"}},
+      {b:{en:"Your payout account: bank, GCash or Maya",fil:"Payout account mo: bank, GCash o Maya"}},
+      {b:{en:"Police or barangay clearance, proof of billing",fil:"Police o barangay clearance, proof of billing"},s:{en:"Optional",fil:"Opsyonal"}}
+    ]}
   },
   merchant: {
     stats:[{n:"₱0",l:{en:"To sign up",fil:"Para sumali"}},{n:{en:"Direct",fil:"Diretso"},l:{en:"To your bank or GCash",fil:"Sa bank o GCash"}},{n:{en:"2–3 days",fil:"2–3 araw"},l:{en:"To go live",fil:"Bago mag-live"}}],
@@ -549,14 +633,14 @@ var DATA = {
     ],
     steps:[
       {h:{en:"Fill the form",fil:"Punan ang form"},p:{en:"Business and contact details — about 5 minutes.",fil:"Detalye ng negosyo — mga 5 minuto."}},
-      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"BIR 2303, menu or catalog, and payout details.",fil:"BIR 2303, menu at payout details."}},
+      {h:{en:"Submit documents",fil:"Isumite ang dokumento"},p:{en:"In the app: permit, DTI or SEC, ID and payout details.",fil:"Sa app: permit, DTI o SEC, ID at payout details."}},
       {h:{en:"Set up your store",fil:"I-set up ang tindahan"},p:{en:"Add menu, photos and hours with our team’s help.",fil:"Idagdag ang menu at litrato kasama kami."}},
       {h:{en:"Receive orders",fil:"Tumanggap ng order"},p:{en:"Usually within a few days.",fil:"Kadalasan sa loob ng ilang araw."}}
     ],
     reqs:[
-      {b:{en:"Business or barangay permit",fil:"Business o barangay permit"},s:{en:"Proof your business operates locally.",fil:"Patunay na lokal ang negosyo."}},
-      {b:{en:"BIR 2303 form",fil:"BIR 2303"},s:{en:"Certificate of registration.",fil:"Certificate of registration."}},
-      {b:{en:"Menu or product catalog",fil:"Menu o katalogo"},s:{en:"With current prices.",fil:"May presyo."}},
+      {b:{en:"Mayor’s / business permit",fil:"Mayor’s / business permit"},s:{en:"Restaurants. Shops send business documents if they have them.",fil:"Para sa restawran. Ang tindahan, kung meron."}},
+      {b:{en:"DTI or SEC registration",fil:"DTI o SEC registration"},s:{en:"Restaurants: DTI, or SEC for a corporation.",fil:"Para sa restawran: DTI, o SEC kung korporasyon."}},
+      {b:{en:"Menu or product list",fil:"Menu o listahan ng produkto"},s:{en:"Added in the app before you open.",fil:"Idinadagdag sa app bago magbukas."}},
       {b:{en:"Valid government ID",fil:"Valid na ID"},s:{en:"Of the owner or authorized contact.",fil:"Ng may-ari o contact."}},
       {b:{en:"Bank / GCash account",fil:"Bank / GCash"},s:{en:"Where we send your payouts.",fil:"Para sa payout."}}
     ],
@@ -566,31 +650,37 @@ var DATA = {
       {q:{en:"How much does it cost to join?",fil:"Magkano ang pagsali?"},a:{en:"Signing up is free at launch. We use a low, transparent commission per order to cover delivery, support and marketing.",fil:"Libre ang pagsali. Mababa at malinaw na komisyon kada order."}}
     ],
     testi:[],
+    /* The app's two applications: a restaurant (app/(restaurant)/onboarding.tsx) and a Marketplace
+       shop (app/(customer)/become-a-seller.tsx), minus photos, documents and payout. */
     fields:[
-      {step:1,k:"name",type:"text",label:{en:"Contact person",fil:"Contact person"},ph:{en:"Owner or authorized contact",fil:"May-ari o contact"},req:true},
-      {step:1,k:"mobile",type:"tel",label:{en:"Mobile number",fil:"Numero"},ph:"09XX XXX XXXX",req:true,phone:true},
-      {step:1,k:"city",type:"select",label:{en:"City / area",fil:"Lungsod / lugar"},opts:CITIES,hint:{en:"We’re live in Marawi City for now — more cities soon.",fil:"Marawi City muna — may susunod pang lungsod."},req:true},
-      {step:1,k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false},
-      {step:2,k:"bizName",type:"text",label:{en:"Business name",fil:"Pangalan ng negosyo"},ph:"e.g. Palapa ni Bai",req:true},
-      {step:2,k:"bizType",type:"select",label:{en:"Business type",fil:"Uri ng negosyo"},opts:["Restaurant / food","Home kitchen","Grocery / store","Crafts / goods"],req:true},
-      {step:2,k:"partnership",type:"select",label:{en:"What do you want to sell?",fil:"Ano ang ibebenta mo?"},opts:[
-        {en:"Food delivery",fil:"Pagkain (delivery)"},{en:"Goods and groceries",fil:"Grocery at paninda"},{en:"Both",fil:"Pareho"}],req:true},
-      {step:2,k:"outlets",type:"select",label:{en:"Number of branches",fil:"Ilang branch"},opts:["1","2–5","6–10","10+"],req:true},
-      {step:2,k:"legalType",type:"select",label:{en:"How is the business registered?",fil:"Paano nakarehistro ang negosyo?"},opts:[
-        {en:"Sole Proprietor",fil:"Sole Proprietor"},{en:"Company / Partnership",fil:"Kumpanya / Partnership"},
-        {en:"Cooperative",fil:"Kooperatiba"},{en:"NGO / Foundation",fil:"NGO / Foundation"},
-        {en:"Not registered yet",fil:"Hindi pa nakarehistro"}],req:true},
-      {step:2,k:"address",type:"text",label:{en:"Business address",fil:"Address ng negosyo"},ph:{en:"Street, barangay, landmark",fil:"Kalye, barangay, landmark"},req:true},
-      {step:2,k:"ownDelivery",type:"yesno",label:{en:"Do you have your own delivery riders?",fil:"May sarili ka bang rider?"},req:true},
-      {step:2,k:"franchise",type:"yesno",label:{en:"Is this a franchise branch?",fil:"Franchise ba ito?"},req:true},
-      {step:3,k:"docs",type:"checks",label:{en:"Which of these do you already have?",fil:"Alin dito ang meron ka na?"},opts:[
-        {en:"DTI registration",fil:"DTI registration"},{en:"BIR 2303",fil:"BIR 2303"},
-        {en:"Business or barangay permit",fil:"Business o barangay permit"},
-        {en:"Menu or price list",fil:"Menu o listahan ng presyo"},
-        {en:"None yet",fil:"Wala pa",excl:true}],
-        hint:{en:"Tick what you have today. Missing papers do not stop your application — our Marawi team helps you finish them.",
-              fil:"I-tsek ang meron ka. Hindi hadlang ang kulang — tutulungan ka ng team namin sa Marawi."},req:true}
-    ]
+      {step:1,k:"kind",type:"choice",label:{en:"What are you applying as?",fil:"Ano ang ina-apply-an mo?"},opts:[{v:"restaurant",en:"Restaurant",fil:"Restawran"},{v:"shop",en:"Shop on the Marketplace",fil:"Tindahan sa Marketplace"}],hint:{en:"Restaurants sell cooked food; shops sell goods and groceries.",fil:"Lutong pagkain ang sa restawran; paninda at grocery ang sa tindahan."},req:true},
+      {step:1,when:{k:"kind",v:"restaurant"},k:"businessName",type:"text",label:{en:"Restaurant name",fil:"Pangalan ng restawran"},ph:"e.g. Aling Nena’s",req:true},
+      {step:1,when:{k:"kind",v:"restaurant"},k:"fullName",type:"text",label:{en:"Owner / contact name",fil:"May-ari / contact"},ph:{en:"Full name",fil:"Buong pangalan"},req:true},
+      {step:1,when:{k:"kind",v:"restaurant"},k:"email",type:"email",label:{en:"Email address",fil:"Email address"},ph:"business@email.com",req:true,email:true},
+      {step:1,when:{k:"kind",v:"restaurant"},k:"mobileNumber",type:"tel",label:{en:"Mobile number",fil:"Numero ng mobile"},ph:"0917 123 4567",hint:{en:"You’ll sign in to the app with this number.",fil:"Ito ang gagamitin mo sa pag-sign in sa app."},req:true,phone:true},
+      {step:1,when:{k:"kind",v:"restaurant"},k:"address",type:"text",label:{en:"Business address",fil:"Address ng negosyo"},ph:{en:"Street, barangay, city",fil:"Kalye, barangay, lungsod"},req:true},
+      {step:1,when:{k:"kind",v:"restaurant"},k:"pin",type:"map",fix:"pinFixR",label:{en:"Location on the map",fil:"Lokasyon sa mapa"},hint:{en:"Riders go to this pin to collect orders, and delivery fees are worked out from it.",fil:"Dito pupunta ang rider para kunin ang order, at dito rin kinukuwenta ang delivery fee."},req:true},
+      {step:1,when:{k:"kind",v:"restaurant"},k:"cuisineType",type:"choice",label:{en:"Cuisine type",fil:"Uri ng pagkain"},opts:CUISINES,req:true},
+      {step:1,when:{k:"kind",v:"shop"},k:"businessName",type:"text",min:2,label:{en:"Store name",fil:"Pangalan ng tindahan"},ph:"e.g. Lourdes’ Dry Goods",req:true},
+      {step:1,when:{k:"kind",v:"shop"},k:"fullName",type:"text",label:{en:"Your name",fil:"Pangalan mo"},ph:{en:"Full name",fil:"Buong pangalan"},req:true},
+      {step:1,when:{k:"kind",v:"shop"},k:"mobileNumber",type:"tel",label:{en:"Mobile number",fil:"Numero ng mobile"},ph:"0917 123 4567",hint:{en:"You’ll sign in to the app with this number.",fil:"Ito ang gagamitin mo sa pag-sign in sa app."},req:true,phone:true},
+      {step:1,when:{k:"kind",v:"shop"},k:"email",type:"email",label:{en:"Email (optional)",fil:"Email (opsyonal)"},ph:"you@email.com",req:false,email:true},
+      {step:1,when:{k:"kind",v:"shop"},k:"pin",type:"map",fix:"pinFixS",label:{en:"Store location",fil:"Lokasyon ng tindahan"},hint:{en:"Pin the store itself: riders are sent here to collect orders.",fil:"I-pin ang mismong tindahan: dito pupunta ang rider para kunin ang order."},req:true}
+    ],
+    docs:{
+      restaurant:[
+        {b:{en:"Mayor’s / business permit",fil:"Mayor’s / business permit"}},
+        {b:{en:"DTI registration (or SEC, for a corporation)",fil:"DTI registration (o SEC, kung korporasyon)"}},
+        {b:{en:"Owner’s government ID",fil:"Government ID ng may-ari"}},
+        {b:{en:"Your payout account: bank, GCash or Maya",fil:"Payout account mo: bank, GCash o Maya"}},
+        {b:{en:"Storefront or menu photo",fil:"Larawan ng tindahan o menu"},s:{en:"Optional",fil:"Opsyonal"}}
+      ],
+      shop:[
+        {b:{en:"Valid government ID",fil:"Valid na government ID"}},
+        {b:{en:"Your payout account: bank, GCash or Maya",fil:"Payout account mo: bank, GCash o Maya"}},
+        {b:{en:"Business documents, if you have them",fil:"Mga dokumento ng negosyo, kung meron"},s:{en:"DTI, SEC, BIR, Mayor’s permit, barangay clearance",fil:"DTI, SEC, BIR, Mayor’s permit, barangay clearance"}}
+      ]
+    }
   }
 };
 
@@ -635,7 +725,7 @@ function renderRole(){
   $("[data-faq]").innerHTML=d.faqs.map(function(f){ return '<details class="faq"><summary>'+tx(f.q)+'<span class="chev">▾</span></summary><p>'+tx(f.a)+'</p></details>'; }).join("");
   $("[data-faqh]").textContent=t(role==="driver"?"faqDrvH":"faqMchH");
   // reqmini (form step 3). Empty upload boxes, not ticks: nothing has been handed over on this form yet.
-  $("[data-reqmini]").innerHTML=d.reqs.map(function(r){ return '<li>'+upmarkHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
+  renderDocs();
   /* Hero copy is role-specific. It used to come from applyI18n alone, which is language-scoped
      only — so picking "Merchant & Seller" left "Be a Pagar Hero. Drive, deliver, earn." and a lead
      about turning your motorcycle into income sitting above the merchant form. */
@@ -652,131 +742,226 @@ function renderRole(){
   $all(".roleview").forEach(function(v){ v.classList.toggle("hidden", v.getAttribute("data-role")!==role); });
 }
 
-function optVal(o){ return typeof o==="string"?o:(o.en||""); }
+function optVal(o){ return typeof o==="string"?o:(o.v!=null?o.v:(o.en||"")); }
 function optLab(o){ return typeof o==="string"?o:tx(o); }
-var YESNO=[{en:"Yes",fil:"Oo"},{en:"No",fil:"Hindi"}];
-function fieldHtml(f){
-  var lab=tx(f.label), ph=f.ph?tx(f.ph):"", v=form[f.k]||"";
-  var input;
-  if(f.type==="select"){
-    input='<select data-k="'+f.k+'"><option value="">\u2014</option>'+f.opts.map(function(o){
-      var ov=optVal(o);
-      return '<option value="'+esc(ov)+'"'+(v===ov?' selected':'')+'>'+esc(optLab(o))+'</option>';
-    }).join("")+'</select>';
-  }
-  /* yesno / checks store a plain string in `form`, exactly like every other field, so validation,
-     the step-4 review and buildPayload need no special case. `value` is always the EN string —
-     switching language must not change what the API receives. */
-  else if(f.type==="yesno"){
-    input='<div class="opts">'+YESNO.map(function(o){
-      var on=v===o.en;
-      return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+f.k+'" data-k="'+f.k+'" data-opt value="'+o.en+'"'+(on?' checked':'')+' /><span>'+esc(tx(o))+'</span></label>';
-    }).join("")+'</div>';
-  }
-  else if(f.type==="checks"){
-    var sel=v?v.split(", "):[];
-    input='<div class="opts col">'+f.opts.map(function(o){
-      var ov=optVal(o), on=sel.indexOf(ov)>=0;
-      return '<label class="opt'+(on?' on':'')+'"><input type="checkbox" data-k="'+f.k+'" data-opt'+(o.excl?' data-excl':'')+' value="'+esc(ov)+'"'+(on?' checked':'')+' /><span>'+esc(optLab(o))+'</span></label>';
-    }).join("")+'</div>';
-  }
-  else { input='<input type="'+f.type+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+' />'; }
-  var hint=f.hint?'<div class="hint">'+esc(tx(f.hint))+'</div>':"";
-  return '<div class="field" data-field="'+f.k+'"><label>'+esc(lab)+'</label>'+input+hint+'<div class="errmsg">'+t("reqFix")+'</div></div>';
-}
-function renderFields(){
-  /* A required select with exactly one option answers itself — while we serve one city, making
-     the applicant open a one-item dropdown is friction with no information in it. */
-  DATA[role].fields.forEach(function(f){
-    if(f.type==="select"&&f.req&&f.opts&&f.opts.length===1&&!form[f.k]) form[f.k]=optVal(f.opts[0]);
-  });
-  function ofStep(n){ return DATA[role].fields.filter(function(f){return f.step===n;}); }
-  $("#fieldsHost").innerHTML=ofStep(1).map(fieldHtml).join("");
-  $("#fieldsHost2").innerHTML=ofStep(2).map(fieldHtml).join("");
-  var h3=$("#fieldsHost3"); if(h3) h3.innerHTML=ofStep(3).map(fieldHtml).join("");
-  $all("#applyForm [data-k]").forEach(function(el){
-    if(el.hasAttribute("data-opt")) return;
-    var ev=el.tagName==="SELECT"?"change":"input";
-    el.addEventListener(ev,function(){ form[el.getAttribute("data-k")]=el.value; var fl=el.closest(".field"); if(fl) fl.classList.remove("err"); });
-  });
-  $all("#applyForm [data-opt]").forEach(function(el){
-    el.addEventListener("change",function(){
-      var k=el.getAttribute("data-k"), fl=el.closest(".field");
-      if(el.type==="checkbox"){
-        /* "None yet" is an escape hatch, not a document — ticking it clears the rest, and ticking
-           a real one clears it. Without this a recruiter gets "BIR 2303, None yet". */
-        var boxes=$all('[data-k="'+k+'"][data-opt]');
-        if(el.checked){
-          if(el.hasAttribute("data-excl")) boxes.forEach(function(x){ if(x!==el) x.checked=false; });
-          else boxes.forEach(function(x){ if(x.hasAttribute("data-excl")) x.checked=false; });
-        }
-        form[k]=boxes.filter(function(x){return x.checked;}).map(function(x){return x.value;}).join(", ");
-      } else { form[k]=el.value; }
-      if(fl){
-        fl.classList.remove("err");
-        $all(".opt",fl).forEach(function(l){ var i=l.querySelector("input"); l.classList.toggle("on", !!(i&&i.checked)); });
-      }
-    });
-  });
+var FIELD_STEPS={ driver:3, merchant:1 };
+function fieldSteps(){ return FIELD_STEPS[role]; }
+function docsStep(){ return fieldSteps()+1; }
+function reviewStep(){ return fieldSteps()+2; }
+function visible(f){ return !f.when || form[f.when.k]===f.when.v; }
+function fieldsOf(n){ return DATA[role].fields.filter(function(f){ return f.step===n && visible(f); }); }
+function hasPin(){ return isFinite(parseFloat(form.latitude)) && isFinite(parseFloat(form.longitude)); }
+function pinText(){ return hasPin() ? t("pinAt")+" "+(+form.latitude).toFixed(5)+", "+(+form.longitude).toFixed(5) : t("pinNone"); }
+
+function splitDay(iso){ var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||""); return m?{d:m[3],m:m[2],y:m[1]}:{d:"",m:"",y:""}; }
+function isoFromParts(p){
+  if(!/^\d{1,2}$/.test(p.d||"")||!/^\d{1,2}$/.test(p.m||"")||!/^\d{4}$/.test(p.y||"")) return "";
+  var iso=p.y+"-"+("0"+p.m).slice(-2)+"-"+("0"+p.d).slice(-2), dt=new Date(iso+"T00:00:00Z");
+  return (!isNaN(dt.getTime()) && dt.toISOString().slice(0,10)===iso) ? iso : "";
 }
 
+/* Province / city / barangay suggestions: the app's lists, from /api/recruit/places. Typing stays allowed. */
+var PLACES=null;
+function fold(x){ return String(x||"").toLowerCase().trim(); }
+function suggestList(kind){
+  if(!PLACES) return [];
+  if(kind==="provinces") return PLACES.provinces||[];
+  var all=kind==="cities"?(PLACES.cities||[]):(PLACES.barangays||[]);
+  var by=kind==="cities"?fold(form.province):fold(form.city);
+  var hit=all.filter(function(x){ return fold(kind==="cities"?x.province:x.city)===by; });
+  var seen={}; return (hit.length?hit:all).map(function(x){ return kind==="cities"?x.city:x.name; }).filter(function(n){ if(seen[n]) return false; seen[n]=1; return true; });
+}
+function fillDatalists(){ $all("datalist[data-suggest]").forEach(function(dl){ dl.innerHTML=suggestList(dl.getAttribute("data-suggest")).map(function(n){ return '<option value="'+esc(n)+'"></option>'; }).join(""); }); }
+function loadPlaces(){
+  if(PLACES||!API_BASE) return;
+  fetch(API_BASE.replace(/\/$/,"")+"/api/recruit/places").then(function(r){ return r.ok?r.json():null; })
+    .then(function(j){ if(j){ PLACES=j; fillDatalists(); } }).catch(function(){});
+}
+
+function fieldHtml(f){
+  var lab=tx(f.label), ph=f.ph?tx(f.ph):"", v=form[f.k]||"", input;
+  if(f.type==="choice"){
+    input='<div class="opts'+(f.col?' col':'')+'" role="radiogroup">'+f.opts.map(function(o){
+      var ov=optVal(o), on=v===ov;
+      return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+f.k+'" data-k="'+f.k+'" data-opt value="'+esc(ov)+'"'+(on?' checked':'')+' /><span>'+esc(optLab(o))+'</span></label>';
+    }).join("")+'</div>';
+  }
+  else if(f.type==="dmy"){
+    var p=form[f.k+"__parts"]||splitDay(v);
+    input='<div class="dmy">'+[["d","dd",2],["m","mm",2],["y","yyyy",4]].map(function(x){
+      return '<input type="text" inputmode="numeric" maxlength="'+x[2]+'" data-dmy="'+f.k+'" data-part="'+x[0]+'" placeholder="'+esc(t(x[1]))+'" aria-label="'+esc(lab+": "+t(x[1]))+'" value="'+esc(p[x[0]]||"")+'" />';
+    }).join("")+'</div>';
+  }
+  else if(f.type==="map"){
+    input='<div class="mapbox" data-map></div><div class="mapbar"><button type="button" data-locate>'+esc(t("useLoc"))+'</button><span data-pinlabel>'+esc(pinText())+'</span></div>';
+  }
+  else {
+    var list=f.suggest?' list="dl_'+f.k+'" autocomplete="off"':'';
+    input='<input type="'+(f.type==="suggest"?"text":f.type)+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+(f.numeric?' inputmode="numeric"':'')+list+' />'
+      +(f.suggest?'<datalist id="dl_'+f.k+'" data-suggest="'+f.suggest+'"></datalist>':'');
+  }
+  var hint=f.hint?'<div class="hint">'+esc(tx(f.hint))+'</div>':"";
+  var why=f.why?'<div class="whybox"><b>'+esc(tx(WHY.h))+'</b>'+WHY.p.map(function(pp){ return '<p>'+esc(tx(pp))+'</p>'; }).join("")+'</div>':"";
+  return '<div class="field" data-field="'+f.k+'"><label>'+esc(lab)+'</label>'+input+hint+why+'<div class="errmsg">'+t("reqFix")+'</div></div>';
+}
+function clearErr(el){ var fl=el.closest(".field"); if(fl) fl.classList.remove("err"); }
+function renderFields(){
+  var html="";
+  for(var n=1;n<=fieldSteps();n++) html+='<div class="step hidden" data-step="'+n+'">'+fieldsOf(n).map(fieldHtml).join("")+'</div>';
+  $("#stepsHost").innerHTML=html;
+  fillDatalists();
+  $all("#stepsHost [data-k]").forEach(function(el){
+    if(el.hasAttribute("data-opt")) return;
+    el.addEventListener("input",function(){
+      var k=el.getAttribute("data-k"); form[k]=el.value; clearErr(el);
+      if(k==="province"||k==="city") fillDatalists();
+    });
+  });
+  $all("#stepsHost [data-opt]").forEach(function(el){
+    el.addEventListener("change",function(){
+      var k=el.getAttribute("data-k"), fl=el.closest(".field"); form[k]=el.value;
+      if(fl){ fl.classList.remove("err"); $all(".opt",fl).forEach(function(l){ var i=l.querySelector("input"); l.classList.toggle("on",!!(i&&i.checked)); }); }
+      if(k==="kind"){ renderFields(); renderDocs(); showStep(); }
+    });
+  });
+  $all("#stepsHost [data-dmy]").forEach(function(el){
+    el.addEventListener("input",function(){
+      var k=el.getAttribute("data-dmy"), part=el.getAttribute("data-part"), p=form[k+"__parts"]||(form[k+"__parts"]=splitDay(form[k]));
+      el.value=el.value.replace(/\D/g,""); p[part]=el.value; form[k]=isoFromParts(p); clearErr(el);
+      if(el.value.length===(part==="y"?4:2)&&el.nextElementSibling) el.nextElementSibling.focus();
+    });
+  });
+  $all("#stepsHost [data-locate]").forEach(function(b){ b.addEventListener("click",function(){ locateMe(b); }); });
+}
+
+/* The map pin: Leaflet + OpenStreetMap, loaded only when a pin is asked for. The app needs a pin too (D-106). */
+var MARAWI=[8.0034,124.2839], leafletLoading=null;
+function loadLeaflet(){
+  if(window.L) return Promise.resolve();
+  if(leafletLoading) return leafletLoading;
+  leafletLoading=new Promise(function(ok,no){
+    var css=document.createElement("link"); css.rel="stylesheet"; css.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    css.integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="; css.crossOrigin=""; document.head.appendChild(css);
+    var js=document.createElement("script"); js.src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    js.integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="; js.crossOrigin=""; js.onload=ok; js.onerror=no; document.head.appendChild(js);
+  });
+  return leafletLoading;
+}
+function setPin(lat,lng){
+  form.latitude=+(+lat).toFixed(6); form.longitude=+(+lng).toFixed(6);
+  $all("[data-pinlabel]").forEach(function(l){ l.textContent=pinText(); });
+  $all("[data-map]").forEach(function(box){ if(box._marker) box._marker.setLatLng([form.latitude,form.longitude]); var fl=box.closest(".field"); if(fl) fl.classList.remove("err"); });
+}
+function ensureMaps(){
+  var boxes=$all(".step:not(.hidden) [data-map]"); if(!boxes.length) return;
+  loadLeaflet().then(function(){
+    boxes.forEach(function(box){
+      if(box._map){ box._map.invalidateSize(); return; }
+      var at=hasPin()?[form.latitude,form.longitude]:MARAWI;
+      var map=L.map(box,{scrollWheelZoom:false}).setView(at,hasPin()?17:14);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+      var marker=L.marker(at,{draggable:true}).addTo(map);
+      marker.on("dragend",function(){ var ll=marker.getLatLng(); setPin(ll.lat,ll.lng); });
+      map.on("click",function(ev){ setPin(ev.latlng.lat,ev.latlng.lng); });
+      box._map=map; box._marker=marker;
+    });
+  }).catch(function(){ boxes.forEach(function(b){ b.textContent=t("mapFail"); }); });
+}
+function locateMe(btn){
+  var lab=btn.parentNode.querySelector("[data-pinlabel]");
+  if(!navigator.geolocation){ lab.textContent=t("locFail"); return; }
+  lab.textContent=t("locating");
+  navigator.geolocation.getCurrentPosition(function(pos){
+    setPin(pos.coords.latitude,pos.coords.longitude);
+    $all("[data-map]").forEach(function(box){ if(box._map) box._map.setView([form.latitude,form.longitude],17); });
+  },function(){ lab.textContent=t("locFail"); },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+}
+
+function renderDocs(){
+  var docs=DATA[role].docs||{}, list=docs[role==="driver"?"driver":form.kind]||[];
+  $("[data-reqmini]").innerHTML=list.map(function(r){ return '<li>'+upmarkHtml()+'<span><b>'+tx(r.b)+'</b>'+(r.s?'<span>'+tx(r.s)+'</span>':'')+'</span></li>'; }).join("");
+}
 function stepTitle(){
-  if(step===1) return t("stepAbout");
-  if(step===2) return role==="driver"?t("stepVehicle"):t("stepBiz");
-  if(step===3) return t("stepDocs");
-  if(step===4) return t("stepReview");
-  return "";
+  if(step===reviewStep()) return t("stepReview");
+  if(step===docsStep()) return t("stepDocs");
+  if(role==="driver") return t(["","stepPersonal","stepLicence","stepVehicle"][step]);
+  return t("stepBiz");
 }
 function showStep(){
   $all("#applyForm .step").forEach(function(s){ s.classList.add("hidden"); });
-  var cur = step==="done" ? $('.step[data-step="done"]') : $('.step[data-step="'+step+'"]');
-  if(cur) cur.classList.remove("hidden");
-  var pct = step==="done"?100:(step/4*100);
-  $(".progress > i").style.width=pct+"%";
-  if(step===4) buildReview();
+  var key=step==="done"?"done":(step===docsStep()?"docs":(step===reviewStep()?"review":String(step)));
+  var cur=$('#applyForm .step[data-step="'+key+'"]'); if(cur) cur.classList.remove("hidden");
+  var total=reviewStep();
+  $(".progress > i").style.width=(step==="done"?100:(step/total*100))+"%";
+  if(step===reviewStep()) buildReview();
   var ft=$("[data-form-title]"), so=$("[data-stepof]");
   if(step==="done"){ ft.textContent=""; so.textContent=""; $("#formActions").classList.add("hidden"); $(".progress").classList.add("hidden"); return; }
   $(".progress").classList.remove("hidden"); $("#formActions").classList.remove("hidden");
   ft.textContent=stepTitle();
-  so.textContent=(lang==="fil"?"Hakbang ":"Step ")+step+(lang==="fil"?" ng 4":" of 4");
+  so.textContent=(lang==="fil"?"Hakbang ":"Step ")+step+(lang==="fil"?" ng ":" of ")+total;
   var back=$("#backBtn"), next=$("#nextBtn");
   back.classList.toggle("hidden", step===1);
-  next.textContent = step===4 ? t("submit") : t("next");
+  next.textContent = step===reviewStep() ? t("submit") : t("next");
   next.disabled = submitting;
+  ensureMaps();
+}
+function shown(f){
+  if(f.type==="map") return hasPin()?(+form.latitude).toFixed(5)+", "+(+form.longitude).toFixed(5):"";
+  var v=form[f.k]; if(!v) return "";
+  if(f.type==="dmy"){ var p=splitDay(v); return p.d+" / "+p.m+" / "+p.y; }
+  if(f.type==="choice"){ var o=f.opts.filter(function(x){ return optVal(x)===v; })[0]; return o?optLab(o):v; }
+  return v;
 }
 function buildReview(){
-  var labels={}; DATA[role].fields.forEach(function(f){ labels[f.k]=tx(f.label); });
-  var rows=DATA[role].fields.map(function(f){return f.k;}).filter(function(k){return form[k];})
-    .map(function(k){ return '<div><b>'+esc(labels[k])+'</b><span>'+esc(form[k])+'</span></div>'; });
+  var rows=[];
+  for(var n=1;n<=fieldSteps();n++) fieldsOf(n).forEach(function(f){ var v=shown(f); if(v) rows.push('<div><b>'+esc(tx(f.label))+'</b><span>'+esc(v)+'</span></div>'); });
   $("[data-review]").innerHTML=rows.join("")||'<div><b>—</b><span>—</span></div>';
 }
 
 function looksLikePhone(v){ var d=(v||"").replace(/[^\d]/g,""); return /^(09\d{9}|639\d{9}|9\d{9})$/.test(d); }
+/* The app's refusals, field by field; the server applies the same ones (server/website-application.ts). */
+function fieldError(f){
+  if(f.type==="map") return f.req&&!hasPin()?f.fix:null;
+  if(f.type==="dmy"){
+    var p=form[f.k+"__parts"]||splitDay(form[f.k]);
+    if(!(p.d||p.m||p.y)) return f.req?"reqFix":null;
+    if(!form[f.k]) return "dateFix";
+    return f.check?f.check(form[f.k]):null;
+  }
+  var v=String(form[f.k]||"").trim();
+  if(!v) return f.req?"reqFix":null;
+  if(f.phone&&!looksLikePhone(v)) return "phoneFix";
+  if(f.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return "emailFix";
+  if(f.min&&v.length<f.min) return "shortFix";
+  return f.check?f.check(v):null;
+}
 function validateStep(n){
-  var ok=true;
-  DATA[role].fields.filter(function(f){return f.step===n;}).forEach(function(f){
-    var el=$('[data-field="'+f.k+'"]'); if(!el) return;
-    var val=(form[f.k]||"").trim(), bad=false;
-    if(f.req&&!val) bad=true;
-    if(f.phone&&val&&!looksLikePhone(val)){ bad=true; el.querySelector(".errmsg").textContent=t("phoneFix"); }
-    else el.querySelector(".errmsg").textContent=t("reqFix");
-    el.classList.toggle("err",bad); if(bad) ok=false;
+  var first=null;
+  fieldsOf(n).forEach(function(f){
+    var el=$('#stepsHost [data-field="'+f.k+'"]'); if(!el) return;
+    var key=fieldError(f); el.querySelector(".errmsg").textContent=t(key||"reqFix");
+    el.classList.toggle("err",!!key); if(key&&!first) first=el;
   });
-  return ok;
+  if(first){ try{ first.scrollIntoView({behavior:"smooth",block:"center"}); }catch(e){} }
+  return !first;
 }
 
-function apiRole(){ if(role==="driver") return "driver"; var b=(form.bizType||"").toLowerCase(); return (b.indexOf("restaurant")>=0||b.indexOf("food")>=0||b.indexOf("kitchen")>=0)?"restaurant":"merchant"; }
+function apiRole(){ return role==="driver"?"driver":(form.kind==="shop"?"merchant":"restaurant"); }
 function turnstileToken(){ try{ return (window.turnstile&&$("#turnstileSlot"))?window.turnstile.getResponse($("#turnstileSlot")):""; }catch(e){ return ""; } }
+/* The app's own field names (docs/recruitment-api.md in the app repo): approval copies them into the app's form. */
+var DRIVER_KEYS=["firstName","middleName","lastName","dateOfBirth","gender","religion","nationality","addressLine1","barangay","province","zipCode",
+  "emergencyContactName","emergencyContactNumber","driversLicenseNumber","licenseExpirationDate","licenseType","licenseRestrictions",
+  "vehicleMake","vehicleModel","vehicleYear","vehicleColor","vehiclePlate","vehicleType"];
 function buildPayload(){
-  var p={ role:apiRole(), fullName:form.name||"", phone:form.mobile||"", city:form.city||"", email:form.email||"", source:"website" };
-  if(role==="driver"){ p.vehicleType=form.vehType||""; p.plateNumber=form.plate||""; p.vehicleYear=form.vehYear||""; }
-  else {
-    p.businessName=form.bizName||""; p.businessType=form.bizType||""; p.address=form.address||"";
-    /* Qualification answers. /api/recruit keeps every key it does not recognise as an opaque JSON
-       payload on the application row (server/api/recruitment-api.ts), so these need no API change —
-       but they are what a recruiter reads before picking up the phone, so the names are for humans. */
-    p.sells=form.partnership||""; p.branches=form.outlets||""; p.registrationType=form.legalType||"";
-    p.hasOwnRiders=form.ownDelivery||""; p.isFranchise=form.franchise||""; p.documentsOnHand=form.docs||"";
+  var p={ role:apiRole(), phone:form.mobileNumber||"", email:(form.email||"").trim(), source:"website" };
+  if(role==="driver"){
+    p.fullName=[form.firstName,form.middleName,form.lastName].map(function(x){ return (x||"").trim(); }).filter(Boolean).join(" ");
+    p.city=(form.city||"").trim();
+    DRIVER_KEYS.forEach(function(k){ var v=String(form[k]||"").trim(); if(v) p[k]=v; });
+  } else {
+    p.fullName=(form.fullName||"").trim(); p.businessName=(form.businessName||"").trim();
+    if(p.role==="restaurant"){ p.address=(form.address||"").trim(); p.cuisineType=form.cuisineType||""; }
+    if(hasPin()){ p.latitude=form.latitude; p.longitude=form.longitude; }
   }
   p.captchaToken=turnstileToken(); return p;
 }
@@ -794,15 +979,15 @@ function submitApp(){
 }
 
 function goNext(){
-  if(step===1){ if(!validateStep(1)) return; step=2; }
-  else if(step===2){ if(!validateStep(2)) return; step=3; }
-  else if(step===3){ if(!$("#agree").checked){ alert(t("agreeFix")); return; } step=4; }
-  else if(step===4){ submitApp(); return; }
-  showStep();
+  if(step==="done") return;
+  if(step<=fieldSteps()){ if(!validateStep(step)) return; step++; }
+  else if(step===docsStep()){ if(!$("#agree").checked){ alert(t("agreeFix")); return; } step++; }
+  else { submitApp(); return; }
+  showStep(); try{ $("#apply").scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){}
 }
 function goBack(){ if(step>1&&step!=="done"){ step=step-1; showStep(); } }
 
-function setRole(r){ role=r; step=1; form={}; submitting=false;
+function setRole(r){ role=r; step=1; form={}; submitting=false; $("#agree").checked=false;
   $all('.roletabs button').forEach(function(b){ b.setAttribute("aria-selected", b.getAttribute("data-role")===r?"true":"false"); });
   renderRole(); renderFields(); showStep();
 }
@@ -812,7 +997,7 @@ function setLang(l){ lang=l;
 }
 
 function init(){
-  applyI18n(); renderRole(); renderFields(); showStep();
+  applyI18n(); renderRole(); renderFields(); showStep(); loadPlaces();
   $all('.roletabs button').forEach(function(b){ b.addEventListener("click",function(){ setRole(b.getAttribute("data-role")); }); });
   $all('.langtoggle button').forEach(function(b){ b.addEventListener("click",function(){ setLang(b.getAttribute("data-lang")); }); });
   $("#nextBtn").addEventListener("click",goNext);
