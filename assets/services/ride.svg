@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <rect width="120" height="120" fill="#e3eafb"/>
+  <rect x="7" y="7" width="106" height="106" fill="#ffffff"/>
+  <rect x="16" y="16" width="88" height="88" rx="22" fill="#e6effc"/>
+  <svg x="27" y="27" width="66" height="66" viewBox="0 0 100 100" aria-label="Ride">
+              <ellipse cx="52" cy="80" rx="26" ry="7" fill="#3f5bd9"/>
+              <ellipse cx="52" cy="78.5" rx="17" ry="4" fill="#2c46b8"/>
+              <g stroke-linecap="round">
+                <path d="M45 52 12 40l2.4 8.6 28 8.4z" fill="#f8312f"/>
+                <path d="M45 56 10 52l4 8 30 3z" fill="#f2b31c"/>
+                <path d="M45 59 13 63l6.5 6.6L45.5 64z" fill="#3bb143"/>
+                <path d="M46 62 22 72l8 4 17-8z" fill="#3f5bd9"/>
+              </g>
+              <path d="M56 30c8 0 13 7 13 16 0 12-6 22-16 26-7 2.8-13.6.4-15.6-5.6-2.4-7.2 1.6-14 6-20 4-5.4 7-16.4 12.6-16.4z" fill="#3f5bd9"/>
+              <path d="M50 52c4-2.4 9-2 12 1.4-3.4 1-6.6 1-8.6-.2z" fill="#3bb143" opacity=".85"/>
+              <circle cx="61" cy="30" r="9" fill="#3f5bd9"/>
+              <path d="M60 20c-1-4 .6-7 4-8.4.8 3.4-.4 6.4-2.6 8.2z" fill="#f8312f"/>
+              <path d="M64.5 20.4c1.6-3.4 4.6-4.6 7.8-3.6-1.6 2.8-4.2 4.4-6.6 4.6z" fill="#f8312f"/>
+              <path d="M69.5 29.5 80 32l-10.5 3z" fill="#f2b31c"/>
+              <g transform="rotate(74 80 32.5)">
+                <path d="M80.5 32c2.6-4.4 8-6.2 12.2-4.2 3.4 1.6 4.6 5.4 3 8.6-2.4 4.8-9.6 5.6-13.4 1.8-1-1-1.6-2-1.8-3z" fill="#f8312f"/>
+                <path d="M93.5 29.6 99 26.4l-1 5.6 1 5.6-5.6-3z" fill="#f2b31c"/>
+                <path d="M87 30.5c2.2-1.4 4.6-1.4 6.4.4-2.2 1.2-4.6 1.2-6.4-.4z" fill="#f2b31c"/>
+                <circle cx="84.4" cy="33.4" r="1.5" fill="#ffffff"/>
+              </g>
+              <circle cx="63.5" cy="28.5" r="1.9" fill="#ffffff"/>
+              <g fill="#f2b31c">
+                <path d="M43 71h4v9h-4z"/><path d="M51 71h4v9h-4z"/>
+                <path d="M39 78h9v4h-9z"/><path d="M47 78h9v4h-9z"/>
+              </g>
+            </svg>
+</svg>

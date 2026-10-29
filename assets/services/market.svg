@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <rect width="120" height="120" fill="#fbeed6"/>
+  <rect x="7" y="7" width="106" height="106" fill="#ffffff"/>
+  <rect x="16" y="16" width="88" height="88" rx="22" fill="#fdf2df"/>
+  <svg x="27" y="27" width="66" height="66" viewBox="0 0 100 100" aria-label="Market">
+              <path d="M22 30c-4-5-9-6-13-3 3.6 4 8.4 5.4 13 4z" fill="#3bb143"/>
+              <path d="M78 30c4-5 9-6 13-3-3.6 4-8.4 5.4-13 4z" fill="#3bb143"/>
+              <rect x="20" y="28" width="60" height="6" rx="3" fill="#1c3f9e"/>
+              <g>
+                <rect x="21" y="34" width="58" height="20" fill="#ffffff"/>
+                <g fill="#f8312f">
+                  <rect x="21" y="34" width="8" height="20"/>
+                  <rect x="37" y="34" width="8" height="20"/>
+                  <rect x="53" y="34" width="8" height="20"/>
+                  <rect x="69" y="34" width="8" height="20"/>
+                </g>
+              </g>
+              <rect x="19" y="52" width="62" height="5" rx="2.5" fill="#1c3f9e"/>
+              <rect x="24" y="57" width="52" height="17" fill="#ffffff"/>
+              <rect x="22" y="34" width="5" height="42" fill="#1c3f9e" opacity="0"/>
+              <g>
+                <rect x="33" y="60" width="12" height="11" rx="1.5" fill="#fbc7c2"/>
+                <rect x="33" y="60" width="12" height="3.5" fill="#f8312f"/>
+                <rect x="37.6" y="60" width="2.8" height="11" fill="#f8312f"/>
+                <circle cx="53" cy="66" r="5.4" fill="#f8312f"/>
+                <circle cx="63" cy="67" r="4.6" fill="#3bb143"/>
+              </g>
+              <rect x="19" y="73" width="62" height="7" rx="3.5" fill="#3f5bd9"/>
+              <rect x="21" y="57" width="4" height="17" fill="#1c3f9e"/>
+              <rect x="75" y="57" width="4" height="17" fill="#1c3f9e"/>
+            </svg>
+</svg>

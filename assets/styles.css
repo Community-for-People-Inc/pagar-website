@@ -86,9 +86,12 @@ section.white{background:#fff}
 .card .ic svg{width:23px;height:23px}
 .card h3{font-weight:800;font-size:17px;margin-bottom:3px}
 .card p{color:var(--ka-ink-soft);font-size:14px}
-.svc{display:flex;flex-direction:column;gap:8px;border-radius:16px;padding:22px;color:#fff;min-height:132px;box-shadow:var(--sh);justify-content:space-between}
-.svc .em{font-size:26px} .svc b{font-weight:800;font-size:18px} .svc span{font-size:13px;opacity:.9}
-.svc.food{background:var(--ka-red)} .svc.ride{background:var(--ka-green-deep)} .svc.package{background:var(--ka-blue)} .svc.market{background:var(--ka-gold);color:var(--ka-ink)} .svc.pabili{background:var(--ka-orange);color:var(--ka-ink)}
+/* Service tiles (assets/services/*.svg) on a white card, the only ground the tiles' white ring blends
+   into. Tile beside the text on phones, above it from 640px. */
+.svc{display:flex;align-items:center;gap:16px;background:#fff;color:var(--ka-ink);border:1px solid var(--ka-line);border-radius:20px;padding:14px;box-shadow:var(--sh)}
+.svc .tile{display:block;flex:none;width:96px;height:96px}
+.svc b{font-weight:800;font-size:19px;letter-spacing:-.015em} .svc span{display:inline-block;margin-top:2px;font-size:13px;color:var(--ka-ink-soft)}
+@media (min-width:640px){.svc{flex-direction:column;gap:14px;text-align:center;padding:14px 14px 20px}.svc .tile{width:120px;height:120px}.svc b{font-size:21px}}
 
 /* steps / reqs / list ticks */
 ol.steps{list-style:none;counter-reset:s;display:grid;gap:14px}

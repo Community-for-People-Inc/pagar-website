@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <rect width="120" height="120" fill="#e9f4e7"/>
+  <rect x="7" y="7" width="106" height="106" fill="#ffffff"/>
+  <rect x="16" y="16" width="88" height="88" rx="22" fill="#eaf6e5"/>
+  <svg x="27" y="27" width="66" height="66" viewBox="0 0 100 100" aria-label="Food">
+              <g fill="none" stroke="#3bb143" stroke-width="4.2" stroke-linecap="round">
+                <path d="M43 27c-3.6-3-9.4-1.6-9.4 3.4 0 4.6 5.6 6.2 9.2 3.6"/>
+                <path d="M42 22.5c2.4-3.4 7.6-3.2 9.4.6"/>
+                <path d="M62 31c-3-2.4-7.8-1.2-7.8 2.8 0 3.8 4.6 5.2 7.6 3"/>
+                <path d="M61 27.4c2-2.8 6.3-2.6 7.8.5"/>
+              </g>
+              <circle cx="35.5" cy="44" r="3.4" fill="#3f5bd9"/>
+              <circle cx="46" cy="45.4" r="3.4" fill="#f8312f"/>
+              <circle cx="56" cy="44.4" r="3.4" fill="#3bb143"/>
+              <path d="M63.5 40.5c3.6-3.2 9-2.6 10.6 1.2 1.7 4-1.4 8-5.6 8.6-2.6.4-5.2-.6-6.6-2.6-1.6-2.4-1-5.3 1.6-7.2z" fill="#3f5bd9"/>
+              <path d="M64.4 49.6 52 68.5l4.7 3.1 11.2-19.4z" fill="#3f5bd9"/>
+              <path d="M18 50.5h64c0 15.4-12 26.5-32 26.5S18 65.9 18 50.5z" fill="#f8312f"/>
+              <path d="M43.5 79.5h13a2.6 2.6 0 0 1 0 5.2h-13a2.6 2.6 0 0 1 0-5.2z" fill="#f8312f"/>
+            </svg>
+</svg>
