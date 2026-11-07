@@ -24,8 +24,12 @@ preserved faithfully here.
 - **Bilingual text:** each element carries `data-en` / `data-fil` (or `-html` variants);
   `pagar.js` swaps them and remembers the visitor's choice. Add `data-fil` to translate; if it's
   missing, the page falls back to English.
-- **Logo/motif:** the Sarimanok + okir SVG symbols are inlined near the top of each page so the
-  logo always renders (no JS needed). Edit once and paste to all if the mark changes.
+- **Logo:** the header and footer mark is the PAGAR app icon, `assets/brand/pagar-icon.svg`.
+  `assets/brand/` holds all three app icons (PAGAR EXPRESS, PAGAR Driver, PAGAR Merchant) plus the
+  favicon, apple-touch and social-card PNGs. They come from the app repo's
+  `scripts/export-app-icons.py` (direction E, 3 Nov 2026); regenerate them there, never by hand.
+- **Motif:** the Sarimanok + okir SVG symbols are still inlined near the top of each page for the
+  flying bird, the hero and the okir backgrounds. Edit once and paste to all if they change.
 
 ## Recruitment wiring (partners.html)
 The Apply form really submits to the app: `POST {API_BASE}/api/recruit` (see

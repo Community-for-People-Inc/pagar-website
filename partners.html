@@ -31,6 +31,12 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Partner with Pagar — Drive or sell in Marawi" />
 <meta name="twitter:description" content="Be a Pagar Hero or bring your business online in Marawi. Apply fully online — ₱0 to join, paid straight to your bank or GCash. Built by Maranaos for Marawi." />
+<meta property="og:image" content="https://community-for-people-inc.github.io/pagar-website/assets/brand/pagar-icon-512.png" />
+<meta property="og:image:alt" content="The PAGAR app icon: the Sarimanok at a torogan doorway" />
+<meta name="twitter:image" content="https://community-for-people-inc.github.io/pagar-website/assets/brand/pagar-icon-512.png" />
+<link rel="icon" type="image/svg+xml" href="assets/brand/pagar-icon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -93,6 +99,10 @@
   .salam { margin-top:30px; display:flex; gap:14px; align-items:center; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:16px 18px; max-width:440px; }
   .salam svg { width:34px; height:34px; flex:0 0 auto; }
   .salam p { font-size:14px; color:rgba(255,255,255,.85); }
+  .brandicon { display:block; flex:0 0 auto; border-radius:22%; box-shadow:0 1px 3px rgba(23,35,58,.18); }
+  .appchip { margin-top:12px; display:flex; gap:14px; align-items:center; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 16px; max-width:440px; }
+  .appchip img { width:52px; height:52px; flex:0 0 auto; border-radius:22%; box-shadow:0 4px 12px rgba(0,0,0,.25); }
+  .appchip p { font-size:14px; color:rgba(255,255,255,.85); }
 
   /* form card */
   .formcard { background:#fff; color:var(--ka-ink); border-radius:18px; box-shadow:var(--sh); overflow:hidden; }
@@ -261,7 +271,7 @@
 <header class="site">
   <div class="wrap bar">
     <a class="brand" href="index.html">
-      <svg width="38" height="38" aria-label="Pagar"><use href="#sarimanok"></use></svg>
+      <img class="brandicon" src="assets/brand/pagar-icon.svg" width="40" height="40" alt="Pagar">
       <span class="word">Pagar</span><span class="seg" data-i18n="segPartners">PARTNERS</span>
     </a>
     <nav class="main">
@@ -296,6 +306,8 @@
           <svg viewBox="0 0 240 240" aria-hidden="true"><use href="#sarimanok"></use></svg>
           <p data-i18n="salam">Assalamu alaykum. Pagar is built by Maranaos — we onboard you personally, in your language.</p>
         </div>
+        <div class="appchip roleview" data-role="driver"><img src="assets/brand/driver-icon.svg" width="52" height="52" alt="PAGAR Driver app icon"><p data-i18n="appDriver">PAGAR Driver is the app for riders and drivers: go online, take jobs and see what you earn.</p></div>
+        <div class="appchip roleview hidden" data-role="merchant"><img src="assets/brand/merchant-icon.svg" width="52" height="52" alt="PAGAR Merchant app icon"><p data-i18n="appMerchant">PAGAR Merchant is the app for restaurants and shops: your orders, your menu or products, and your opening hours.</p></div>
       </div>
 
       <!-- APP ROUTE — merchant only. `roleview` is toggled by renderRole(), so this hides for drivers. -->
@@ -392,7 +404,7 @@
 
 <footer class="site">
   <div class="wrap row">
-    <span class="word">Pagar</span>
+    <span style="display:flex;align-items:center;gap:10px"><img class="brandicon" src="assets/brand/pagar-icon.svg" width="36" height="36" alt="Pagar"><span class="word">Pagar</span></span>
     <span data-i18n="footTag">Built by Maranaos for Marawi and all of Mindanao.</span>
     <span style="margin-left:auto">
       <a href="help.html#privacy" data-i18n="footPrivacy">Privacy</a> ·
@@ -453,6 +465,8 @@ var T = {
     appRouteNoLink:"Not on the app yet? Fill in the form below and we will text you the link.",
     appRouteBtn:"Download the app",
     salam:"Assalamu alaykum. Pagar is built by Maranaos — we onboard you personally, in your language.",
+    appDriver:"PAGAR Driver is the app for riders and drivers: go online, take jobs and see what you earn.",
+    appMerchant:"PAGAR Merchant is the app for restaurants and shops: your orders, your menu or products, and your opening hours.",
     howEy:"How it works", howH:"Live in four steps.",
     reqEy:"What you need", reqNote:"Missing something? Apply anyway and we’ll tell you exactly what to fix — our Marawi onboarding team will guide you.",
     startApp:"Start your application →", fromPartners:"From our partners",
@@ -486,6 +500,8 @@ var T = {
     segPartners:"PARTNERS", navAbout:"Tungkol", navCoverage:"Saklaw", navSafety:"Kaligtasan", navPartners:"Partners", navHelp:"Tulong", applyNow:"Mag-apply →",
     tabDriver:"🦸 Maging Hero", tabMerchant:"🏪 Merchant at Seller",
     salam:"Assalamu alaykum. Ang Pagar ay gawa ng mga Maranao — personal ka naming ino-onboard, sa wika mo.",
+    appDriver:"Ang PAGAR Driver ang app ng mga rider at driver: mag-online, tumanggap ng trabaho at tingnan ang kita mo.",
+    appMerchant:"Ang PAGAR Merchant ang app ng mga restawran at tindahan: ang mga order mo, ang menu o paninda mo, at ang oras ng pagbukas mo.",
     howEy:"Paano gumagana", howH:"Live sa apat na hakbang.",
     reqEy:"Ano ang kailangan", reqNote:"May kulang? Mag-apply pa rin at sasabihin namin kung ano ang aayusin — gagabayan ka ng aming Marawi onboarding team.",
     startApp:"Simulan ang aplikasyon →", fromPartners:"Mula sa aming partners",
