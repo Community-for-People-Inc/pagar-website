@@ -40,6 +40,7 @@ nav.main a.navlink[aria-current]{color:var(--ka-red)}
 .langtoggle{display:inline-flex;border:2px solid var(--ka-ink);border-radius:10px;overflow:hidden}
 .langtoggle button{border:0;background:#fff;padding:7px 11px;font-weight:800;font-size:12px;cursor:pointer;color:var(--ka-ink);font-family:inherit}
 .langtoggle button[aria-pressed="true"]{background:var(--ka-forest);color:#fff}
+html:not(.fil-on) .langtoggle{display:none} /* FIL_ON in pagar.js */
 @media (max-width:900px){nav.main .navlink,.brand .seg{display:none}}
 
 /* buttons */

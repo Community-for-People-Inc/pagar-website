@@ -3,7 +3,9 @@
    The SVG sprite (Sarimanok + okir) is inlined per page so the logo renders without JS. */
 (function () {
   var KEY = "pagar_lang";
-  function getLang() { try { return localStorage.getItem(KEY) === "fil" ? "fil" : "en"; } catch (e) { return "en"; } }
+  // Filipino is hidden for now (8 Nov 2026). true brings back the EN/FIL toggle and any saved FIL choice.
+  var FIL_ON = false;
+  function getLang() { if (!FIL_ON) return "en"; try { return localStorage.getItem(KEY) === "fil" ? "fil" : "en"; } catch (e) { return "en"; } }
   function setLang(l) { try { localStorage.setItem(KEY, l); } catch (e) {} apply(l); }
 
   function apply(lang) {
@@ -39,6 +41,7 @@
   }
 
   function init() {
+    if (FIL_ON) document.documentElement.classList.add("fil-on");
     apply(getLang());
     markActiveNav();
     var btns = document.querySelectorAll(".langtoggle button");
