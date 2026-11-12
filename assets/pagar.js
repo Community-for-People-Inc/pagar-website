@@ -40,10 +40,28 @@
     }
   }
 
+  // A #link's target moves as fonts and media load after the jump, and Safari does not compensate;
+  // re-align once they have loaded, unless the reader has started scrolling.
+  function holdHashTarget() {
+    var id = location.hash.slice(1);
+    if (!id || !document.getElementById(id)) return;
+    var moved = false;
+    function stop() { moved = true; }
+    ["wheel", "touchstart", "keydown", "mousedown"].forEach(function (e) { window.addEventListener(e, stop, { passive: true }); });
+    function align() { var el = document.getElementById(id); if (!moved && el) el.scrollIntoView({ block: "start", behavior: "instant" }); }
+    // Smooth scrolling would animate toward where the target was before fonts loaded; jump instead.
+    var root = document.documentElement;
+    root.style.scrollBehavior = "auto";
+    function settle() { align(); root.style.scrollBehavior = ""; }
+    if (document.readyState === "complete") settle(); else window.addEventListener("load", settle);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
+  }
+
   function init() {
     if (FIL_ON) document.documentElement.classList.add("fil-on");
     apply(getLang());
     markActiveNav();
+    holdHashTarget();
     var btns = document.querySelectorAll(".langtoggle button");
     for (var i = 0; i < btns.length; i++) {
       btns[i].addEventListener("click", function () { setLang(this.getAttribute("data-lang")); });
