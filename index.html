@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<!-- Content security policy (17 Nov 2026): the browser only lets this page load from, and send to, the places listed. Form details can only go to the Pagar app server (connect-src). Adding a new outside service? Add its address here on all six pages. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://unpkg.com https://tile.openstreetmap.org; media-src 'self'; connect-src 'self' https://delivery-app-ub1c.onrender.com; frame-src https://challenges.cloudflare.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="index, follow" />
 <title>Pagar — one app for Marawi. Food, rides, parcels, market.</title>

@@ -1,3 +1,5 @@
+// Run it from http://localhost:8080/.claude/ (a page without the site's content security policy,
+// which blocks the eval used to load this file). It inspects the real pages in iframes.
 // Unevenness audit for the Pagar site (dev tool, not shipped). Loads each page in an iframe at each
 // width and reports: card rows whose buttons/links sit at different heights, a lone card on a last
 // row under a fuller row, cards in one row with different heights, and headings that leave one word

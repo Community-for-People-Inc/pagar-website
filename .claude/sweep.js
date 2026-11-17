@@ -1,3 +1,5 @@
+// Run it from http://localhost:8080/.claude/ (a page without the site's content security policy,
+// which blocks the eval used to load this file). It inspects the real pages in iframes.
 // Defect sweep for the Pagar site (dev tool, not shipped). Paste into the browser console on any
 // page of the local preview, or run through the preview's JS tool. Loads each page in an iframe at
 // each width, scrolls it through, and reports problems. Usage: await window.pagarSweep()
