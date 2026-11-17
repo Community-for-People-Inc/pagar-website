@@ -19,6 +19,8 @@
   });
   var css =
     ".flybird{animation-iteration-count:1!important}" +
+    /* on a phone the 118px bird covers a third of the screen as it crosses headings; same bird, smaller */
+    "@media(max-width:599px){.flybird{width:78px!important;height:78px!important}}" +
     ".menubtn{display:none;flex:none;width:44px;height:44px;border:2px solid var(--ka-ink);border-radius:11px;background:#fff;color:var(--ka-ink);cursor:pointer;place-items:center;padding:0;font:inherit}" +
     ".menubtn svg{width:22px;height:22px}" +
     ".menubtn .x{display:none}" +

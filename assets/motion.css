@@ -101,3 +101,5 @@ details.faq summary:hover .chev{background:#fbd5d5}
 /* even lines: card headings balance, paragraphs avoid a lone last word (17 Nov 2026) */
 h1,h2.sec,main h3,.tooltitle{text-wrap:balance}
 main p,main li{text-wrap:pretty}
+/* hero stat boxes on phones: room for "BARANGAYS" on one line (the 18px padding in styles.css comes after its phone rule) */
+@media(max-width:520px){.hero .stats .stat,.hero .stats .stat:last-child{padding:10px 8px}}
