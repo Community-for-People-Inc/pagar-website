@@ -260,3 +260,8 @@ details.faq p{font-size:15px}
 
 /* the Sarimanok shown inside light sections sits on its gold disc */
 section.block svg[aria-label="Sarimanok"]{width:200px!important;height:200px!important;padding:22px;border-radius:50%;background:radial-gradient(circle,#fbebab 0%,#fbebab 55%,rgba(251,235,171,0) 72%)}
+
+/* A form after it is sent: no white pill (white text on it was invisible), a tick and the message on the red */
+.hero .inrow.done{display:block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);box-shadow:none;border-radius:18px;padding:14px 18px}
+.hero .inrow.done .okmsg{margin:0;color:#fff;font-weight:800;font-size:15.5px;line-height:1.4;display:flex;gap:10px;align-items:flex-start}
+.hero .inrow.done .okmsg::before{content:"✓";flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:var(--ka-forest);font-size:13px;font-weight:900}

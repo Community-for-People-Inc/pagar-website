@@ -60,23 +60,39 @@
     var els = [].slice.call(document.querySelectorAll(sel)).filter(function (el) {
       return !el.closest(".hero, #how, .herostage, [hidden]");
     });
+    var pending = [];
+    function show(el) {
+      var i = pending.indexOf(el); if (i < 0) return; pending.splice(i, 1);
+      el.classList.add("in"); io.unobserve(el);
+      if (el.tagName !== "OL") setTimeout(function () { el.classList.remove("rv", "in"); el.style.transitionDelay = ""; }, 1300);
+    }
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var el = e.target; el.classList.add("in"); io.unobserve(el);
-        if (el.tagName !== "OL") setTimeout(function () { el.classList.remove("rv", "in"); el.style.transitionDelay = ""; }, 1300);
-      });
+      es.forEach(function (e) { if (e.isIntersecting) show(e.target); });
     }, { rootMargin: "0px 0px -8% 0px", threshold: .08 });
+    /* Backup (17 Nov sweep): a jump (a #link, a fast fling, a restored scroll position) can carry the
+       page past a block without the observer ever seeing it on screen, leaving it hidden. Anything whose
+       top is above the bottom of the screen is shown, on every scroll and once things settle. */
+    var queued = false;
+    function sweep() {
+      queued = false;
+      var vh = window.innerHeight;
+      pending.slice().forEach(function (el) { if (el.getBoundingClientRect().top < vh) show(el); });
+      if (!pending.length) window.removeEventListener("scroll", onScroll);
+    }
+    function onScroll() { if (!queued) { queued = true; requestAnimationFrame(sweep); } }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("hashchange", function () { setTimeout(sweep, 400); });
+    window.addEventListener("load", function () { setTimeout(sweep, 400); });
     var vh = window.innerHeight;
     els.forEach(function (el) {
       if (el.getBoundingClientRect().top < vh * .92) return; // already on screen: leave as is
       var sib = el.parentNode ? [].indexOf.call(el.parentNode.children, el) : 0;
       el.style.transitionDelay = Math.min(sib, 5) * 80 + "ms";
-      el.classList.add("rv"); io.observe(el);
+      el.classList.add("rv"); pending.push(el); io.observe(el);
     });
     [].forEach.call(document.querySelectorAll("main ol.steps"), function (ol) {
       if (ol.getBoundingClientRect().top < vh * .92) return;
-      ol.classList.add("rvl"); io.observe(ol);
+      ol.classList.add("rvl"); pending.push(ol); io.observe(ol);
     });
   }
 

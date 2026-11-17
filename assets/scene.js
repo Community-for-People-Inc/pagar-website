@@ -1,9 +1,8 @@
 /* PAGAR inner pages — scroll scene for step-by-step sections (17 Nov 2026).
    Used on About (journey steps), Safety (Before / During / After), Coverage (Where to next?) and
    Partners (Live in four steps). On wide screens (900px+ wide, 640px+ tall) the section's eyebrow,
-   heading and list stay pinned while you scroll, and the items light up one at a time: a counter
-   and a bar show how far through you are, a large outlined number sits behind, finished items keep
-   a tick. Clicking an item scrolls to it.
+   heading and list stay pinned while you scroll, and the items light up one at a time: a bar shows how
+   far through you are and finished items keep a tick. (No step counter: owner, 17 Nov.) Clicking an item scrolls to it.
    Smaller screens, reduced motion and no JS: the section stays exactly as written. */
 (function () {
   var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -22,13 +21,11 @@
     first.parentNode.insertBefore(box, first);
     var n = first; while (n) { var next = n.nextElementSibling; box.appendChild(n); if (n === list) break; n = next; }
     var meta = document.createElement("div"); meta.className = "scnmeta"; meta.setAttribute("aria-hidden", "true");
-    meta.innerHTML = '<span class="scncount"><b>01</b> / ' + pad(items.length) + '</span><span class="scnbar"><i></i></span>';
+    meta.innerHTML = '<span class="scnbar"><i></i></span>';
     list.parentNode.insertBefore(meta, list);
-    var num = document.createElement("div"); num.className = "scnnum"; num.setAttribute("aria-hidden", "true"); num.textContent = "01";
-    box.appendChild(num);
     var run = document.createElement("div"); run.className = "scnrun"; run.setAttribute("aria-hidden", "true");
     box.parentNode.insertBefore(run, box.nextSibling);
-    var s = { box: box, run: run, items: [], list: list, meta: meta, num: num, cur: -1, on: false, top: 0, h: 0, len: 0 };
+    var s = { box: box, run: run, items: [], list: list, meta: meta, cur: -1, on: false, top: 0, h: 0, len: 0 };
     scenes.push(s);
     collect(s);
     /* Partners rebuilds its steps when you switch between driver and merchant: pick them up again */
@@ -42,10 +39,8 @@
       it.addEventListener("click", function (e) { if (s.on && !e.target.closest("a,button,input,select,textarea,summary")) goTo(s, s.items.indexOf(it)); });
     });
     s.cur = -1;
-    var c = s.meta.querySelector(".scncount"); if (c) c.lastChild.textContent = " / " + pad(s.items.length);
   }
   function prevMatch(el, sel) { var p = el.previousElementSibling; while (p) { if (p.matches(sel)) return p; p = p.previousElementSibling; } return null; }
-  function pad(v) { return ("0" + v).slice(-2); }
 
   function measure() {
     var want = window.innerWidth >= 900 && window.innerHeight >= 640;
@@ -73,15 +68,11 @@
         if (!s.on) return;
         var p = progress(s), N = s.items.length, f = p * N, i = Math.min(N - 1, Math.floor(f));
         s.meta.querySelector(".scnbar i").style.transform = "scaleX(" + Math.max(.02, (i + Math.min(1, f - i)) / N) + ")";
-        s.num.style.translate = "0 " + ((f - i - .5) * -24).toFixed(1) + "px";
         if (i === s.cur) return;
-        var back = i < s.cur; s.cur = i;
+        s.cur = i;
         s.items.forEach(function (it, j) {
           it.classList.toggle("on", j === i); it.classList.toggle("done", j < i); it.classList.toggle("ahead", j > i);
         });
-        s.meta.querySelector(".scncount b").textContent = pad(i + 1);
-        s.num.textContent = pad(i + 1);
-        s.num.classList.remove("swap", "swapb"); void s.num.offsetWidth; s.num.classList.add(back ? "swapb" : "swap");
       });
     });
   }

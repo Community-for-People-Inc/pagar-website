@@ -441,9 +441,6 @@
   @keyframes kaBar{to{transform:scaleX(1)}}
   #services .svcstage{position:relative;border-radius:32px;min-height:620px;display:grid;place-items:center;overflow:hidden;border:1px solid var(--ka-line);
     background:radial-gradient(circle at 50% 45%,var(--g,#dcf2d6) 0,rgba(255,255,255,0) 62%),radial-gradient(rgba(23,35,58,.14) 1px,transparent 1.2px) 0 0/18px 18px,#fff;transition:background .5s}
-  #services .stagemeta{position:absolute;top:20px;left:24px;display:flex;gap:6px;align-items:baseline;font:700 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ka-ink-soft);letter-spacing:.06em}
-  #services .stagemeta .idx{font-size:22px;color:var(--c,var(--ka-ink))}
-  #services .stagemeta .sname{margin-left:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--c,var(--ka-ink))}
   #services .phone{transform:rotate(-2deg)}
   .scrn{position:absolute;inset:0;opacity:0;transform:translateY(14px) scale(.98);transition:opacity .45s,transform .45s;pointer-events:none}
   .scrn.on{opacity:1;transform:none}
@@ -484,8 +481,7 @@
   @media(min-width:900px){#services .svcstage::before{margin-left:-180px}}
   @media(prefers-reduced-motion:reduce){#services .svcstage::before{animation:none}}
   #services .svcstage>.phone{position:relative;z-index:2}
-  #services .stagechip,#services .stagemeta{z-index:6}
-  @media(max-width:560px){#services .stagemeta{display:none}}
+  #services .stagechip{z-index:6}
   .svcrail,.svchint,.svcrun{display:none}
   @media(min-width:900px){
     #services.scrolly .svcwrap{position:sticky}
@@ -745,7 +741,6 @@
       <!-- One sample screen per service, drawn in HTML and labelled "Sample screen" until real
            screenshots exist. The tab beside it carries the service's own words. -->
       <div class="svcstage" id="svcstage" role="tabpanel" aria-live="polite">
-        <div class="stagemeta" aria-hidden="true"><span class="idx">01</span><span>/ 05</span><span class="sname">Food</span></div>
         <div class="stagechip" aria-hidden="true"><i>✓</i><span>Halal Certified filter</span></div>
         <div class="phone"><div class="scr">
           <div class="notch"></div>
@@ -1062,7 +1057,7 @@
   var sec=document.getElementById("services"), list=sec&&sec.querySelector(".svctabs"), stage=document.getElementById("svcstage");
   if(!list||!stage) return;
   var wrap=sec.querySelector(".svcwrap"), tabs=[].slice.call(list.querySelectorAll('[role="tab"]')), scr=[].slice.call(stage.querySelectorAll(".scrn"));
-  var phone=stage.querySelector(".phone"), idx=stage.querySelector(".idx"), nm=stage.querySelector(".sname");
+  var phone=stage.querySelector(".phone");
   var N=tabs.length, cur=-1, timer=null, inView=false, stopped=false, scrolly=false, hovering=false, hoverT=null;
   var calm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
   /* decorations, built here so the page without JS is unchanged */
@@ -1085,8 +1080,7 @@
     stage.style.setProperty("--g", t.style.getPropertyValue("--g"));
     sec.style.setProperty("--c", t.style.getPropertyValue("--c"));
     stage.setAttribute("aria-labelledby", t.id);
-    idx.textContent=("0"+(cur+1)).slice(-2); nm.textContent=t.querySelector("b").textContent;
-    word.textContent=nm.textContent; word.classList.remove("swap"); void word.offsetWidth; word.classList.add("swap");
+    word.textContent=t.querySelector("b").textContent; word.classList.remove("swap"); void word.offsetWidth; word.classList.add("swap");
     var chip=stage.querySelector(".stagechip span"), on=stage.querySelector('.scrn[data-s="'+k+'"]');
     if(chip&&on){ chip.textContent=on.getAttribute("data-chip"); chip.parentNode.classList.remove("pop"); void chip.offsetWidth; chip.parentNode.classList.add("pop"); }
     if(phone&&prev>=0&&!calm){ phone.classList.remove("kick","kickb"); void phone.offsetWidth; phone.classList.add(back?"kickb":"kick"); }
@@ -1213,17 +1207,20 @@ var WAITLIST_MAILBOX = "marketing@communityforpeople.org";
     var name=document.getElementById('wName').value.trim(), contact=document.getElementById('wContact').value.trim();
     if(!name||!contact){ document.getElementById('wFine').textContent = (window.PagarLang&&window.PagarLang.get()==="fil")?"Pakilagay ang pangalan at contact.":"Please add your name and contact."; return; }
     var ok=(window.PagarLang&&window.PagarLang.get()==="fil")?"Salamat! Aabisuhan ka namin pag-launch sa lugar mo.":"Thank you! We’ll message you when we launch in your area.";
-    function ack(){ f.innerHTML='<p class="okmsg" style="color:#fff">'+ok+'</p>'; }
+    /* Done: the form loses its white pill (white text on it was invisible) and the note under it
+       goes back to its own words, so an earlier error message does not linger. */
+    function done(html){ f.classList.add('done'); f.innerHTML='<p class="okmsg">'+html+'</p>';
+      var n=document.getElementById('wFine'); if(n){ var fil=(window.PagarLang&&window.PagarLang.get()==="fil"); n.textContent=(fil&&n.getAttribute('data-fil'))||n.getAttribute('data-en')||''; } }
+    function ack(){ done(ok); }
     function handoff(){
       var fil=(window.PagarLang&&window.PagarLang.get()==="fil");
       var subject="PAGAR EXPRESS waitlist — "+name;
       var body=(fil?"Gusto kong malaman kapag bumukas ang Pagar sa lugar ko.":"I would like to know when Pagar opens in my area.")
         +"\n\n"+(fil?"Pangalan":"Name")+": "+name+"\nContact: "+contact+"\n";
       window.location.href="mailto:"+WAITLIST_MAILBOX+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-      f.innerHTML='<p class="okmsg" style="color:#fff">'
+      done(''
         +(fil?"Bubuksan namin ang email app mo na may nakalagay na detalye — i-send lang para maisama ka."
-             :"We have opened your email app with your details filled in — send it and you are on the list.")
-        +'</p>';
+             :"We have opened your email app with your details filled in — send it and you are on the list."));
     }
     if(!WAITLIST_ENDPOINT){ handoff(); return; }
     fetch(WAITLIST_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"waitlist",name:name,contact:contact})})

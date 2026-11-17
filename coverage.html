@@ -202,17 +202,20 @@ var CITY_MAILBOX = "marketing@communityforpeople.org";
     var city=document.getElementById('cCity').value.trim(), contact=document.getElementById('cContact').value.trim();
     if(!city){ document.getElementById('cFine').textContent=(window.PagarLang&&window.PagarLang.get()==="fil")?"Pakilagay ang siyudad.":"Please enter your city."; return; }
     var ok=(window.PagarLang&&window.PagarLang.get()==="fil")?"Salamat! Naitala na ang "+city+".":"Thanks! We've counted "+city+" in.";
-    function ack(){ f.innerHTML='<p class="okmsg" style="color:#fff">'+ok+'</p>'; }
+    /* Done: the form loses its white pill (white text on it was invisible) and the note under it
+       goes back to its own words, so an earlier error message does not linger. */
+    function done(html){ f.classList.add('done'); f.innerHTML='<p class="okmsg">'+html+'</p>';
+      var n=document.getElementById('cFine'); if(n){ var fil=(window.PagarLang&&window.PagarLang.get()==="fil"); n.textContent=(fil&&n.getAttribute('data-fil'))||n.getAttribute('data-en')||''; } }
+    function ack(){ done(ok); }
     function handoff(){
       var fil=(window.PagarLang&&window.PagarLang.get()==="fil");
       var subject="PAGAR EXPRESS — bring Pagar to "+city;
       var body=(fil?"Gusto ko pong dumating ang Pagar sa lugar namin.":"I would like Pagar to come to my area.")
         +"\n\n"+(fil?"Lungsod":"City")+": "+city+"\nContact: "+contact+"\n";
       window.location.href="mailto:"+CITY_MAILBOX+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-      f.innerHTML='<p class="okmsg" style="color:#fff">'
+      done(''
         +(fil?"Bubuksan namin ang email app mo na may nakalagay na detalye — i-send lang."
-             :"We have opened your email app with your details filled in — send it and we will count your city.")
-        +'</p>';
+             :"We have opened your email app with your details filled in — send it and we will count your city."));
     }
     if(!CITY_ENDPOINT){ handoff(); return; }
     fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"coverage",city:city,contact:contact})})
