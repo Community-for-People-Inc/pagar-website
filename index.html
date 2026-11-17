@@ -72,18 +72,54 @@
   .homehero .stats .stat:last-child{border-right:1px solid rgba(255,255,255,.24)}
   .homehero .stats .n{font-size:22px}
   .herostage{position:relative;min-height:640px}
-  .herostage .herobird{position:absolute;left:auto;right:262px;top:-30px;margin:0;width:190px;height:190px;min-height:0;z-index:3}
+  .herostage .herobird{position:absolute;left:auto;right:232px;top:-34px;margin:0;width:180px;height:180px;min-height:0;z-index:3}
   .herostage .herobird::before{width:96%;opacity:.95}
   .herostage .herobird svg{width:78%}
   .phone{position:relative;width:272px;height:556px;border-radius:44px;background:#101216;padding:10px;box-shadow:0 50px 80px -30px rgba(40,0,0,.75),inset 0 0 0 2px #2a2d33;color:var(--ka-ink);text-align:left}
   .herostage .phone{position:absolute;right:12px;top:78px;transform:rotate(3deg);z-index:1}
-  .homehero .pill .when{margin-left:6px;opacity:.85}
+  .homehero .pill .when{margin-left:-2px;opacity:.85}
   .homehero .inrow .btn::after{content:"→";display:inline-block;margin-left:8px;transition:transform .2s}
   .homehero .inrow .btn:hover::after{transform:translateX(3px)}
   .hslide{position:absolute;inset:0;opacity:0;transform:translateX(18px);transition:opacity .5s,transform .5s}
   .hslide.on{opacity:1;transform:none}
   .hslide .ap{position:absolute;inset:0}
   .hdots{position:absolute;right:120px;bottom:-26px;display:flex;gap:6px;z-index:2}
+  /* Hero, third pass (17 Nov 2026): depth around the phone, floating service tiles, a fuller app
+     screen and a curved edge into the cream section below. Decorative only. */
+  .homehero{padding-bottom:40px}
+  .homehero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:70px;z-index:2;pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 70' preserveAspectRatio='none'%3E%3Cpath d='M0 70V38C240 6 480 0 720 22s480 38 720 4v44z' fill='%23f8f4f4'/%3E%3C/svg%3E") no-repeat bottom/100% 100%}
+  .herostage .spot{position:absolute;right:-60px;top:-20px;width:520px;height:620px;pointer-events:none;
+    background:radial-gradient(closest-side,rgba(255,215,101,.32),rgba(255,215,101,0) 72%)}
+  .herostage .spot::after{content:"";position:absolute;inset:0;opacity:.35;
+    background:radial-gradient(rgba(255,255,255,.55) 1px,transparent 1.4px) 0 0/18px 18px;
+    -webkit-mask:radial-gradient(closest-side,#000 30%,transparent 80%);mask:radial-gradient(closest-side,#000 30%,transparent 80%)}
+  .ftile{position:absolute;z-index:2;display:block;width:68px;height:68px;border-radius:25%;overflow:hidden;
+    box-shadow:0 18px 30px -12px rgba(60,0,0,.55),0 0 0 3px rgba(255,255,255,.35);
+    animation:kaDrift 7s ease-in-out infinite;transition:translate .25s ease-out}
+  .ftile img{position:absolute;width:136.4%;height:136.4%;max-width:none;left:-18.2%;top:-18.2%}
+  .ftile.t1{right:300px;top:250px;width:76px;height:76px}
+  .ftile.t2{right:-22px;top:200px;width:62px;height:62px;animation-delay:-1.4s}
+  .ftile.t3{right:-48px;top:440px;width:70px;height:70px;animation-delay:-2.8s}
+  .ftile.t4{right:290px;top:470px;width:58px;height:58px;animation-delay:-4.2s}
+  .ftile.t5{right:40px;top:6px;width:54px;height:54px;animation-delay:-5.6s}
+  @keyframes kaDrift{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+  .ap .act{margin:2px 10px 0;display:grid;gap:5px}
+  .ap .ah2{display:flex;justify-content:space-between;align-items:baseline}
+  .ap .ah2 b{font-size:11px;font-weight:900}.ap .ah2 em{font-style:normal;color:#ee0000;font-weight:800;font-size:8.5px}
+  .ap .ac{display:flex;justify-content:space-between;align-items:center;gap:6px;background:#fff;border:1px solid #e3dedd;border-radius:10px;padding:8px 9px}
+  .ap .ac small{display:block;color:#ee0000;font-weight:900;font-size:7px;letter-spacing:.08em}
+  .ap .ac b{display:block;font-size:10.5px;font-weight:900}.ap .ac span{color:#8f8a8c;font-size:8px}
+  .ap .ac i{font-style:normal;background:#e7f6ec;color:var(--ka-forest);font-weight:800;font-size:8px;border-radius:6px;padding:3px 6px}
+  @media(max-width:899px){
+    .homehero::after{height:40px}
+    .herostage .spot{right:-40px;top:20px;width:380px;height:480px}
+    .ftile{width:48px!important;height:48px!important}
+    .ftile.t1{right:auto;left:0;top:250px}.ftile.t2{right:-6px;top:120px}.ftile.t3{right:-6px;top:380px}
+    .ftile.t4,.ftile.t5{display:none}
+    .herostage .ap .act{margin-top:6px}
+  }
+  @media(prefers-reduced-motion:reduce){.ftile{animation:none}}
   .hdots i{width:7px;height:7px;border-radius:7px;background:rgba(255,255,255,.4);transition:width .3s,background .3s}
   .hdots i.on{width:22px;background:#fff}
   .scr{height:100%;border-radius:35px;background:#f7f3f2;overflow:hidden;position:relative;font-size:12px;line-height:1.35}
@@ -438,6 +474,8 @@
         </div>
       </div>
       <div class="herostage">
+        <div class="spot" aria-hidden="true"></div>
+        <span class="ftile t1" aria-hidden="true"><img src="assets/services/food.svg" alt=""></span><span class="ftile t2" aria-hidden="true"><img src="assets/services/ride.svg" alt=""></span><span class="ftile t3" aria-hidden="true"><img src="assets/services/package.svg" alt=""></span><span class="ftile t4" aria-hidden="true"><img src="assets/services/market.svg" alt=""></span><span class="ftile t5" aria-hidden="true"><img src="assets/services/pabili.svg" alt=""></span>
         <div class="herobird" aria-hidden="true"><svg viewBox="0 0 240 240"><use href="#sarimanok-flutter"></use></svg></div>
         <!-- Sample PAGAR EXPRESS home screen, drawn in HTML (no screenshot yet). Marked "Sample screen". -->
         <div class="phone" aria-hidden="true"><div class="scr">
@@ -450,7 +488,7 @@
             </div>
             <div class="srch"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#5b8ad6" stroke-width="2.4"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5" stroke-linecap="round"/></svg>Search for food, shops…</div>
             <div class="t5"><div><img src="assets/services/food.svg" alt="">Food</div><div><img src="assets/services/ride.svg" alt="">Ride</div><div><img src="assets/services/package.svg" alt="">Package</div><div><img src="assets/services/market.svg" alt="">Market</div><div><img src="assets/services/pabili.svg" alt="">Pabili</div></div>
-            <div class="bnr"><div class="bt"><b>Help Build a Mosque</b><span>communityforpeople.org</span></div><div class="bm"></div></div>
+            <div class="bnr"><div class="bt"><b>Help Build a Mosque</b><span>communityforpeople.org</span></div><div class="bm"></div></div><div class="act"><div class="ah2"><b>Recent activity</b><em>See all</em></div><div class="ac"><div><small>FOOD</small><b>Order #1042</b><span>Chicken Kabsa · ₱250</span></div><i>Delivered</i></div></div>
             <div class="bnav"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Profile</span></div>
           </div>
         </div></div>
@@ -747,6 +785,21 @@
 <script src="assets/hash-target.js"></script>
 <script src="assets/nav.js"></script>
 <script src="assets/journey.js"></script>
+<script>
+/* Hero depth: on desktop the floating service tiles and the phone shift slightly with the mouse. */
+(function(){
+  var hero=document.querySelector(".homehero"); if(!hero) return;
+  if(window.matchMedia&&(matchMedia("(prefers-reduced-motion: reduce)").matches||!matchMedia("(pointer:fine)").matches)) return;
+  var tiles=[].slice.call(hero.querySelectorAll(".ftile")), phone=hero.querySelector(".herostage .phone"), raf=0, mx=0, my=0;
+  hero.addEventListener("mousemove",function(e){ var r=hero.getBoundingClientRect(); mx=(e.clientX-r.left)/r.width-.5; my=(e.clientY-r.top)/r.height-.5;
+    if(!raf) raf=requestAnimationFrame(function(){ raf=0;
+      tiles.forEach(function(t,i){ var d=10+i*5; t.style.translate=(mx*d)+"px "+(my*d)+"px"; });
+      if(phone) phone.style.translate=(mx*-8)+"px "+(my*-6)+"px";
+    });
+  });
+  hero.addEventListener("mouseleave",function(){ tiles.forEach(function(t){ t.style.translate=""; }); if(phone) phone.style.translate=""; });
+})();
+</script>
 <script>
 /* Hero phone: shows the app's Home, Food and Ride screens in turn (every 3.5s) while the hero is on
    screen. Food and Ride are taken from the services showcase below, so there is one copy of each. */
