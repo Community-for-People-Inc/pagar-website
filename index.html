@@ -1194,8 +1194,13 @@
    drivers and merchants, not customers. Rather than keep a promise nobody can keep, an empty
    endpoint now hands the details to the visitor's mail app, addressed to a mailbox that is
    actually read. One more click for them, and it delivers, which is the right way round.
-   Set WAITLIST_ENDPOINT when a real one exists and this path stops being used. */
-var WAITLIST_ENDPOINT = "https://communityforpeople.org/api/pagar-signup";
+   Set WAITLIST_ENDPOINT when a real one exists and this path stops being used.
+   17 Nov 2026: communityforpeople.org/api/pagar-signup sent no CORS header, so browsers refused every
+   post and everyone landed in the mail-app fallback. Signups now go to the app's own server
+   (POST /api/waitlist, delivery-app server/api/website-signup-api.ts), which keeps each one and emails
+   the marketing mailbox. A 400 there means the details need fixing and is shown on the form; anything
+   else (server down, not deployed yet) still falls back to the mail app, so nothing is lost. */
+var WAITLIST_ENDPOINT = "https://delivery-app-ub1c.onrender.com/api/waitlist";
 var WAITLIST_MAILBOX = "marketing@communityforpeople.org";
 (function(){
   var f=document.getElementById('waitForm');
@@ -1222,7 +1227,11 @@ var WAITLIST_MAILBOX = "marketing@communityforpeople.org";
     }
     if(!WAITLIST_ENDPOINT){ handoff(); return; }
     fetch(WAITLIST_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"waitlist",name:name,contact:contact})})
-        .then(function(r){ if(!r.ok) throw new Error("bad status"); ack(); })
+        .then(function(r){
+          if(r.ok){ ack(); return; }
+          if(r.status===400) return r.json().then(function(j){ document.getElementById('wFine').textContent=(j&&j.error)||"Please check your details."; });
+          throw new Error("bad status");
+        })
         .catch(function(){ handoff(); });
   });
 })();

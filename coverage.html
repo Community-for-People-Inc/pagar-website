@@ -187,8 +187,11 @@
    city and contact away, while the copy above the form says "We use this only to gauge demand and
    notify you at launch." Neither gauging nor notifying was possible — nothing was kept.
    With no city-interest table to POST to, an empty endpoint now hands the details to the
-   visitor's mail app addressed to a mailbox that is read. Set CITY_ENDPOINT when one exists. */
-var CITY_ENDPOINT = "https://communityforpeople.org/api/pagar-signup";
+   visitor's mail app addressed to a mailbox that is read. Set CITY_ENDPOINT when one exists.
+   17 Nov 2026: now the app's own server (POST /api/waitlist, kind "coverage"), which keeps each vote and
+   emails the marketing mailbox; the old communityforpeople.org address was refused by every browser
+   (no CORS header). A 400 is shown on the form; any other failure still falls back to the mail app. */
+var CITY_ENDPOINT = "https://delivery-app-ub1c.onrender.com/api/waitlist";
 var CITY_MAILBOX = "marketing@communityforpeople.org";
 (function(){
   var f=document.getElementById('cityForm');
@@ -213,7 +216,11 @@ var CITY_MAILBOX = "marketing@communityforpeople.org";
     }
     if(!CITY_ENDPOINT){ handoff(); return; }
     fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"coverage",city:city,contact:contact})})
-        .then(function(r){ if(!r.ok) throw new Error("bad status"); ack(); })
+        .then(function(r){
+          if(r.ok){ ack(); return; }
+          if(r.status===400) return r.json().then(function(j){ document.getElementById('cFine').textContent=(j&&j.error)||"Please check your details."; });
+          throw new Error("bad status");
+        })
         .catch(function(){ handoff(); });
   });
 })();
