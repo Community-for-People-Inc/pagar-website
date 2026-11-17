@@ -103,3 +103,9 @@ h1,h2.sec,main h3,.tooltitle{text-wrap:balance}
 main p,main li{text-wrap:pretty}
 /* hero stat boxes on phones: room for "BARANGAYS" on one line (the 18px padding in styles.css comes after its phone rule) */
 @media(max-width:520px){.hero .stats .stat,.hero .stats .stat:last-child{padding:10px 8px}}
+/* homepage hero pill on narrow phones: two tidy lines (dot, then the place, then the date under it)
+   instead of two side-by-side halves that each wrap ("COMING SOON TO · NOVEMBER / MARAWI 2026") */
+@media(max-width:440px){.homehero .pill{display:inline-grid;grid-template-columns:auto auto;column-gap:8px;row-gap:3px;align-items:center;border-radius:18px;padding:9px 16px}.homehero .pill .dot{grid-row:span 2}.homehero .pill>span:not(.dot){white-space:nowrap}}
+/* homepage hero on tablets: the phone, bird and tiles are placed from the right edge of their box; at
+   600-899px that box was the full width, so the whole picture hugged the right. Centre a box its own size. */
+@media(min-width:521px) and (max-width:899px){.homehero .herostage{width:100%;max-width:460px;margin-left:auto;margin-right:auto}}
