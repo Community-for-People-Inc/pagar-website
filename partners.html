@@ -375,7 +375,7 @@
 
       <!-- APP ROUTE — merchant only. `roleview` is toggled by renderRole(), so this hides for drivers. -->
       <div class="approute roleview hidden" data-role="merchant">
-        <h3 data-i18n="appRouteH">Already have the Pagar app?</h3>
+        <h3 aria-level="2" data-i18n="appRouteH">Already have the Pagar app?</h3>
         <p data-i18n="appRouteP"></p>
         <div data-approute-cta></div>
       </div>
@@ -788,7 +788,7 @@ function renderRole(){
   var bw=$('[data-benefits="'+role+'"]');
   if(bw) bw.innerHTML=d.benefits.map(function(b){ return '<div class="card"><div class="ic">'+IC[b.ic]+'</div><h3>'+tx(b.h)+'</h3><p>'+tx(b.p)+'</p></div>'; }).join("");
   // steps
-  $("[data-steps]").innerHTML=d.steps.map(function(s){ return '<li><h4>'+tx(s.h)+'</h4><p>'+tx(s.p)+'</p></li>'; }).join("");
+  $("[data-steps]").innerHTML=d.steps.map(function(s){ return '<li><h4 aria-level="3">'+tx(s.h)+'</h4><p>'+tx(s.p)+'</p></li>'; }).join("");
   // reqs
   $("[data-reqs]").innerHTML=d.reqs.map(function(r){ return '<li>'+tickHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
   $("[data-reqh]").textContent = t(role==="driver"?"reqDrvH":"reqMchH");
@@ -862,7 +862,7 @@ function loadPlaces(){
 function fieldHtml(f){
   var lab=tx(f.label), ph=f.ph?tx(f.ph):"", v=form[f.k]||"", input;
   if(f.type==="choice"){
-    input='<div class="opts'+(f.col?' col':'')+'" role="radiogroup">'+f.opts.map(function(o){
+    input='<div class="opts'+(f.col?' col':'')+'" role="radiogroup" aria-label="'+esc(lab)+'">'+f.opts.map(function(o){
       var ov=optVal(o), on=v===ov;
       return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+f.k+'" data-k="'+f.k+'" data-opt value="'+esc(ov)+'"'+(on?' checked':'')+' /><span>'+esc(optLab(o))+'</span></label>';
     }).join("")+'</div>';
@@ -878,12 +878,14 @@ function fieldHtml(f){
   }
   else {
     var list=f.suggest?' list="dl_'+f.k+'" autocomplete="off"':'';
-    input='<input type="'+(f.type==="suggest"?"text":f.type)+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+(f.numeric?' inputmode="numeric"':'')+list+' />'
+    input='<input type="'+(f.type==="suggest"?"text":f.type)+'" id="fld_'+f.k+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+(f.numeric?' inputmode="numeric"':'')+list+' />'
       +(f.suggest?'<datalist id="dl_'+f.k+'" data-suggest="'+f.suggest+'"></datalist>':'');
   }
   var hint=f.hint?'<div class="hint">'+esc(tx(f.hint))+'</div>':"";
   var why=f.why?'<div class="whybox"><b>'+esc(tx(WHY.h))+'</b>'+WHY.p.map(function(pp){ return '<p>'+esc(tx(pp))+'</p>'; }).join("")+'</div>':"";
-  return '<div class="field" data-field="'+f.k+'"><label>'+esc(lab)+'</label>'+input+hint+why+'<div class="errmsg">'+t("reqFix")+'</div></div>';
+  /* a plain input's label points at it, so screen readers announce the field's name */
+  var plain=f.type!=="choice"&&f.type!=="dmy"&&f.type!=="map";
+  return '<div class="field" data-field="'+f.k+'"><label'+(plain?' for="fld_'+f.k+'"':'')+'>'+esc(lab)+'</label>'+input+hint+why+'<div class="errmsg">'+t("reqFix")+'</div></div>';
 }
 function clearErr(el){ var fl=el.closest(".field"); if(fl) fl.classList.remove("err"); }
 function renderFields(){
