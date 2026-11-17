@@ -26,12 +26,51 @@
       ".mpanel a:last-child{border-bottom:0}" +
       ".mpanel a[aria-current]{color:var(--ka-red)}" +
     "}" +
-    ".menubtn:focus-visible,.mpanel a:focus-visible{outline:3px solid var(--ka-red);outline-offset:2px}";
+    ".menubtn:focus-visible,.mpanel a:focus-visible{outline:3px solid var(--ka-red);outline-offset:2px}" +
+    /* scroll-in: content rises gently into view; siblings in a row follow one another */
+    ".rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}" +
+    ".rv.in{opacity:1;transform:none}" +
+    /* numbered steps: the dotted link to the next step draws itself once the steps are in */
+    "ol.steps.rvl li::after{transform:scaleX(0);transform-origin:left;transition:transform .6s ease}" +
+    "ol.steps.rvl.in li::after{transform:scaleX(1)}" +
+    "ol.steps.rvl.in li:nth-child(2)::after{transition-delay:.25s}ol.steps.rvl.in li:nth-child(3)::after{transition-delay:.5s}";
+
+  /* Scroll-in animation for the content blocks on every page. Only JS adds the hidden starting state,
+     so without JS (or with reduced motion) everything simply shows. Things already on screen when the
+     page opens appear at once. */
+  function reveal() {
+    if (!("IntersectionObserver" in window)) return;
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var sel = "main section.block h2.sec, main .card, main ol.steps li, main ul.reqs li, main ul.checks li, main details.faq," +
+              " main .tcard, main .appcard, main .city, main .phase .p, main .note, main .filmcard, main .svcstage";
+    var els = [].slice.call(document.querySelectorAll(sel)).filter(function (el) {
+      return !el.closest(".hero, #how, .herostage, [hidden]");
+    });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target; el.classList.add("in"); io.unobserve(el);
+        if (el.tagName !== "OL") setTimeout(function () { el.classList.remove("rv", "in"); el.style.transitionDelay = ""; }, 1300);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: .08 });
+    var vh = window.innerHeight;
+    els.forEach(function (el) {
+      if (el.getBoundingClientRect().top < vh * .92) return; // already on screen: leave as is
+      var sib = el.parentNode ? [].indexOf.call(el.parentNode.children, el) : 0;
+      el.style.transitionDelay = Math.min(sib, 5) * 80 + "ms";
+      el.classList.add("rv"); io.observe(el);
+    });
+    [].forEach.call(document.querySelectorAll("main ol.steps"), function (ol) {
+      if (ol.getBoundingClientRect().top < vh * .92) return;
+      ol.classList.add("rvl"); io.observe(ol);
+    });
+  }
 
   function init() {
     var st = document.createElement("style");
     st.textContent = css;
     document.head.appendChild(st);
+    reveal();
 
     var header = document.querySelector("header.site");
     var bar = header && header.querySelector(".bar");

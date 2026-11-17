@@ -36,6 +36,23 @@
   .cov .city h4{font-weight:800;font-size:17px} .cov .city p{color:var(--ka-ink-soft);font-size:13.5px;margin-top:2px}
   .status{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:6px 11px;border-radius:99px;white-space:nowrap}
   .status.live{background:#e7f6ec;color:var(--ka-green-deep)} .status.next{background:#eaf2fb;color:var(--ka-blue-deep)} .status.soon{background:#f3f2f2;color:var(--ka-ink-soft)}
+
+  /* modern layer (17 Nov 2026): live dot, roadmap cards with a three-step tracker */
+  .eyebrow.green{display:inline-flex;align-items:center;gap:8px}
+  .eyebrow.green::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ka-green);box-shadow:0 0 0 0 rgba(14,176,70,.5);animation:kaLive 2s infinite}
+  @keyframes kaLive{70%{box-shadow:0 0 0 10px rgba(14,176,70,0)}100%{box-shadow:0 0 0 0 rgba(14,176,70,0)}}
+  .cov{gap:16px}
+  .cov .city{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px 12px;border-radius:22px;padding:22px 22px 18px;box-shadow:var(--sh);transition:transform .25s,box-shadow .25s}
+  .cov .city:hover{transform:translateY(-3px);box-shadow:0 26px 46px -26px rgba(23,35,58,.45)}
+  .cov .city h4{font-size:20px;font-weight:900;letter-spacing:-.02em}
+  .track{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-style:normal}
+  .track i{height:6px;border-radius:6px;background:#ece6e4}
+  .track.t-next i.on{background:linear-gradient(90deg,#3f7fd6,#0058a1)}
+  .track.t-soon i.on{background:#b9b2b0}
+  .track.t-live i.on{background:var(--ka-green)}
+  .track em{font-style:normal;font-size:11px;font-weight:700;color:var(--ka-ink-soft);letter-spacing:.02em}
+  .track.t-next em:nth-of-type(2),.track.t-soon em:nth-of-type(1){color:var(--ka-ink);font-weight:800}
+  @media(prefers-reduced-motion:reduce){.eyebrow.green::before{animation:none}}
 </style>
 </head>
 <body>
@@ -128,10 +145,10 @@
       <div class="eyebrow" style="margin-top:38px" data-en="Rolling out next" data-fil="Susunod na ilulunsad">Rolling out next</div>
       <h2 class="sec" data-en="Where to next?" data-fil="Saan susunod?">Where to next?</h2>
       <div class="cov mt22">
-        <div class="city"><div><h4 aria-level="3">Iligan</h4><p data-en="Lanao del Norte" data-fil="Lanao del Norte">Lanao del Norte</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span></div>
-        <div class="city"><div><h4 aria-level="3">Cagayan de Oro</h4><p data-en="Misamis Oriental" data-fil="Misamis Oriental">Misamis Oriental</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span></div>
-        <div class="city"><div><h4 aria-level="3">Cotabato City</h4><p data-en="BARMM" data-fil="BARMM">BARMM</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span></div>
-        <div class="city"><div><h4 aria-level="3">Pagadian</h4><p data-en="Zamboanga del Sur" data-fil="Zamboanga del Sur">Zamboanga del Sur</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span></div>
+        <div class="city"><div><h4 aria-level="3">Iligan</h4><p data-en="Lanao del Norte" data-fil="Lanao del Norte">Lanao del Norte</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span><span class="track t-next" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
+        <div class="city"><div><h4 aria-level="3">Cagayan de Oro</h4><p data-en="Misamis Oriental" data-fil="Misamis Oriental">Misamis Oriental</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span><span class="track t-next" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
+        <div class="city"><div><h4 aria-level="3">Cotabato City</h4><p data-en="BARMM" data-fil="BARMM">BARMM</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span><span class="track t-soon" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
+        <div class="city"><div><h4 aria-level="3">Pagadian</h4><p data-en="Zamboanga del Sur" data-fil="Zamboanga del Sur">Zamboanga del Sur</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span><span class="track t-soon" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
       </div>
     </div>
   </section>

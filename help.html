@@ -49,6 +49,20 @@
   details.faq .doc ul{margin:4px 0 4px 18px}
   details.faq .revnote{margin-top:12px;font-size:12.5px;color:var(--ka-ink-soft);border-top:1px solid var(--ka-line);padding-top:10px}
 </style>
+<style>
+/* FAQ search and topic chips (17 Nov 2026) */
+.faqtools{margin:24px 0 26px;display:grid;gap:14px}
+.faqsearch{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--ka-line);border-radius:999px;padding:0 18px;box-shadow:0 14px 30px -22px rgba(23,35,58,.45);transition:border-color .15s,box-shadow .15s}
+.faqsearch:focus-within{border-color:var(--ka-red);box-shadow:0 0 0 4px rgba(238,0,0,.1)}
+.faqsearch svg{width:20px;height:20px;color:var(--ka-ink-soft);flex:none}
+.faqsearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:500 16px/1 inherit;font-family:inherit;padding:15px 0;color:var(--ka-ink)}
+.faqchips{display:flex;flex-wrap:wrap;gap:8px}
+.faqchips button{border:1.5px solid var(--ka-line);background:#fff;color:var(--ka-ink);font:700 14px/1 inherit;font-family:inherit;padding:10px 16px;border-radius:999px;cursor:pointer;min-height:40px;transition:background .15s,border-color .15s,color .15s}
+.faqchips button:hover{border-color:#f0c9c9}
+.faqchips button[aria-pressed="true"]{background:var(--ka-red);border-color:var(--ka-red);color:#fff}
+.faqchips button:focus-visible{outline:3px solid var(--ka-red);outline-offset:2px}
+.faqnone{color:var(--ka-ink-soft);font-size:15px}
+</style>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true">
@@ -129,6 +143,13 @@
     <div class="wrap" style="max-width:820px">
       <div class="eyebrow">FAQ</div>
       <h2 class="sec" data-en="Questions, answered." data-fil="Mga tanong, sagot na.">Questions, answered.</h2>
+      <!-- Search and topic filters (17 Nov 2026), built by the script at the end of the page from the
+           categories below. Hidden until that script runs, so without JS the plain list shows. -->
+      <div class="faqtools" id="faqtools" hidden>
+        <label class="faqsearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg><input id="faqq" type="search" placeholder="Search questions" aria-label="Search questions" autocomplete="off"></label>
+        <div class="faqchips" id="faqchips" role="group" aria-label="Topics"></div>
+        <p class="faqnone" id="faqnone" hidden>No questions match that search. Try another word, or email support@pagarexpress.com.</p>
+      </div>
 
       <div class="cat" data-en="Getting started" data-fil="Pagsisimula">Getting started</div>
       <details class="faq"><summary><span data-en="How do I create an account?" data-fil="Paano gumawa ng account?">How do I create an account?</span><span class="chev">▾</span></summary><p data-en="Download the app, enter your mobile number, and verify the one-time PIN sent by SMS. Add your name and email to finish." data-fil="I-download ang app, ilagay ang numero, i-verify ang PIN sa SMS, idagdag ang pangalan at email.">Download the app, enter your mobile number, and verify the one-time PIN sent by SMS. Add your name and email to finish.</p></details>
@@ -273,6 +294,36 @@
 <script src="assets/pagar.js"></script>
 <script src="assets/hash-target.js"></script>
 <script src="assets/nav.js"></script>
+<script>
+/* FAQ search and topic chips: filter the questions under "Questions, answered." by words (in the
+   question or its answer) and by topic. Topics come from the page's own .cat headings. */
+(function(){
+  var tools=document.getElementById("faqtools"); if(!tools) return;
+  var wrap=tools.parentNode, q=document.getElementById("faqq"), chips=document.getElementById("faqchips"), none=document.getElementById("faqnone");
+  var items=[], cats=[], current=null, topic="all";
+  [].forEach.call(wrap.children,function(el){
+    if(el.classList.contains("cat")){ current={el:el,name:el.textContent.trim(),items:[]}; cats.push(current); }
+    else if(el.matches("details.faq")&&current){ var it={el:el,cat:current,text:el.textContent.toLowerCase()}; items.push(it); current.items.push(it); }
+  });
+  if(!items.length) return;
+  function chip(label,val){ var b=document.createElement("button"); b.type="button"; b.textContent=label; b.setAttribute("aria-pressed",val===topic?"true":"false");
+    b.addEventListener("click",function(){ topic=val; [].forEach.call(chips.children,function(c){ c.setAttribute("aria-pressed","false"); }); b.setAttribute("aria-pressed","true"); apply(); }); chips.appendChild(b); }
+  chip("All","all"); cats.forEach(function(c,i){ chip(c.name,i); });
+  function apply(){
+    var words=q.value.toLowerCase().trim().split(/\s+/).filter(Boolean), shown=0;
+    items.forEach(function(it){
+      var okTopic=topic==="all"||cats[topic]===it.cat, okWords=words.every(function(w){ return it.text.indexOf(w)>-1; });
+      var show=okTopic&&okWords; it.el.hidden=!show; if(show) shown++;
+      if(!words.length&&it.el.dataset.auto){ it.el.open=false; delete it.el.dataset.auto; }
+      if(show&&words.length&&!it.el.open&&words.some(function(w){ return it.el.querySelector(".doc,p")&&it.el.textContent.toLowerCase().indexOf(w)>-1&&it.el.querySelector("summary").textContent.toLowerCase().indexOf(w)<0; })){ it.el.open=true; it.el.dataset.auto="1"; }
+    });
+    cats.forEach(function(c){ c.el.hidden=!c.items.some(function(it){ return !it.el.hidden; }); });
+    none.hidden=shown>0;
+  }
+  q.addEventListener("input",apply);
+  tools.hidden=false;
+})();
+</script>
 <script>
 /* Store listings link straight at a single policy — help.html#privacy, help.html#terms.
    The policies are <details> accordions, so an id alone lands the reader on a closed panel.
