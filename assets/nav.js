@@ -124,6 +124,36 @@
     reveal();
     cardLight();
 
+    /* A nav link that points into this page (About's "Our journey" → about.html#journey) takes the
+       highlight while its section is on screen, and hands it back to the page's own link after. */
+    function sectionSpy(header) {
+      var page = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+      var all = header.querySelectorAll("a.navlink"), own = [], spots = [];
+      for (var i = 0; i < all.length; i++) {
+        var h = (all[i].getAttribute("href") || "").toLowerCase();
+        if (h === page) own.push(all[i]);
+        else if (h.indexOf(page + "#") === 0) {
+          var sec = document.getElementById(all[i].getAttribute("href").split("#")[1]);
+          if (sec) spots.push({ a: all[i], sec: sec });
+        }
+      }
+      if (!spots.length) return;
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var line = header.getBoundingClientRect().bottom + innerHeight * .25, hit = null;
+        spots.forEach(function (s) { var r = s.sec.getBoundingClientRect(); if (r.top <= line && r.bottom > line) hit = s.sec; });
+        spots.forEach(function (s) { if (s.sec === hit) s.a.setAttribute("aria-current", "location"); else s.a.removeAttribute("aria-current"); });
+        own.forEach(function (a) { if (hit) a.removeAttribute("aria-current"); else a.setAttribute("aria-current", "page"); });
+      }
+      function soon() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+      addEventListener("scroll", soon, { passive: true });
+      addEventListener("resize", soon);
+      addEventListener("hashchange", soon);
+      addEventListener("load", soon);
+      update();
+    }
+
     var header = document.querySelector("header.site");
     if (header && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) {
       var sb = document.createElement("div"); sb.className = "scrollbar"; sb.setAttribute("aria-hidden", "true"); header.appendChild(sb);
@@ -150,6 +180,7 @@
       '<svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     bar.appendChild(btn);
     header.appendChild(panel);
+    sectionSpy(header);
 
     function set(open) {
       header.classList.toggle("menu-open", open);
