@@ -2,7 +2,7 @@
    The section is tall; its stage sticks to the screen while you scroll through it. A winding road
    is drawn to fit the stage and a Pagar tricycle drives along it with the scroll, slowing at each
    stop. On top of that:
-   - a camera (.jworld) that zooms in, tilts slightly and follows the tricycle, then pulls back out
+   - a camera (.jworld) that zooms in and follows the tricycle, then pulls back out
      at the start and the end so the whole route shows;
    - a 3D card deck: the current stop's card flips up, earlier cards slide back behind it;
    - a burst in the Sarimanok's tail colours at each stop, and lane markings that flow while you
@@ -105,7 +105,7 @@
     // camera: zoom in and follow the tricycle mid-journey, pull back out at both ends
     var Z = mobile ? .18 : .38, f = Math.sin(Math.PI * Math.min(1, s * 1.08)), z = 1 + Z * f;
     var tx = f * (W * .5 - z * a.x), ty = f * (H * (mobile ? .5 : .6) - z * a.y);
-    if (world !== stage) world.style.transform = "perspective(1600px) rotateX(" + (10 * f).toFixed(2) + "deg) translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + z.toFixed(3) + ")";
+    if (world !== stage) world.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + z.toFixed(3) + ")";
 
     var at = 0;
     for (var i = 0; i < N; i++) if (L >= stopLen[i] - 6) at = i;

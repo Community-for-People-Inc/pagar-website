@@ -269,7 +269,7 @@
   .jscene .sky{bottom:42%;height:46%;opacity:.55}
   .jscene .lake{bottom:0;height:46%}
   .journey.live .jstage{position:sticky;top:0;height:100vh;height:100svh}
-  .jhead{position:relative;z-index:2;padding-top:84px}
+  .jhead{position:relative;z-index:5;padding-top:84px}
   .jhead .sec{color:var(--ka-ink);max-width:20ch}
   .jhead .eyebrow{color:var(--ka-red)!important}
   .jmeta{display:flex;align-items:center;gap:14px;margin-top:14px;font:700 12.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;color:var(--ka-ink-soft)}
@@ -912,14 +912,15 @@
   function tick(){ clearTimeout(timer); if(stopped||!inView||calm||hovering) return; timer=setTimeout(function(){ show(cur+1); tick(); },3500); }
   function stop(){ stopped=true; clearTimeout(timer); list.classList.remove("auto"); }
   tabs.forEach(function(t,i){ t.addEventListener("click",function(){ clearTimeout(hoverT); stop(); show(i); }); });
-  /* Desktop: hovering a service shows it (after a short delay, so sweeping across the list doesn't
+  /* Mouse: hovering a service shows it (after a short delay, so sweeping across the list doesn't
      flicker). Auto-advance pauses while the mouse is over the list and resumes when it leaves,
-     unless someone clicked a service. */
-  if(window.matchMedia&&matchMedia("(hover:hover) and (pointer:fine)").matches){
-    tabs.forEach(function(t,i){ t.addEventListener("mouseenter",function(){ clearTimeout(hoverT); hoverT=setTimeout(function(){ if(i!==cur) show(i); },120); }); });
-    list.addEventListener("mouseenter",function(){ hovering=true; clearTimeout(timer); list.classList.remove("auto"); });
-    list.addEventListener("mouseleave",function(){ hovering=false; clearTimeout(hoverT); if(!stopped&&!calm){ list.classList.add("auto"); show(cur); tick(); } });
-  }
+     unless someone clicked a service. The pointer type is checked on each event, not once at load,
+     so it works however the page was opened; touch keeps tap-to-switch. */
+  function isMouse(e){ return e.pointerType ? e.pointerType==="mouse" : true; }
+  var hasPointer="PointerEvent" in window, enterEv=hasPointer?"pointerenter":"mouseenter", leaveEv=hasPointer?"pointerleave":"mouseleave";
+  tabs.forEach(function(t,i){ t.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; clearTimeout(hoverT); hoverT=setTimeout(function(){ if(i!==cur) show(i); },120); }); });
+  list.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; hovering=true; clearTimeout(timer); list.classList.remove("auto"); });
+  list.addEventListener(leaveEv,function(e){ if(!isMouse(e)) return; hovering=false; clearTimeout(hoverT); if(!stopped&&!calm){ list.classList.add("auto"); show(cur); tick(); } });
   list.addEventListener("keydown",function(e){
     var k=e.key, n=k==="ArrowDown"||k==="ArrowRight"?1:k==="ArrowUp"||k==="ArrowLeft"?-1:0;
     if(k==="Enter"||k===" "){ e.preventDefault(); stop(); return; }
