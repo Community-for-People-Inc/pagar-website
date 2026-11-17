@@ -1273,10 +1273,19 @@
   function resume(){ if(calm||hovering) return; stopped=false; list.classList.add("auto"); var b=tabs[cur]&&tabs[cur].querySelector(".bar"); if(b){ b.style.animation="none"; void b.offsetWidth; b.style.animation=""; } tick(); }
   tabs.forEach(function(t,i){ t.addEventListener("click",function(){ clearTimeout(hoverT); stop(); if(scrolly) goTo(i); else show(i); }); });
   function isMouse(e){ return e.pointerType ? e.pointerType==="mouse" : true; }
-  var hasPointer="PointerEvent" in window, enterEv=hasPointer?"pointerenter":"mouseenter", leaveEv=hasPointer?"pointerleave":"mouseleave";
-  tabs.forEach(function(t,i){ t.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; clearTimeout(hoverT); hoverT=setTimeout(function(){ if(i!==cur) show(i); },120); }); });
-  list.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; hovering=true; clearTimeout(timer); list.classList.remove("auto"); });
-  list.addEventListener(leaveEv,function(e){ if(!isMouse(e)) return; hovering=false; clearTimeout(hoverT); if(!stopped&&!calm){ list.classList.add("auto"); tick(); } });
+  /* Hover means the mouse really moved onto a service. When you scroll with the mouse resting on
+     the list, the page slides under it; that is not a hover, so it must not pick a service or
+     pause the timer. Scrolling always takes over again and restarts the timer. */
+  var lastScroll=0, mx=-1, my=-1;
+  window.addEventListener("scroll",function(){ lastScroll=Date.now(); if(hovering){ hovering=false; clearTimeout(hoverT); resume(); } },{passive:true});
+  function realMove(e){ var moved=Math.abs(e.screenX-mx)+Math.abs(e.screenY-my)>2; mx=e.screenX; my=e.screenY; return moved && Date.now()-lastScroll>250; }
+  var moveEv="PointerEvent" in window?"pointermove":"mousemove", leaveEv="PointerEvent" in window?"pointerleave":"mouseleave";
+  tabs.forEach(function(t,i){ t.addEventListener(moveEv,function(e){
+    if(!isMouse(e)||!realMove(e)) return;
+    if(!hovering){ hovering=true; clearTimeout(timer); list.classList.remove("auto"); }
+    if(i!==cur){ clearTimeout(hoverT); hoverT=setTimeout(function(){ if(hovering) show(i); },90); }
+  }); });
+  list.addEventListener(leaveEv,function(e){ if(!isMouse(e)) return; clearTimeout(hoverT); if(hovering){ hovering=false; if(!stopped&&!calm){ list.classList.add("auto"); tick(); } } });
   list.addEventListener("keydown",function(e){
     var k=e.key, n=k==="ArrowDown"||k==="ArrowRight"?1:k==="ArrowUp"||k==="ArrowLeft"?-1:0;
     if(k==="Enter"||k===" "){ e.preventDefault(); stop(); return; }

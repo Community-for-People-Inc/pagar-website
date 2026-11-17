@@ -88,13 +88,22 @@
     function tick() { clearTimeout(timer); if (stopped || hovering || !inView || calm || box.hidden) return; timer = setTimeout(function () { show(cur + 1); tick(); }, 4500); }
     function stop() { stopped = true; clearTimeout(timer); list.classList.remove("auto"); }
     function isMouse(e) { return e.pointerType ? e.pointerType === "mouse" : true; }
-    var enter = "PointerEvent" in window ? "pointerenter" : "mouseenter", leave = "PointerEvent" in window ? "pointerleave" : "mouseleave";
+    /* hover = the mouse really moved onto a step; the page scrolling under a resting mouse is not a
+       hover, and scrolling hands control back to the timer */
+    var move = "PointerEvent" in window ? "pointermove" : "mousemove", leave = "PointerEvent" in window ? "pointerleave" : "mouseleave";
+    var lastScroll = 0, mx = -1, my = -1;
+    function realMove(e) { var moved = Math.abs(e.screenX - mx) + Math.abs(e.screenY - my) > 2; mx = e.screenX; my = e.screenY; return moved && Date.now() - lastScroll > 250; }
+    function unhover() { if (!hovering) return; hovering = false; if (!stopped && !calm) { list.classList.add("auto"); show(cur); tick(); } }
+    window.addEventListener("scroll", function () { lastScroll = Date.now(); unhover(); }, { passive: true });
     steps.forEach(function (s, i) {
       s.addEventListener("click", function () { swiping = false; stop(); show(i); });
-      s.addEventListener(enter, function (e) { if (isMouse(e) && i !== cur) show(i); });
+      s.addEventListener(move, function (e) {
+        if (!isMouse(e) || !realMove(e)) return;
+        if (!hovering) { hovering = true; clearTimeout(timer); list.classList.remove("auto"); }
+        if (i !== cur) show(i);
+      });
     });
-    list.addEventListener(enter, function (e) { if (!isMouse(e)) return; hovering = true; clearTimeout(timer); list.classList.remove("auto"); });
-    list.addEventListener(leave, function (e) { if (!isMouse(e)) return; hovering = false; if (!stopped && !calm) { list.classList.add("auto"); show(cur); tick(); } });
+    list.addEventListener(leave, function (e) { if (isMouse(e)) unhover(); });
     list.addEventListener("keydown", function (e) {
       var n = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
       if (!n) return; e.preventDefault(); stop(); show(cur + n, true);
