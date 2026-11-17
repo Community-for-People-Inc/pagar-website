@@ -179,6 +179,31 @@
   .ap .fld.ph{color:#8f8a8c}
   .ap .fld.map{display:flex;justify-content:space-between;font-weight:800}
   .ap .hl{color:#7b7f90;font-size:8.5px}
+  /* Ride screen, redrawn from the real app's "Book a Ride" step 1 (capacity tiers, distance, female-driver option) */
+  .ap .fm.rd{gap:4px;padding:10px 9px 6px;overflow:hidden}
+  .ap .fm.rd .fld{margin-bottom:2px;padding:6px 8px}
+  .ap .fld.typing::after{content:"";display:inline-block;width:1px;height:9px;margin-left:2px;vertical-align:-1px;background:#ee0000;animation:kaCaret 1s steps(2) infinite}
+  @keyframes kaCaret{50%{opacity:0}}
+  .ap .dist{background:#e9f7ee;border:1px solid #0eb046;color:#0a7a34;border-radius:7px;padding:5px 8px;font-weight:800;font-size:8.5px}
+  .ap .fld.vm{text-align:center;font-weight:800;color:var(--ka-ink)}
+  .ap .tierh b{font-size:11px;font-weight:900}
+  .ap .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+  .ap .tiers.two{grid-template-columns:1fr 1fr}
+  .ap .tier{background:#fff;border:1px solid #e3dedd;border-radius:8px;padding:4px 2px 5px;text-align:center;line-height:1.2}
+  .ap .tier svg{display:block;width:22px;height:16px;margin:0 auto 2px}
+  .ap .tier b{display:block;font-size:8px;font-weight:900}.ap .tier small{display:block;font-size:6.5px;color:#7b7f90}
+  .ap .tier em{display:block;font-style:normal;font-weight:900;font-size:7.5px;color:#ee0000}
+  .ap .tier.on{background:#ee0000;border-color:#ee0000;color:#fff;box-shadow:0 6px 12px -6px rgba(238,0,0,.8)}
+  .ap .tier.on small,.ap .tier.on em{color:#fff}
+  .ap .tier.off{background:#f4f2f2;color:#a9a5a6}.ap .tier.off em{color:#a9a5a6;font-weight:700}.ap .tier.off svg{opacity:.55}
+  .ap .tiers.two .tier{display:grid;grid-template-columns:24px 1fr;align-items:center;text-align:left;column-gap:4px;padding:4px 6px}
+  .ap .tiers.two .tier svg{grid-row:span 2;margin:0}
+  .ap .fem{display:flex;align-items:center;gap:6px;background:#f6f3f2;border:1px solid #e6e1e0;border-radius:7px;padding:6px 8px;font-size:8.5px;font-weight:600}
+  .ap .disc{background:#f4f2f2;border-radius:7px;padding:6px 8px;font-size:7.5px;color:#5b5f73;line-height:1.35}
+  .ap .fem i{width:10px;height:10px;border:1.5px solid #c9c4c3;border-radius:3px;background:#fff}
+  .scrn.on .tier.on{animation:kaTier .6s .35s cubic-bezier(.3,1.5,.5,1) both}
+  @keyframes kaTier{from{transform:scale(.86)}to{transform:none}}
+  @media(prefers-reduced-motion:reduce){.ap .fld.typing::after,.scrn.on .tier.on{animation:none}}
   .ap .next{margin:0 10px 18px;background:#ee0000;color:#fff;text-align:center;font-weight:900;font-size:11px;border-radius:8px;padding:10px}
   /* Package (blue), Market (yellow) and Pabili (orange) as in the app */
   .ap .mk.dk{filter:none}
@@ -426,6 +451,47 @@
   }
   @media(prefers-reduced-motion:reduce){#services .svctabs.auto .svc[aria-selected="true"] .bar{animation:none}.scrn{transition:none}}
   @media(max-width:640px){.film{padding:56px 0}.filmcard{border-radius:20px}}
+  /* ---- Services scroll scene + richer screen changes (17 Nov 2026, second pass) ---- */
+  .scrn{transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1),filter .5s}
+  .scrn:not(.on){transform:translateY(46px) scale(.96);filter:blur(6px)}
+  .scrn.out{transform:translateY(-46px) scale(.96)}
+  #svcstage.back .scrn:not(.on){transform:translateY(-46px) scale(.96)}
+  #svcstage.back .scrn.out{transform:translateY(46px) scale(.96)}
+  .scrn.on{filter:none}
+  #services .phone{--tilt:0deg;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  @media(min-width:900px){#services.scrolly .svcstage .phone{transform:translateX(80px) rotate(calc(-2deg + var(--tilt)))}}
+  @media(max-width:1180px) and (min-width:900px){#services.scrolly .svcstage .phone{transform:translateX(84px) rotate(calc(-2deg + var(--tilt))) scale(.92)}}
+  #services .phone.kick{animation:kaKick .7s cubic-bezier(.3,1.3,.5,1)}
+  #services .phone.kickb{animation:kaKickB .7s cubic-bezier(.3,1.3,.5,1)}
+  @keyframes kaKick{0%{translate:0 0}35%{translate:0 -14px}100%{translate:0 0}}
+  @keyframes kaKickB{0%{translate:0 0}35%{translate:0 14px}100%{translate:0 0}}
+  .svcword{position:absolute;z-index:0;left:0;right:0;top:50%;margin-top:-.55em;text-align:center;font-weight:900;font-size:clamp(96px,14vw,200px);line-height:1.1;letter-spacing:-.04em;text-transform:uppercase;white-space:nowrap;color:transparent;-webkit-text-stroke:2.5px var(--c,#ee0000);opacity:.3;pointer-events:none}
+  .svcword.swap{animation:kaWord .7s cubic-bezier(.2,.8,.2,1)}
+  @keyframes kaWord{from{opacity:0;letter-spacing:.08em;filter:blur(8px)}to{opacity:.3}}
+  /* orbit rings in the service colour behind the phone */
+  #services .svcstage::before{content:"";position:absolute;z-index:1;left:50%;top:50%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,transparent 0 37%,color-mix(in srgb,var(--c,#ee0000) 22%,transparent) 37.2% 37.6%,transparent 37.8% 55%,color-mix(in srgb,var(--c,#ee0000) 14%,transparent) 55.2% 55.6%,transparent 55.8%),
+      conic-gradient(from 0deg,transparent 0 78%,color-mix(in srgb,var(--c,#ee0000) 28%,transparent) 92%,transparent 100%);
+    -webkit-mask:radial-gradient(circle,transparent 0 36%,#000 37%);mask:radial-gradient(circle,transparent 0 36%,#000 37%);animation:kaSpin 14s linear infinite}
+  @media(min-width:900px){#services .svcstage::before{margin-left:-180px}}
+  @media(prefers-reduced-motion:reduce){#services .svcstage::before{animation:none}}
+  #services .svcstage>.phone{position:relative;z-index:2}
+  #services .stagechip,#services .stagemeta{z-index:6}
+  @media(max-width:560px){#services .stagemeta{display:none}}
+  .svcrail,.svchint,.svcrun{display:none}
+  @media(min-width:900px){
+    #services.scrolly .svcwrap{position:sticky}
+    #services.scrolly .svcrun{display:block}
+    #services.scrolly .svctabs{position:relative;padding-left:22px}
+    #services.scrolly .svcrail{display:block;position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:3px;background:rgba(23,35,58,.1);overflow:hidden}
+    #services.scrolly .svcrail i{display:block;height:100%;background:linear-gradient(var(--ka-red),var(--c,var(--ka-red)));transform:scaleY(0);transform-origin:top}
+    #services.scrolly .svchint{display:flex;align-items:center;gap:8px;position:absolute;z-index:6;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(255,255,255,.92);border:1px solid var(--ka-line);border-radius:999px;padding:7px 14px;font-weight:800;font-size:12px;color:var(--ka-ink-soft);transition:opacity .4s,transform .4s}
+    #services.scrolly .svchint i{width:10px;height:16px;border:2px solid currentColor;border-radius:6px;position:relative}
+    #services.scrolly .svchint i::after{content:"";position:absolute;left:50%;top:2px;width:2px;height:4px;margin-left:-1px;border-radius:2px;background:currentColor;animation:kaWheel 1.4s infinite}
+    #services.scrolly .svchint.gone{opacity:0;transform:translate(-50%,10px)}
+  }
+  @keyframes kaWheel{0%{transform:translateY(0);opacity:1}100%{transform:translateY(6px);opacity:0}}
+  @media(prefers-reduced-motion:reduce){.scrn,.scrn:not(.on),.scrn.out{transition:none;filter:none}#services .phone.kick,#services .phone.kickb,.svcword.swap{animation:none}}
 </style>
 </head>
 <body>
@@ -530,7 +596,7 @@
             <div class="srch"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#5b8ad6" stroke-width="2.4"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5" stroke-linecap="round"/></svg>Search for food, shops…</div>
             <div class="t5"><div><img src="assets/services/food.svg" alt="">Food</div><div><img src="assets/services/ride.svg" alt="">Ride</div><div><img src="assets/services/package.svg" alt="">Package</div><div><img src="assets/services/market.svg" alt="">Market</div><div><img src="assets/services/pabili.svg" alt="">Pabili</div></div>
             <div class="bnr"><div class="bt"><b>Help Build a Mosque</b><span>communityforpeople.org</span></div><div class="bm"></div></div><div class="act"><div class="ah2"><b>Recent activity</b><em>See all</em></div><div class="ac"><div><small>FOOD</small><b>Order #1042</b><span>Chicken Kabsa · ₱250</span></div><i>Delivered</i></div></div>
-            <div class="bnav"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Profile</span></div>
+            <div class="bnav"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
           </div>
         </div></div>
       </div>
@@ -593,9 +659,9 @@
       <p class="lead" style="margin-top:12px">Tap a service to see it in the app.</p>
       <div class="svcwrap mt22">
       <div class="svctabs" role="tablist" aria-label="Pagar services">
-        <div class="svc food" role="tab" id="tab-food" data-s="food" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#2f9e3a;--g:#dcf2d6"><span class="tilebox"><img class="tile" src="assets/services/food.svg" width="120" height="120" alt=""></span><div><b data-en="Food" data-fil="Pagkain">Food</b><br><span data-en="Halal kitchens and local favorites, delivered hot." data-fil="Halal na kusina at paboritong lokal, mainit na hatid.">Halal kitchens and local favorites, delivered hot.</span></div><i class="bar" aria-hidden="true"></i></div>
-        <div class="svc ride" role="tab" id="tab-ride" data-s="ride" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#3f5bd9;--g:#dfe6fb"><span class="tilebox"><img class="tile" src="assets/services/ride.svg" width="120" height="120" alt=""></span><div><b data-en="Ride" data-fil="Sakay">Ride</b><br><span data-en="Tricycle — upfront fares. Habal-habal and car coming soon." data-fil="Tricycle — presyong alam agad. Habal-habal at kotse, malapit na.">Tricycle — upfront fares. Habal-habal and car coming soon.</span></div><i class="bar" aria-hidden="true"></i></div>
-        <div class="svc package" role="tab" id="tab-package" data-s="package" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#e8302d;--g:#fbdcdb"><span class="tilebox"><img class="tile" src="assets/services/package.svg" width="120" height="120" alt=""></span><div><b data-en="Package" data-fil="Padala">Package</b><br><span data-en="Send parcels across the city, same day." data-fil="Magpadala sa buong siyudad, same day.">Send parcels across the city, same day.</span></div><i class="bar" aria-hidden="true"></i></div>
+        <div class="svc food" role="tab" id="tab-food" data-s="food" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#e00000;--g:#fde0de"><span class="tilebox"><img class="tile" src="assets/services/food.svg" width="120" height="120" alt=""></span><div><b data-en="Food" data-fil="Pagkain">Food</b><br><span data-en="Halal kitchens and local favorites, delivered hot." data-fil="Halal na kusina at paboritong lokal, mainit na hatid.">Halal kitchens and local favorites, delivered hot.</span></div><i class="bar" aria-hidden="true"></i></div>
+        <div class="svc ride" role="tab" id="tab-ride" data-s="ride" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#0e7a3a;--g:#d9f1e1"><span class="tilebox"><img class="tile" src="assets/services/ride.svg" width="120" height="120" alt=""></span><div><b data-en="Ride" data-fil="Sakay">Ride</b><br><span data-en="Tricycle — upfront fares. Habal-habal and car coming soon." data-fil="Tricycle — presyong alam agad. Habal-habal at kotse, malapit na.">Tricycle — upfront fares. Habal-habal and car coming soon.</span></div><i class="bar" aria-hidden="true"></i></div>
+        <div class="svc package" role="tab" id="tab-package" data-s="package" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#0058a1;--g:#dbe8f6"><span class="tilebox"><img class="tile" src="assets/services/package.svg" width="120" height="120" alt=""></span><div><b data-en="Package" data-fil="Padala">Package</b><br><span data-en="Send parcels across the city, same day." data-fil="Magpadala sa buong siyudad, same day.">Send parcels across the city, same day.</span></div><i class="bar" aria-hidden="true"></i></div>
         <div class="svc market" role="tab" id="tab-market" data-s="market" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#c98a00;--g:#f8ebcb"><span class="tilebox"><img class="tile" src="assets/services/market.svg" width="120" height="120" alt=""></span><div><b data-en="Market" data-fil="Palengke">Market</b><br><span data-en="Buy from local sellers — malong, brassware, goods." data-fil="Bumili sa lokal — malong, brassware, paninda.">Buy from local sellers — malong, brassware, goods.</span></div><i class="bar" aria-hidden="true"></i></div>
         <div class="svc pabili" role="tab" id="tab-pabili" data-s="pabili" aria-controls="svcstage" aria-selected="false" tabindex="-1" style="--c:#ee6a24;--g:#fbe0d0"><span class="tilebox"><img class="tile" src="assets/services/pabili.svg" width="120" height="120" alt=""></span><div><b data-en="Pabili" data-fil="Pabili">Pabili</b><br><span data-en="A rider buys what you ask for and brings it to your door." data-fil="Bibilhin ng rider ang ipinapabili mo at dadalhin sa pinto mo.">A rider buys what you ask for and brings it to your door.</span></div><i class="bar" aria-hidden="true"></i></div>
       </div>
@@ -612,30 +678,40 @@
               <div class="ahd shd"><span class="bk">←</span><span class="logo"><svg class="mk" viewBox="0 0 240 240" aria-hidden="true"><use href="#sarimanok"></use></svg>PAGAR <em>Food</em></span><span class="ct"><svg viewBox="0 0 24 24" fill="#17233a"><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.4L21 8H6.2"/><circle cx="10" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/></svg></span></div>
               <div class="srch sq"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#5b8ad6" stroke-width="2.4"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5" stroke-linecap="round"/></svg>Search for food, restaurants…</div>
               <div class="dl2"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z" fill="#ee0000"/><circle cx="12" cy="11" r="2.6" fill="#fff"/></svg><div><small>DELIVER NOW</small> · Banggolo Mosque, Marawi City</div></div>
-              <div class="chips"><span class="on">All</span><span>Grilled</span><span>Seafood</span></div>
-              <div class="sorts"><span class="on">Nearest</span><span>Top rated</span><span>☪ Halal Certified</span></div>
+              <div class="cats fc"><span class="on"><svg viewBox="0 0 24 24" fill="#fff"><path d="M6 2v9a2 2 0 0 0 2 2v9h2V2zM15 2c-2 2-3 5-3 9h3v11h2V2z"/></svg>All</span><span><svg viewBox="0 0 24 24" fill="#0eb046"><path d="M4 10h16l-3 6H7zM9 16l-2 6M15 16l2 6M8 3c0 2 2 2 2 4M12 3c0 2 2 2 2 4"/></svg>Grilled</span><span><svg viewBox="0 0 24 24" fill="#0058a1"><path d="M2 12c4-6 12-6 16 0-4 6-12 6-16 0zM18 12l4-4v8z"/></svg>Seafood</span><span><svg viewBox="0 0 24 24" fill="#003f74"><path d="M3 11h18a9 9 0 0 1-18 0zM16 4l-3 6"/></svg>Filipino</span><span><svg viewBox="0 0 24 24" fill="#124a28"><path d="M12 6c4 0 5 5 3 11-1 3-5 3-6 0C7 11 8 6 12 6zM12 2v4"/></svg>Maranao</span></div>
+              <div class="sorts"><span class="on">Nearest</span><span>Top rated</span><span>Fastest</span><span>☪ Halal Certified</span></div>
               <b class="ttl">Popular now</b>
               <div class="li"><i></i><div><b>Chicken Adobo Rice</b><small>Halal kitchen · ordered 8×</small></div><span>₱180.00</span></div>
               <div class="li"><i></i><div><b>Chicken Kabsa</b><small>Halal kitchen · ordered 8×</small></div><span>₱250.00</span></div>
               <div class="li"><i></i><div><b>Fresh Buko Juice</b><small>Halal kitchen · ordered 6×</small></div><span>₱65.00</span></div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span class="on"><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Profile</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span class="on"><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="ride" data-chip="Upfront fare · no surge" aria-hidden="true">
             <div class="ap" data-k="ride">
-              <div class="ahd form" style="background:#0e7a3a"><span class="bk2">‹</span><div><b>Book a Ride</b><small>Where are you going?</small></div></div>
-              <div class="fm">
+              <div class="ahd form" style="background:#0e7a3a"><span class="bk2">‹</span><div><b>Book a Ride</b><small>Step 1 of 3 · Where are you going?</small></div></div>
+              <div class="fm rd">
                 <div class="lb"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z" fill="#ee0000"/><circle cx="12" cy="11" r="2.6" fill="#fff"/></svg>Pickup location<em>⌖ Use my location</em></div><div class="fld">Banggolo Mosque, Marawi City</div>
-                <div class="lb"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z" fill="#ee0000"/><circle cx="12" cy="11" r="2.6" fill="#fff"/></svg>Dropoff location</div><div class="fld ph">Type the dropoff address…</div>
-                <div class="fld map">▢ Choose on map <span>›</span></div><p class="hl">Set your destination: tap a suggestion or choose on the map.</p>
+                <div class="lb"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z" fill="#ee0000"/><circle cx="12" cy="11" r="2.6" fill="#fff"/></svg>Dropoff location</div><div class="fld ph typing">Type dropoff address…</div>
+                <div class="dist">📏 Distance: 2.4 km · about 9 min</div>
+                <div class="fld vm">View on Map</div>
+                <div class="tierh"><b>Choose a capacity tier</b></div>
+                <div class="tiers">
+                  <div class="tier off"><svg viewBox="0 0 32 24"><circle cx="7" cy="17" r="4" fill="none" stroke="#e86a7a" stroke-width="2.4"/><circle cx="25" cy="17" r="4" fill="none" stroke="#e86a7a" stroke-width="2.4"/><path d="M7 17l6-6h7l5 6M13 11l-2-4h4" fill="none" stroke="#e86a7a" stroke-width="2.4" stroke-linejoin="round"/></svg><b>Habal-habal</b><small>1 pax</small><em>Coming soon</em></div>
+                  <div class="tier on"><svg viewBox="0 0 32 24"><path d="M6 6h10l3 7h6a3 3 0 0 1 3 3v2H3v-6z" fill="#f4b60e"/><path d="M8 7h6l2 5H8z" fill="#fff6d6"/><circle cx="8" cy="19" r="3" fill="#17233a"/><circle cx="24" cy="19" r="3" fill="#17233a"/><path d="M4 6l3-3" stroke="#ee0000" stroke-width="2" stroke-linecap="round"/></svg><b>Tricycle, 2</b><small>1–2 pax</small><em>from ₱29.50</em></div>
+                  <div class="tier"><svg viewBox="0 0 32 24"><path d="M6 6h10l3 7h6a3 3 0 0 1 3 3v2H3v-6z" fill="#f4b60e"/><path d="M8 7h6l2 5H8z" fill="#fff6d6"/><circle cx="8" cy="19" r="3" fill="#17233a"/><circle cx="24" cy="19" r="3" fill="#17233a"/><path d="M4 6l3-3" stroke="#ee0000" stroke-width="2" stroke-linecap="round"/></svg><b>Tricycle, 3</b><small>1–3 pax</small><em>from ₱29.50</em></div>
+                </div>
+                <div class="tiers two"><div class="tier off"><svg viewBox="0 0 32 24"><path d="M4 16l3-7h18l3 7v4H4z" fill="#e86a7a"/><path d="M9 10h14l2 5H7z" fill="#fff" opacity=".7"/><circle cx="9" cy="20" r="2.6" fill="#17233a"/><circle cx="23" cy="20" r="2.6" fill="#17233a"/></svg><b>Car, 4</b><em>Coming soon</em></div><div class="tier off"><svg viewBox="0 0 32 24"><path d="M4 16l3-7h18l3 7v4H4z" fill="#7aa3e0"/><path d="M9 10h14l2 5H7z" fill="#fff" opacity=".7"/><circle cx="9" cy="20" r="2.6" fill="#17233a"/><circle cx="23" cy="20" r="2.6" fill="#17233a"/></svg><b>Car, 6</b><em>Coming soon</em></div></div>
+                <div class="fem"><i></i>Prefer a female driver</div>
+                <p class="disc">Student, PWD or Senior Citizen? Your fare discount applies once your ID is verified.</p>
               </div>
-              <div class="next">Next</div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span class="on"><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="package" data-chip="Same day, across the city" aria-hidden="true">
             <div class="ap">
               <div class="ahd pk"><span class="ar">←</span><b>Send a package</b><span class="box"></span></div>
-              <div class="steps"><i class="on"></i><i></i><i></i><i></i><span>1/4</span></div>
+              <div class="steps"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span>1/8</span></div>
               <div class="fm plain">
                 <b class="h">Route</b>
                 <b class="h2">Pickup details</b><p class="hl">Where should the driver pick up the package?</p>
@@ -645,7 +721,7 @@
                 <b class="h2">Drop-off details</b>
               </div>
               <div class="next">Continue →</div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span class="on"><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Profile</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span class="on"><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="market" data-chip="From local sellers" aria-hidden="true">
@@ -658,7 +734,7 @@
               <div class="cats"><span class="on"><svg viewBox="0 0 24 24" fill="#fff"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>All</span><span><svg viewBox="0 0 24 24" fill="#ee0000"><path d="M8 3l-5 4 3 4 2-1v11h8V10l2 1 3-4-5-4c-1 2-5 2-8 0z"/></svg>Fashion</span><span><svg viewBox="0 0 24 24" fill="#0eb046"><path d="M3 11l9-8 9 8h-3v10H6V11z"/></svg>Home</span><span><svg viewBox="0 0 24 24" fill="#124a28"><path d="M3 9h18l-2 11H5zM8 9l4-6 4 6"/></svg>Grocery</span><span><svg viewBox="0 0 24 24" fill="#0a7a34"><path d="M3 4h18v6H3zM5 10h14v10H5z"/></svg>Sari-sari</span></div>
               <b class="ttl">Popular now</b>
               <div class="pcs"><div class="pc"><div class="pt">CO</div><b>Cooking Oil (1L)</b><small>Local store</small><span>₱95.00</span></div><div class="pc"><div class="pt">JR</div><b>Jasmine Rice (5kg)</b><small>Local store</small><span>₱285.00</span></div></div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span class="on"><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Profile</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span class="on"><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="pabili" data-chip="A rider buys it for you" aria-hidden="true">
@@ -673,7 +749,7 @@
                 <span class="add"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z" fill="#ee0000"/><circle cx="12" cy="11" r="2.6" fill="#fff"/></svg> Pin the store on the map</span>
                 <div class="lb">Where should we deliver?</div><div class="fld r">Banggolo Mosque, Marawi City</div>
               </div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span class="on"><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Profile</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span class="on"><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
         </div></div>
@@ -885,52 +961,110 @@
 })();
 </script>
 <script>
-/* Services tabs: pick a service to see its sample screen. Advances every 3.5s while the section is on
-   screen; any click, tap or key press on a tab stops the auto-advance for good. Arrow keys move
-   between tabs. Reduced-motion visitors get no auto-advance. */
+/* Services showcase (17 Nov 2026, second pass).
+   Wide screens (900px+ wide, 640px+ tall): a scroll scene. The tabs and phone stick to the screen
+   while you scroll through the section; each stretch of scroll shows the next service, the tab's bar
+   and the side rail fill with the scroll, and a large outlined service name drifts behind the phone.
+   Clicking a tab (or arrow keys) scrolls to that service.
+   Narrow screens: tap/swipe tabs, plus the 3.5s auto-advance while on screen (stops once you tap).
+   Reduced motion: no scroll scene, no auto-advance, no screen animation. Without JS: the Food screen
+   and every tab's words still show. */
 (function(){
-  var list=document.querySelector("#services .svctabs"), stage=document.getElementById("svcstage");
+  var sec=document.getElementById("services"), list=sec&&sec.querySelector(".svctabs"), stage=document.getElementById("svcstage");
   if(!list||!stage) return;
-  var tabs=[].slice.call(list.querySelectorAll('[role="tab"]')), scr=stage.querySelectorAll(".scrn");
-  var idx=stage.querySelector(".idx"), nm=stage.querySelector(".sname"), cur=0, timer=null, inView=false, stopped=false;
+  var wrap=sec.querySelector(".svcwrap"), tabs=[].slice.call(list.querySelectorAll('[role="tab"]')), scr=[].slice.call(stage.querySelectorAll(".scrn"));
+  var phone=stage.querySelector(".phone"), idx=stage.querySelector(".idx"), nm=stage.querySelector(".sname");
+  var N=tabs.length, cur=-1, timer=null, inView=false, stopped=false, scrolly=false, hovering=false, hoverT=null;
   var calm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* decorations, built here so the page without JS is unchanged */
+  var word=document.createElement("div"); word.className="svcword"; word.setAttribute("aria-hidden","true"); stage.insertBefore(word,stage.firstChild);
+  var rail=document.createElement("div"); rail.className="svcrail"; rail.setAttribute("aria-hidden","true"); rail.innerHTML="<i></i>"; list.appendChild(rail);
+  var hint=document.createElement("div"); hint.className="svchint"; hint.setAttribute("aria-hidden","true"); hint.innerHTML="<i></i>Scroll to explore"; stage.appendChild(hint);
+  var run=document.createElement("div"); run.className="svcrun"; run.setAttribute("aria-hidden","true"); wrap.parentNode.insertBefore(run,wrap.nextSibling);
+
   function show(i, focus){
-    cur=(i+tabs.length)%tabs.length;
+    i=(i+N)%N; if(i===cur&&!focus) return;
+    var back=cur>i&&!(cur===N-1&&i===0), prev=cur; cur=i;
     var t=tabs[cur], k=t.getAttribute("data-s");
     tabs.forEach(function(x){ var on=x===t; x.setAttribute("aria-selected",on?"true":"false"); x.tabIndex=on?0:-1; });
-    for(var j=0;j<scr.length;j++) scr[j].classList.toggle("on", scr[j].getAttribute("data-s")===k);
+    stage.classList.toggle("back",back);
+    scr.forEach(function(el){
+      var on=el.getAttribute("data-s")===k, was=prev>=0&&el.classList.contains("on");
+      el.classList.toggle("out",was&&!on); el.classList.toggle("on",on);
+    });
     stage.style.setProperty("--c", t.style.getPropertyValue("--c"));
     stage.style.setProperty("--g", t.style.getPropertyValue("--g"));
+    sec.style.setProperty("--c", t.style.getPropertyValue("--c"));
     stage.setAttribute("aria-labelledby", t.id);
     idx.textContent=("0"+(cur+1)).slice(-2); nm.textContent=t.querySelector("b").textContent;
+    word.textContent=nm.textContent; word.classList.remove("swap"); void word.offsetWidth; word.classList.add("swap");
     var chip=stage.querySelector(".stagechip span"), on=stage.querySelector('.scrn[data-s="'+k+'"]');
     if(chip&&on){ chip.textContent=on.getAttribute("data-chip"); chip.parentNode.classList.remove("pop"); void chip.offsetWidth; chip.parentNode.classList.add("pop"); }
-    var bar=t.querySelector(".bar"); if(bar){ bar.style.animation="none"; void bar.offsetWidth; bar.style.animation=""; }
-    if(focus) t.focus();
-    if(window.innerWidth<900 && !focus && list.scrollWidth>list.clientWidth) list.scrollTo({left:t.offsetLeft-20,behavior:"smooth"});
+    if(phone&&prev>=0&&!calm){ phone.classList.remove("kick","kickb"); void phone.offsetWidth; phone.classList.add(back?"kickb":"kick"); }
+    if(!scrolly){ var bar=t.querySelector(".bar"); if(bar){ bar.style.transform=""; bar.style.animation="none"; void bar.offsetWidth; bar.style.animation=""; } }
+    if(focus) t.focus({preventScroll:scrolly});
+    if(window.innerWidth<900 && !focus && list.scrollWidth>list.clientWidth) list.scrollTo({left:t.offsetLeft-20,behavior:calm?"auto":"smooth"});
   }
-  var hovering=false, hoverT=null;
-  function tick(){ clearTimeout(timer); if(stopped||!inView||calm||hovering) return; timer=setTimeout(function(){ show(cur+1); tick(); },3500); }
+
+  /* ---- scroll scene ---- */
+  var stickTop=0, wrapH=0, runLen=0, ticking=false;
+  function measure(){
+    var want=!calm && window.innerWidth>=900 && window.innerHeight>=640;
+    if(want!==scrolly){
+      scrolly=want; sec.classList.toggle("scrolly",scrolly);
+      if(scrolly){ clearTimeout(timer); list.classList.remove("auto"); }
+      else { tabs.forEach(function(x){ var b=x.querySelector(".bar"); if(b){ b.style.transform=""; b.style.animation=""; } }); if(!stopped&&!calm){ list.classList.add("auto"); tick(); } }
+    }
+    if(!scrolly){ wrap.style.top=""; run.style.height=""; return; }
+    wrapH=wrap.offsetHeight;
+    stickTop=Math.max(84, Math.round((window.innerHeight-wrapH)/2+20));
+    wrap.style.top=stickTop+"px";
+    runLen=Math.round(window.innerHeight*.55*N);
+    run.style.height=runLen+"px";
+    onScroll();
+  }
+  function progress(){ return Math.min(1,Math.max(0,(stickTop+wrapH-run.getBoundingClientRect().top)/runLen)); }
+  function onScroll(){
+    if(!scrolly||ticking) return; ticking=true;
+    requestAnimationFrame(function(){
+      ticking=false; if(!scrolly) return;
+      var p=progress(), f=p*N, i=Math.min(N-1,Math.floor(f)), local=Math.min(1,f-i);
+      show(i);
+      tabs.forEach(function(x,j){ var b=x.querySelector(".bar"); if(b){ b.style.animation="none"; b.style.transform="scaleX("+(j===i?local:0)+")"; } });
+      rail.firstChild.style.transform="scaleY("+p+")";
+      word.style.translate=(30-60*local)+"px 0";
+      if(phone) phone.style.setProperty("--tilt",(local-.5)*6+"deg");
+      hint.classList.toggle("gone",p>.04);
+    });
+  }
+  function goTo(i){
+    i=Math.max(0,Math.min(N-1,i));
+    var top=window.scrollY+run.getBoundingClientRect().top-stickTop-wrapH+(i+.5)/N*runLen;
+    window.scrollTo({top:top,behavior:calm?"auto":"smooth"}); show(i);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+  var rt; window.addEventListener("resize",function(){ clearTimeout(rt); rt=setTimeout(measure,120); });
+  window.addEventListener("load",measure);
+
+  /* ---- tabs: click, hover (mouse, outside the scroll scene), keys ---- */
+  function tick(){ clearTimeout(timer); if(scrolly||stopped||!inView||calm||hovering) return; timer=setTimeout(function(){ show(cur+1); tick(); },3500); }
   function stop(){ stopped=true; clearTimeout(timer); list.classList.remove("auto"); }
-  tabs.forEach(function(t,i){ t.addEventListener("click",function(){ clearTimeout(hoverT); stop(); show(i); }); });
-  /* Mouse: hovering a service shows it (after a short delay, so sweeping across the list doesn't
-     flicker). Auto-advance pauses while the mouse is over the list and resumes when it leaves,
-     unless someone clicked a service. The pointer type is checked on each event, not once at load,
-     so it works however the page was opened; touch keeps tap-to-switch. */
+  tabs.forEach(function(t,i){ t.addEventListener("click",function(){ clearTimeout(hoverT); stop(); if(scrolly) goTo(i); else show(i); }); });
   function isMouse(e){ return e.pointerType ? e.pointerType==="mouse" : true; }
   var hasPointer="PointerEvent" in window, enterEv=hasPointer?"pointerenter":"mouseenter", leaveEv=hasPointer?"pointerleave":"mouseleave";
-  tabs.forEach(function(t,i){ t.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; clearTimeout(hoverT); hoverT=setTimeout(function(){ if(i!==cur) show(i); },120); }); });
-  list.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; hovering=true; clearTimeout(timer); list.classList.remove("auto"); });
-  list.addEventListener(leaveEv,function(e){ if(!isMouse(e)) return; hovering=false; clearTimeout(hoverT); if(!stopped&&!calm){ list.classList.add("auto"); show(cur); tick(); } });
+  tabs.forEach(function(t,i){ t.addEventListener(enterEv,function(e){ if(scrolly||!isMouse(e)) return; clearTimeout(hoverT); hoverT=setTimeout(function(){ if(i!==cur) show(i); },120); }); });
+  list.addEventListener(enterEv,function(e){ if(scrolly||!isMouse(e)) return; hovering=true; clearTimeout(timer); list.classList.remove("auto"); });
+  list.addEventListener(leaveEv,function(e){ if(scrolly||!isMouse(e)) return; hovering=false; clearTimeout(hoverT); if(!stopped&&!calm){ list.classList.add("auto"); tick(); } });
   list.addEventListener("keydown",function(e){
     var k=e.key, n=k==="ArrowDown"||k==="ArrowRight"?1:k==="ArrowUp"||k==="ArrowLeft"?-1:0;
     if(k==="Enter"||k===" "){ e.preventDefault(); stop(); return; }
-    if(!n) return; e.preventDefault(); stop(); show(cur+n,true);
+    if(!n) return; e.preventDefault(); stop();
+    if(scrolly){ goTo(cur+n); tabs[cur].focus({preventScroll:true}); } else show(cur+n,true);
   });
   if(!calm) list.classList.add("auto");
-  show(0);
+  show(0); measure();
   if("IntersectionObserver" in window){
-    new IntersectionObserver(function(es){ inView=es[0].isIntersecting; if(inView){ show(cur); tick(); } else clearTimeout(timer); },{threshold:.35}).observe(stage);
+    new IntersectionObserver(function(es){ inView=es[0].isIntersecting; if(inView) tick(); else clearTimeout(timer); },{threshold:.35}).observe(stage);
   }
 })();
 </script>

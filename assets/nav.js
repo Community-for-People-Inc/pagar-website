@@ -28,8 +28,15 @@
     "}" +
     ".menubtn:focus-visible,.mpanel a:focus-visible{outline:3px solid var(--ka-red);outline-offset:2px}" +
     /* scroll-in: content rises gently into view; siblings in a row follow one another */
-    ".rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}" +
-    ".rv.in{opacity:1;transform:none}" +
+    ".rv{opacity:0;transform:translateY(28px) scale(.985);filter:blur(6px);transition:opacity .6s ease,transform .8s cubic-bezier(.2,.8,.2,1),filter .6s ease}" +
+    ".rv.in{opacity:1;transform:none;filter:none}" +
+    /* section headings wipe up from a line, like a reveal mask */
+    "h2.sec.rv{transform:none;filter:none;clip-path:inset(0 0 100% 0);transition:clip-path .9s cubic-bezier(.7,0,.2,1),opacity .3s}" +
+    "h2.sec.rv.in{clip-path:inset(-10% -2% -20% -2%)}" +
+    /* scroll progress line under the header (browsers without scroll timelines get none) */
+    ".scrollbar{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none;background:linear-gradient(90deg,#ee0000,#f4b60e 60%,#0eb046);transform-origin:left;transform:scaleX(0);opacity:0}" +
+    "@supports (animation-timeline:scroll()){.scrollbar{opacity:1;animation:kaProg linear both;animation-timeline:scroll(root)}}" +
+    "@keyframes kaProg{to{transform:scaleX(1)}}" +
     /* numbered steps: the dotted link to the next step draws itself once the steps are in */
     "ol.steps.rvl li::after{transform:scaleX(0);transform-origin:left;transition:transform .6s ease}" +
     "ol.steps.rvl.in li::after{transform:scaleX(1)}" +
@@ -73,6 +80,9 @@
     reveal();
 
     var header = document.querySelector("header.site");
+    if (header && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+      var sb = document.createElement("div"); sb.className = "scrollbar"; sb.setAttribute("aria-hidden", "true"); header.appendChild(sb);
+    }
     var bar = header && header.querySelector(".bar");
     var nav = header && header.querySelector("nav.main");
     if (!bar || !nav) return;

@@ -260,3 +260,15 @@ details.faq p{font-size:15px}
 
 /* the Sarimanok shown inside light sections sits on its gold disc */
 section.block svg[aria-label="Sarimanok"]{width:200px!important;height:200px!important;padding:22px;border-radius:50%;background:radial-gradient(circle,#fbebab 0%,#fbebab 55%,rgba(251,235,171,0) 72%)}
+
+/* Page-to-page transitions (17 Nov 2026, second pass). Browsers that support cross-page View
+   Transitions keep the header still and slide the page in; others simply load the page. Off for
+   reduced motion. */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+  header.site{view-transition-name:site-header}
+  ::view-transition-old(root){animation:kaPageOut .28s cubic-bezier(.4,0,1,1) both}
+  ::view-transition-new(root){animation:kaPageIn .5s cubic-bezier(0,0,.2,1) both}
+  @keyframes kaPageOut{to{opacity:0;transform:translateY(-14px) scale(.99);filter:blur(4px)}}
+  @keyframes kaPageIn{from{opacity:0;transform:translateY(22px)}}
+}
