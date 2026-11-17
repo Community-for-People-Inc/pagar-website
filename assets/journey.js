@@ -41,7 +41,7 @@
     svg.setAttribute("viewBox", "0 0 " + W + " " + H);
     var f = mobile
       ? [[.2, .30], [.78, .37], [.24, .45], [.76, .52], [.26, .59], [.72, .66]]
-      : [[.07, .80], [.24, .44], [.42, .76], [.6, .42], [.78, .74], [.93, .46]];
+      : [[.07, .80], [.24, .44], [.42, .76], [.6, .42], [.78, .74], [.92, .62]];
     var pts = f.map(function (q) { return [q[0] * W, q[1] * H]; });
     var d = catmull(pts);
     [road, edge, lane, done].forEach(function (p) { p.setAttribute("d", d); });
