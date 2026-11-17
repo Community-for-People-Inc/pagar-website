@@ -44,7 +44,80 @@
     if (panel) panel.hidden = !any;
   }
 
+  /* ---- the install guide: four steps beside a phone showing each one ----
+     Desktop: click or hover a step (hover pauses), arrow keys, and a 4.5s timer while on screen.
+     Phones: tap a step or swipe the phone left/right, plus the timer. Tapping or clicking stops the
+     timer; hovering only pauses it. Reduced motion: no timer, no animation. */
+  function guide() {
+    var box = document.getElementById("install");
+    if (!box) return;
+    var list = box.querySelector(".igsteps"), steps = [].slice.call(box.querySelectorAll(".igstep")),
+        scr = [].slice.call(box.querySelectorAll(".igscr")), dots = [].slice.call(box.querySelectorAll(".igdots i")),
+        stage = box.querySelector(".igstage");
+    var N = steps.length, cur = 0, timer = null, stopped = false, hovering = false, inView = false;
+    var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function show(i, focus) {
+      i = (i + N) % N; cur = i;
+      steps.forEach(function (s, j) { var on = j === i; s.setAttribute("aria-selected", on ? "true" : "false"); s.tabIndex = on ? 0 : -1;
+        var b = s.querySelector(".bar"); if (on && b) { b.style.animation = "none"; void b.offsetWidth; b.style.animation = ""; } });
+      scr.forEach(function (el, j) { el.classList.toggle("on", j === i); });
+      dots.forEach(function (d, j) { d.classList.toggle("on", j === i); });
+      stage.setAttribute("aria-labelledby", steps[i].id);
+      if (focus) steps[i].focus({ preventScroll: true });
+      /* phones: the steps are a swipe row under the phone; keep the shown step in the middle */
+      if (window.innerWidth < 900 && !swiping && list.scrollWidth > list.clientWidth) {
+        var s = steps[i];
+        list.scrollTo({ left: s.offsetLeft - (list.clientWidth - s.offsetWidth) / 2, behavior: calm ? "auto" : "smooth" });
+      }
+    }
+    /* swiping the row of steps shows the step that settles in the middle */
+    var swiping = false, swipeT = null;
+    list.addEventListener("touchstart", function () { swiping = true; }, { passive: true });
+    list.addEventListener("scroll", function () {
+      if (!swiping || window.innerWidth >= 900) return;
+      clearTimeout(swipeT);
+      swipeT = setTimeout(function () {
+        var mid = list.scrollLeft + list.clientWidth / 2, best = 0, d = 1e9;
+        steps.forEach(function (s, j) { var dd = Math.abs(s.offsetLeft + s.offsetWidth / 2 - mid); if (dd < d) { d = dd; best = j; } });
+        if (list.scrollLeft + list.clientWidth >= list.scrollWidth - 4) best = N - 1; /* swiped to the end */
+        if (list.scrollLeft <= 4) best = 0;
+        swiping = false;
+        if (best !== cur) { stop(); show(best); }
+      }, 140);
+    }, { passive: true });
+    function tick() { clearTimeout(timer); if (stopped || hovering || !inView || calm || box.hidden) return; timer = setTimeout(function () { show(cur + 1); tick(); }, 4500); }
+    function stop() { stopped = true; clearTimeout(timer); list.classList.remove("auto"); }
+    function isMouse(e) { return e.pointerType ? e.pointerType === "mouse" : true; }
+    var enter = "PointerEvent" in window ? "pointerenter" : "mouseenter", leave = "PointerEvent" in window ? "pointerleave" : "mouseleave";
+    steps.forEach(function (s, i) {
+      s.addEventListener("click", function () { swiping = false; stop(); show(i); });
+      s.addEventListener(enter, function (e) { if (isMouse(e) && i !== cur) show(i); });
+    });
+    list.addEventListener(enter, function (e) { if (!isMouse(e)) return; hovering = true; clearTimeout(timer); list.classList.remove("auto"); });
+    list.addEventListener(leave, function (e) { if (!isMouse(e)) return; hovering = false; if (!stopped && !calm) { list.classList.add("auto"); show(cur); tick(); } });
+    list.addEventListener("keydown", function (e) {
+      var n = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+      if (!n) return; e.preventDefault(); stop(); show(cur + n, true);
+    });
+    var sx = 0, sy = 0;
+    stage.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    stage.addEventListener("touchend", function (e) {
+      var p = e.changedTouches[0], dx = p.clientX - sx, dy = p.clientY - sy;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+      stop(); show(cur + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+    stage.addEventListener("click", function () { stop(); show(cur + 1); }); /* tapping the phone moves on too */
+    if (!calm) list.classList.add("auto");
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; if (inView) { show(cur); tick(); } else clearTimeout(timer); }, { threshold: .35 }).observe(box);
+    show(0);
+  }
+
   window.pagarGetApp = render; // lets a preview try links without editing this file
-  function init() { render(APPS); }
+  function init() {
+    render(APPS);
+    /* ?getapp=preview shows the install guide before any link is set, for review */
+    if (/[?&]getapp=preview\b/.test(location.search)) { var p = document.getElementById("install"); if (p) p.hidden = false; }
+    guide();
+  }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();

@@ -39,7 +39,7 @@ window.pagarSweep = async function (pages, widths) {
       if (w <= 768 && parseFloat(cs.fontSize) < 11) add('text-under-11px', el, cs.fontSize);
       // 4 spill: text wider than its own box with clipping, or beyond the viewport
       const r = el.getBoundingClientRect();
-      if (r.right > w + 1 && !el.closest('.tktrack, .svctabs, .faqchips, .tbl, pre')) add('beyond-viewport', el, Math.round(r.right - w) + 'px');
+      if (r.right > w + 1 && !el.closest('.tktrack, .svctabs, .igsteps, .faqchips, .tbl, pre')) add('beyond-viewport', el, Math.round(r.right - w) + 'px');
       if ((cs.overflow === 'hidden' || cs.overflowX === 'hidden') && el.scrollWidth > el.clientWidth + 2 && cs.textOverflow !== 'ellipsis') add('text-clipped', el, el.scrollWidth + '>' + el.clientWidth);
       // 5 contrast against the first solid background behind it
       if (parseFloat(cs.opacity) === 0) continue;
