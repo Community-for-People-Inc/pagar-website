@@ -492,7 +492,82 @@
   }
   @keyframes kaWheel{0%{transform:translateY(0);opacity:1}100%{transform:translateY(6px);opacity:0}}
   @media(prefers-reduced-motion:reduce){.scrn,.scrn:not(.on),.scrn.out{transition:none;filter:none}#services .phone.kick,#services .phone.kickb,.svcword.swap{animation:none}}
+  /* ---- Homepage motion, third pass (17 Nov 2026). "motion" is set in <head> unless reduced motion. ---- */
+  /* hero opening: words rise in order, the headline wipes up, phone and Sarimanok arrive, tiles pop.
+     fill-mode "backwards" so nothing stays pinned by the animation once it ends (the hero's mouse
+     parallax keeps working). */
+  @keyframes kaRise{from{opacity:0;transform:translateY(26px)}}
+  @keyframes kaWipeUp{from{-webkit-mask-size:100% 0;mask-size:100% 0;transform:translateY(30px)}}
+  @keyframes kaPhoneIn{from{opacity:0;translate:0 90px;scale:.9}}
+  @keyframes kaTilePop{from{opacity:0;scale:.2}}
+  @keyframes kaBirdIn{from{opacity:0;translate:-40px -70px;rotate:-14deg}}
+  @keyframes kaGlowIn{from{opacity:0;scale:.6}}
+  .motion .homehero .herocontent>*:not(.stats):not(h1){animation:kaRise .9s cubic-bezier(.2,.8,.2,1) backwards}
+  .motion .homehero .herocontent>.pill{animation-delay:.05s}
+  .motion .homehero .herocontent>.lead{animation-delay:.32s}
+  .motion .homehero .herocontent>div:not(.stats){animation-delay:.44s}
+  .motion .homehero h1{-webkit-mask:linear-gradient(#000,#000) 0 100%/100% 100% no-repeat;mask:linear-gradient(#000,#000) 0 100%/100% 100% no-repeat;animation:kaWipeUp 1.05s .14s cubic-bezier(.7,0,.2,1) backwards}
+  .motion .homehero .stats .stat{animation:kaRise .8s cubic-bezier(.2,.8,.2,1) backwards}
+  .motion .homehero .stats .stat:nth-child(1){animation-delay:.56s}.motion .homehero .stats .stat:nth-child(2){animation-delay:.64s}.motion .homehero .stats .stat:nth-child(3){animation-delay:.72s}
+  .motion .homehero .herostage .phone{animation:kaPhoneIn 1.2s .2s cubic-bezier(.2,.8,.2,1) backwards}
+  .motion .homehero .herostage .spot{animation:kaGlowIn 1.4s .1s ease-out backwards}
+  .motion .homehero .herostage .herobird{animation:kaBirdIn 1s .75s cubic-bezier(.3,1.3,.5,1) backwards}
+  .motion .homehero .ftile.t1{animation:kaTilePop .7s .70s cubic-bezier(.3,1.6,.5,1) backwards,kaFloat 6s 1.4s ease-in-out infinite}
+  .motion .homehero .ftile.t2{animation:kaTilePop .7s .80s cubic-bezier(.3,1.6,.5,1) backwards,kaFloat 6s 0s ease-in-out infinite}
+  .motion .homehero .ftile.t3{animation:kaTilePop .7s .90s cubic-bezier(.3,1.6,.5,1) backwards,kaFloat 6s -1.4s ease-in-out infinite}
+  .motion .homehero .ftile.t4{animation:kaTilePop .7s 1.00s cubic-bezier(.3,1.6,.5,1) backwards,kaFloat 6s -2.8s ease-in-out infinite}
+  .motion .homehero .ftile.t5{animation:kaTilePop .7s 1.10s cubic-bezier(.3,1.6,.5,1) backwards,kaFloat 6s -4.2s ease-in-out infinite}
+  .homehero .stat .n{font-variant-numeric:tabular-nums}
+
+  /* launch band as a ticker (home.js); the band's words and colours are unchanged */
+  .launchband.ticking{overflow:hidden}
+  .launchband.ticking>.wrap{max-width:none;display:block!important;padding:15px 0!important}
+  .launchband .tktrack{display:flex;width:max-content;animation:kaTick 46s linear infinite}
+  .launchband.ticking:hover .tktrack{animation-play-state:paused}
+  .launchband .tkgroup{display:flex;align-items:center;gap:22px;padding-right:22px;white-space:nowrap}
+  .launchband .tkword{font-weight:900;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--ka-ink)}
+  .launchband .tkdot{width:8px;height:8px;border-radius:50%;background:var(--ka-red);flex:none}
+  .launchband .tkdot:nth-of-type(3n+2){background:var(--ka-gold)}.launchband .tkdot:nth-of-type(3n){background:var(--ka-green)}
+  @keyframes kaTick{to{transform:translateX(-25%)}}
+
+  /* cards: cursor light + tilt (home.js adds .glow, mouse only) */
+  .glow{position:relative;isolation:isolate;transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;will-change:transform}
+  .glow::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;
+    background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(238,0,0,.09),rgba(244,182,14,.06) 40%,transparent 70%)}
+  .glow:hover::after{opacity:1}
+  .glow:hover{box-shadow:0 34px 60px -30px rgba(23,35,58,.5)}
+  .whygrid .card.lead.glow::after{background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.14),transparent 70%)}
+  .glow .ic{transition:transform .4s cubic-bezier(.3,1.5,.5,1)}
+  .glow:hover .ic{transform:translateY(-3px) rotate(-6deg) scale(1.08)}
+  #apps .appcard img{transition:transform .5s cubic-bezier(.3,1.5,.5,1),filter .5s}
+  #apps .appcard:hover img{transform:translateY(-6px) rotate(-5deg) scale(1.06);filter:drop-shadow(0 16px 18px rgba(23,35,58,.3))}
+
+  /* coverage: Marawi and the next cities, routes draw in (desktop) */
+  .covmap{display:none}
+  @media(min-width:980px){
+    .covband .wrap.inner{position:relative;padding-right:400px!important}
+    .covmap{display:block;position:absolute;right:28px;top:50%;width:340px;height:250px;transform:translateY(-50%);overflow:visible}
+    .covmap .rt{fill:none;stroke:rgba(255,255,255,.55);stroke-width:2;stroke-dasharray:5 7;stroke-linecap:round}
+    .covmap .rt.go{stroke-dasharray:none;stroke:#ffd765;stroke-width:2.5;stroke-dashoffset:0;transition:stroke-dashoffset 1.6s cubic-bezier(.6,0,.2,1)}
+    .covmap.wait .rt.go{stroke-dashoffset:var(--len)}
+    .covmap .city circle{fill:#fff}
+    .covmap .city text{fill:rgba(255,255,255,.9);font:700 13px Archivo,system-ui,sans-serif}
+    .covmap .city.main circle{fill:#ee0000}
+    .covmap .city.main text{fill:#fff;font-size:15px;font-weight:900}
+    .covmap .ring{fill:none;stroke:#ee0000;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:kaMapRing 2.4s ease-out infinite}
+    .covmap .ring.r2{animation-delay:1.2s}
+    .covmap .city:not(.main){transition:opacity .5s}
+    .covmap.wait .city:not(.main){opacity:.35}
+    .covmap.draw .city.c1{transition-delay:.9s}.covmap.draw .city.c2{transition-delay:1.3s}.covmap.draw .city.c3{transition-delay:1.7s}
+    .covmap .rt.go.r2{transition-delay:.3s}.covmap .rt.go.r3{transition-delay:.6s}
+  }
+  @keyframes kaMapRing{from{transform:scale(.4);opacity:1}to{transform:scale(2.6);opacity:0}}
+
+  /* motion off: the band stays as written, nothing tilts or pops */
+  @media(prefers-reduced-motion:reduce){.launchband .tktrack,.covmap .ring{animation:none}.glow,.glow .ic,#apps .appcard img{transition:none}}
 </style>
+<script>if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("motion")</script>
+<script>/* skipped page transitions are harmless; keep them out of the error console */addEventListener("pagereveal",function(e){var v=e.viewTransition;if(v)[v.ready,v.finished,v.updateCallbackDone].forEach(function(p){p&&p.catch&&p.catch(function(){})})});addEventListener("unhandledrejection",function(e){var r=e.reason;if(r&&r.name==="InvalidStateError"&&/Transition was aborted/.test(r.message))e.preventDefault()});</script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true">
@@ -644,7 +719,7 @@
        it: the strip now carries the launch month. Owner direction 2026-10-13: the launch reads
        "November 2026" (month, no day) everywhere, and the "see what's ready today" link went with the
        list it pointed at. -->
-  <section style="background:#fff7e6;border-top:2px solid var(--ka-ink);border-bottom:2px solid var(--ka-ink)">
+  <section class="launchband" style="background:#fff7e6;border-top:2px solid var(--ka-ink);border-bottom:2px solid var(--ka-ink)">
     <div class="wrap" style="padding:16px 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;text-align:center">
       <span style="font-weight:800;font-size:14px;color:var(--ka-ink)" data-en="Coming soon." data-fil="Malapit na.">Coming soon.</span>
       <span style="font-size:14px;color:#7a5b12" data-en="Public launch November 2026." data-fil="Public launch Nobyembre 2026.">Public launch November 2026.</span>
@@ -888,6 +963,17 @@
   <section class="hero ink block covband">
     <div class="okir-bg" aria-hidden="true"><svg><use href="#okir"></use></svg></div>
     <div class="wrap inner" style="padding:44px 20px">
+      <!-- Decorative: Marawi (live first) and the next cities the text names; routes draw in on scroll. -->
+      <svg class="covmap" viewBox="0 0 340 250" aria-hidden="true">
+        <path class="rt" d="M150 150 C 140 110, 128 90, 122 62"/><path class="rt" d="M150 150 C 190 110, 230 80, 270 48"/><path class="rt" d="M150 150 C 160 185, 180 205, 205 226"/>
+        <path class="rt go r1" style="--len:100" stroke-dasharray="100" d="M150 150 C 140 110, 128 90, 122 62"/>
+        <path class="rt go r2" style="--len:175" stroke-dasharray="175" d="M150 150 C 190 110, 230 80, 270 48"/>
+        <path class="rt go r3" style="--len:105" stroke-dasharray="105" d="M150 150 C 160 185, 180 205, 205 226"/>
+        <g class="city main"><circle class="ring" cx="150" cy="150" r="9"/><circle class="ring r2" cx="150" cy="150" r="9"/><circle cx="150" cy="150" r="9"/><text x="166" y="155">Marawi</text></g>
+        <g class="city c1"><circle cx="122" cy="62" r="6"/><text x="72" y="44">Iligan</text></g>
+        <g class="city c2"><circle cx="270" cy="48" r="6"/><text x="196" y="30">Cagayan de Oro</text></g>
+        <g class="city c3"><circle cx="205" cy="226" r="6"/><text x="218" y="231">Cotabato</text></g>
+      </svg>
       <div class="eyebrow" style="color:#fff;opacity:.85" data-en="Coverage" data-fil="Saklaw">Coverage</div>
       <h2 class="sec" style="color:#fff" data-en="Starting in Marawi. Rising across Mindanao." data-fil="Nagsisimula sa Marawi. Aakyat sa buong Mindanao.">Starting in Marawi. Rising across Mindanao.</h2>
       <p class="lead" style="color:rgba(255,255,255,.85);margin-top:12px" data-en="All five services go live across Marawi and its barangays first — then Iligan, Cagayan de Oro, Cotabato and beyond as demand grows." data-fil="Mauunang mag-live ang limang serbisyo sa Marawi at mga barangay nito — tapos Iligan, Cagayan de Oro, Cotabato at iba pa habang lumalaki ang demand.">All five services go live across Marawi and its barangays first — then Iligan, Cagayan de Oro, Cotabato and beyond as demand grows.</p>
@@ -922,6 +1008,7 @@
 <script src="assets/hash-target.js"></script>
 <script src="assets/nav.js"></script>
 <script src="assets/journey.js"></script>
+<script src="assets/home.js"></script>
 <script>
 /* Hero depth: on desktop the floating service tiles and the phone shift slightly with the mouse. */
 (function(){
@@ -1019,7 +1106,7 @@
     wrapH=wrap.offsetHeight;
     stickTop=Math.max(84, Math.round((window.innerHeight-wrapH)/2+20));
     wrap.style.top=stickTop+"px";
-    runLen=Math.round(window.innerHeight*.55*N);
+    runLen=Math.round(window.innerHeight*.45*N);
     run.style.height=runLen+"px";
     onScroll();
   }

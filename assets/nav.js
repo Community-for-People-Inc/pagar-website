@@ -11,6 +11,12 @@
    Sarimanok: .flybird looped every 5.6s for as long as the page was open, and on the homepage
    crossed the waitlist fields. It now makes one flight on load and is gone. Colours untouched. */
 (function () {
+  /* Page-to-page transitions (styles.css) are skipped when the tab is hidden; that skip is harmless,
+     so it is not reported as an error. (The arriving page catches its side in its own <head>.) */
+  window.addEventListener("pageswap", function (e) {
+    var vt = e.viewTransition; if (!vt) return;
+    [vt.ready, vt.finished, vt.updateCallbackDone].forEach(function (p) { if (p && p.catch) p.catch(function () {}); });
+  });
   var css =
     ".flybird{animation-iteration-count:1!important}" +
     ".menubtn{display:none;flex:none;width:44px;height:44px;border:2px solid var(--ka-ink);border-radius:11px;background:#fff;color:var(--ka-ink);cursor:pointer;place-items:center;padding:0;font:inherit}" +
@@ -31,8 +37,9 @@
     ".rv{opacity:0;transform:translateY(28px) scale(.985);filter:blur(6px);transition:opacity .6s ease,transform .8s cubic-bezier(.2,.8,.2,1),filter .6s ease}" +
     ".rv.in{opacity:1;transform:none;filter:none}" +
     /* section headings wipe up from a line, like a reveal mask */
-    "h2.sec.rv{transform:none;filter:none;clip-path:inset(0 0 100% 0);transition:clip-path .9s cubic-bezier(.7,0,.2,1),opacity .3s}" +
-    "h2.sec.rv.in{clip-path:inset(-10% -2% -20% -2%)}" +
+    /* (a mask, not clip-path: a fully clipped heading never counts as on screen, so it would never appear) */
+    "h2.sec.rv{transform:translateY(12px);filter:none;-webkit-mask:linear-gradient(#000,#000) 0 100%/100% 0 no-repeat;mask:linear-gradient(#000,#000) 0 100%/100% 0 no-repeat;transition:-webkit-mask-size .9s cubic-bezier(.7,0,.2,1),mask-size .9s cubic-bezier(.7,0,.2,1),transform .9s cubic-bezier(.2,.8,.2,1),opacity .3s}" +
+    "h2.sec.rv.in{transform:none;-webkit-mask-size:100% 100%;mask-size:100% 100%}" +
     /* scroll progress line under the header (browsers without scroll timelines get none) */
     ".scrollbar{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none;background:linear-gradient(90deg,#ee0000,#f4b60e 60%,#0eb046);transform-origin:left;transform:scaleX(0);opacity:0}" +
     "@supports (animation-timeline:scroll()){.scrollbar{opacity:1;animation:kaProg linear both;animation-timeline:scroll(root)}}" +

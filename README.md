@@ -18,6 +18,8 @@ preserved faithfully here.
 | `assets/styles.css` | Shared brand stylesheet (single source of truth) |
 | `assets/pagar.js` | Shared behavior: EN/FIL toggle (persisted), active-nav |
 | `assets/nav.js` | Phone menu (below 900px, cloned from the header links) + one-time Sarimanok flight; loaded by all six pages |
+| `assets/journey.js` | Homepage "ride along" scroll story (#how) |
+| `assets/home.js` | Homepage motion: count-ups, launch ticker, card light/tilt, coverage map routes |
 
 ## Editing
 - **Copy / colors / components:** edit `assets/styles.css` (brand tokens are the `--ka-*` CSS

@@ -272,3 +272,9 @@ section.block svg[aria-label="Sarimanok"]{width:200px!important;height:200px!imp
   @keyframes kaPageOut{to{opacity:0;transform:translateY(-14px) scale(.99);filter:blur(4px)}}
   @keyframes kaPageIn{from{opacity:0;transform:translateY(22px)}}
 }
+
+/* Button hover: a light sweeps across (17 Nov 2026, third pass). Off for reduced motion. */
+.btn,.bigcta{position:relative;overflow:hidden;isolation:isolate}
+.btn::before,.bigcta::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.32) 50%,transparent 75%);transform:translateX(-110%);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.btn:hover::before,.bigcta:hover::before{transform:translateX(110%)}
+@media(prefers-reduced-motion:reduce){.btn::before,.bigcta::before{display:none}}

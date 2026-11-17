@@ -47,6 +47,7 @@ div[style*="border-radius:24px;background:var(--ka-red)"]{animation:kaSOS 2.2s e
 @keyframes kaSOS{0%{box-shadow:0 0 0 0 rgba(238,0,0,.45),var(--sh)}70%{box-shadow:0 0 0 18px rgba(238,0,0,0),var(--sh)}100%{box-shadow:0 0 0 0 rgba(238,0,0,0),var(--sh)}}
 @media(prefers-reduced-motion:reduce){div[style*="border-radius:24px;background:var(--ka-red)"]{animation:none}}
 </style>
+<script>/* skipped page transitions are harmless; keep them out of the error console */addEventListener("pagereveal",function(e){var v=e.viewTransition;if(v)[v.ready,v.finished,v.updateCallbackDone].forEach(function(p){p&&p.catch&&p.catch(function(){})})});addEventListener("unhandledrejection",function(e){var r=e.reason;if(r&&r.name==="InvalidStateError"&&/Transition was aborted/.test(r.message))e.preventDefault()});</script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true">
