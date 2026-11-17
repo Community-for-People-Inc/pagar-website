@@ -345,7 +345,7 @@
   .filmsound{position:absolute;top:14px;right:14px;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:9px 15px;min-height:40px;font:700 13px/1 Archivo,system-ui,sans-serif;color:var(--ka-ink);background:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.3)}
   .filmplay:focus-visible,.filmsound:focus-visible{outline:3px solid #fff;outline-offset:3px}
   /* Services (17 Nov 2026): Tricia's five cards are now tabs; the phone beside them shows a sample
-     screen for the chosen service. It advances by itself every 5s while on screen and stops as soon
+     screen for the chosen service. It advances by itself every 3.5s while on screen and stops as soon
      as someone picks a service. Tile artwork untouched: .tilebox only crops the square frame drawn
      around each tile's rounded square. */
   #services .svcwrap{display:grid;gap:28px;align-items:center}
@@ -363,7 +363,7 @@
   #services .svc br{display:none}
   #services .svc span:not(.tilebox){display:block;margin-top:2px;font-size:14.5px;color:var(--ka-ink-soft)}
   #services .svc .bar{position:absolute;left:18px;right:18px;bottom:0;height:3px;border-radius:3px;background:var(--c);transform:scaleX(0);transform-origin:left}
-  #services .svctabs.auto .svc[aria-selected="true"] .bar{animation:kaBar 5s linear forwards}
+  #services .svctabs.auto .svc[aria-selected="true"] .bar{animation:kaBar 3.5s linear forwards}
   @keyframes kaBar{to{transform:scaleX(1)}}
   #services .svcstage{position:relative;border-radius:32px;min-height:620px;display:grid;place-items:center;overflow:hidden;border:1px solid var(--ka-line);
     background:radial-gradient(circle at 50% 45%,var(--g,#dcf2d6) 0,rgba(255,255,255,0) 62%),radial-gradient(rgba(23,35,58,.14) 1px,transparent 1.2px) 0 0/18px 18px,#fff;transition:background .5s}
@@ -824,7 +824,7 @@
 })();
 </script>
 <script>
-/* Services tabs: pick a service to see its sample screen. Advances every 5s while the section is on
+/* Services tabs: pick a service to see its sample screen. Advances every 3.5s while the section is on
    screen; any click, tap or key press on a tab stops the auto-advance for good. Arrow keys move
    between tabs. Reduced-motion visitors get no auto-advance. */
 (function(){
@@ -849,7 +849,7 @@
     if(window.innerWidth<900 && !focus && list.scrollWidth>list.clientWidth) list.scrollTo({left:t.offsetLeft-20,behavior:"smooth"});
   }
   var hovering=false, hoverT=null;
-  function tick(){ clearTimeout(timer); if(stopped||!inView||calm||hovering) return; timer=setTimeout(function(){ show(cur+1); tick(); },5000); }
+  function tick(){ clearTimeout(timer); if(stopped||!inView||calm||hovering) return; timer=setTimeout(function(){ show(cur+1); tick(); },3500); }
   function stop(){ stopped=true; clearTimeout(timer); list.classList.remove("auto"); }
   tabs.forEach(function(t,i){ t.addEventListener("click",function(){ clearTimeout(hoverT); stop(); show(i); }); });
   /* Desktop: hovering a service shows it (after a short delay, so sweeping across the list doesn't
