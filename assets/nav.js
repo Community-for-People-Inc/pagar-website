@@ -98,6 +98,30 @@
 
   /* Cards on every page: a soft light follows the cursor and the card tilts slightly. Mouse only,
      and off for reduced motion. The light and lift styles are .glow in styles.css. */
+  /* A two-sentence heading ("Fair to riders. Respectful of every faith.") breaks between its
+     sentences, not in the middle of one. Same words; each sentence just stays in one piece
+     while it fits on a line. */
+  function sentenceLines() {
+    var hs = document.querySelectorAll("h1, h2.sec, .filmcap");
+    for (var i = 0; i < hs.length; i++) {
+      var h = hs[i];
+      if (h.children.length) continue;
+      var parts = h.textContent.match(/[^.!?]+[.!?]+(\s+|$)/g);
+      if (!parts || parts.length < 2 || parts.join("") !== h.textContent) continue;
+      h.textContent = "";
+      parts.forEach(function (p) {
+        var s = document.createElement("span");
+        s.className = "sentence";
+        s.textContent = p.replace(/\s+$/, "");
+        h.appendChild(s);
+        if (/\s$/.test(p)) h.appendChild(document.createTextNode(" "));
+      });
+    }
+    var st = document.createElement("style");
+    st.textContent = ".sentence{display:inline-block;max-width:100%;text-wrap:balance}";
+    document.head.appendChild(st);
+  }
+
   function cardLight() {
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
@@ -123,6 +147,7 @@
     document.head.appendChild(st);
     reveal();
     cardLight();
+    sentenceLines();
 
     /* A nav link that points into this page (About's "Our journey" → about.html#journey) takes the
        highlight while its section is on screen, and hands it back to the page's own link after. */

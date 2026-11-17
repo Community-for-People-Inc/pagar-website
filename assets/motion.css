@@ -97,3 +97,7 @@ details.faq summary:hover .chev{background:#fbd5d5}
 .tooltitle{font-weight:900;font-size:clamp(20px,2.6vw,24px);letter-spacing:-.02em}
 [data-tool]:empty{display:none}
 
+
+/* even lines: card headings balance, paragraphs avoid a lone last word (17 Nov 2026) */
+h1,h2.sec,main h3,.tooltitle{text-wrap:balance}
+main p,main li{text-wrap:pretty}
