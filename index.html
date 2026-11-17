@@ -383,6 +383,27 @@
   .store{display:flex;align-items:center;gap:10px;width:max-content;margin-top:14px;background:var(--ka-ink);color:#fff;border-radius:12px;padding:8px 14px;font-size:11.5px;line-height:1.2}
   #apps .appcard a{display:inline-flex;align-items:center;min-height:40px;margin-top:4px}
   .store b{display:block;font-size:14px}.store svg{width:20px;height:20px}
+  /* Get the app: APK download per card + install panel (assets/getapp.js) */
+  #apps .appcard .dl{display:flex;flex-direction:column;gap:6px;margin-top:auto;padding-top:4px}
+  #apps .appcard.hasdl .store{margin-top:12px}
+  #apps .appcard .dl a.dlbtn{display:inline-flex;align-items:center;gap:10px;min-height:46px;margin:0;padding:0 18px;border-radius:999px;background:var(--dl,#e00000);color:#fff;text-decoration:none;font-weight:800;font-size:14.5px;box-shadow:0 12px 24px -12px var(--dl,#e00000);transition:transform .2s,box-shadow .2s}
+  #apps .appcard .dl a.dlbtn:hover{transform:translateY(-2px);box-shadow:0 18px 30px -12px var(--dl,#e00000)}
+  #apps .appcard .dl a.dlbtn:focus-visible{outline:3px solid var(--ka-ink);outline-offset:3px}
+  #apps .appcard .dl a.dlbtn svg{width:20px;height:20px;flex:none}
+  #apps .appcard .dl a.dlbtn small{font-weight:600;opacity:.85;font-size:12.5px}
+  #apps .appcard[data-app="driver"]{--dl:#0058a1}#apps .appcard[data-app="merchant"]{--dl:#0e7a3a}
+  #apps .appcard .dlmeta{font-size:12.5px;color:var(--ka-ink-soft)}
+  .install{margin-top:22px;border-radius:26px;padding:30px;background:radial-gradient(120% 140% at 100% 0%,#1d6b3d 0%,var(--ka-forest) 55%);color:#fff;display:grid;gap:24px;box-shadow:0 30px 50px -34px rgba(18,74,40,.8)}
+  .install[hidden]{display:none}
+  @media(min-width:900px){.install{grid-template-columns:.9fr 1.1fr;padding:38px 42px;align-items:center}}
+  .install .eyebrow{color:#ffd765!important}
+  .install h3{font-size:clamp(22px,2.6vw,28px);font-weight:900;letter-spacing:-.02em;margin:6px 0 10px}
+  .install p{color:rgba(255,255,255,.82);font-size:15.5px;line-height:1.55}
+  .install p.ios{margin-top:12px;font-size:14px;color:rgba(255,255,255,.72)}
+  .install p.ios a{color:#ffd765;font-weight:800;display:inline-flex;align-items:center;min-height:36px}
+  .insteps{list-style:none;counter-reset:st;display:grid;gap:12px;margin:0;padding:0}
+  .insteps li{counter-increment:st;display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5;color:rgba(255,255,255,.9)}
+  .insteps li::before{content:counter(st);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#ffd765;color:var(--ka-forest);font-weight:900;font-size:15px}
   .whygrid{display:grid;gap:16px}
   @media(min-width:640px){.whygrid{grid-template-columns:repeat(6,1fr)}.whygrid .card{grid-column:span 3}.whygrid .card.lead{grid-column:1/-1}}
   @media(min-width:640px) and (max-width:899px){.whygrid .card:last-child{grid-column:1/-1}}
@@ -904,9 +925,24 @@
       <h2 class="sec" data-en="An app for each of us." data-fil="May app para sa bawat isa.">An app for each of us.</h2>
       <p class="lead" style="margin-top:12px" data-en="Customers, riders and shops each get an app made for what they do. All three carry the Sarimanok." data-fil="May sariling app ang customer, rider at tindahan — gawa para sa ginagawa ng bawat isa. Dala ng tatlo ang Sarimanok.">Customers, riders and shops each get an app made for what they do. All three carry the Sarimanok.</p>
       <div class="grid c3 mt22">
-        <div class="appcard"><img src="assets/brand/pagar-icon.svg" width="88" height="88" alt="PAGAR EXPRESS app icon"><div><b>PAGAR EXPRESS</b><span class="who r" data-en="For customers" data-fil="Para sa customer">For customers</span><p data-en="Order food, book a tricycle, send a parcel, shop the market or send a rider on a pabili." data-fil="Mag-order ng pagkain, sumakay ng tricycle, magpadala ng parcel, mamili sa palengke o magpa-pabili sa rider.">Order food, book a tricycle, send a parcel, shop the market or send a rider on a pabili.</p><a href="#waitForm" data-en="Join the waitlist →" data-fil="Sumali sa waitlist →">Join the waitlist →</a><span class="store" aria-label="Coming to Google Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3l10 9-10 9z" fill="currentColor" opacity=".9"/><path d="M14 12l3-3 4 2.3c.9.5.9 1.4 0 1.9L17 15z" fill="currentColor"/></svg><span>Coming to<b>Google Play</b></span></span></div></div>
-        <div class="appcard"><img src="assets/brand/driver-icon.svg" width="88" height="88" alt="PAGAR Driver app icon"><div><b>PAGAR Driver</b><span class="who b" data-en="For riders and drivers" data-fil="Para sa rider at driver">For riders and drivers</span><p data-en="Go online, take ride and delivery jobs near you, and see what you earn." data-fil="Mag-online, tumanggap ng sakay at delivery malapit sa iyo, at tingnan ang kita mo.">Go online, take ride and delivery jobs near you, and see what you earn.</p><a href="partners.html" data-en="Apply as a Hero →" data-fil="Mag-apply bilang Hero →">Apply as a Hero →</a><span class="store" aria-label="Coming to Google Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3l10 9-10 9z" fill="currentColor" opacity=".9"/><path d="M14 12l3-3 4 2.3c.9.5.9 1.4 0 1.9L17 15z" fill="currentColor"/></svg><span>Coming to<b>Google Play</b></span></span></div></div>
-        <div class="appcard"><img src="assets/brand/merchant-icon.svg" width="88" height="88" alt="PAGAR Merchant app icon"><div><b>PAGAR Merchant</b><span class="who g" data-en="For restaurants and shops" data-fil="Para sa restawran at tindahan">For restaurants and shops</span><p data-en="Take orders, keep your menu or products up to date, and set your opening hours." data-fil="Tumanggap ng order, panatilihing updated ang menu o paninda, at itakda ang oras ng pagbukas.">Take orders, keep your menu or products up to date, and set your opening hours.</p><a href="partners.html" data-en="Sell on Pagar →" data-fil="Magbenta sa Pagar →">Sell on Pagar →</a><span class="store" aria-label="Coming to Google Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3l10 9-10 9z" fill="currentColor" opacity=".9"/><path d="M14 12l3-3 4 2.3c.9.5.9 1.4 0 1.9L17 15z" fill="currentColor"/></svg><span>Coming to<b>Google Play</b></span></span></div></div>
+        <div class="appcard" data-app="express"><img src="assets/brand/pagar-icon.svg" width="88" height="88" alt="PAGAR EXPRESS app icon"><div><b>PAGAR EXPRESS</b><span class="who r" data-en="For customers" data-fil="Para sa customer">For customers</span><p data-en="Order food, book a tricycle, send a parcel, shop the market or send a rider on a pabili." data-fil="Mag-order ng pagkain, sumakay ng tricycle, magpadala ng parcel, mamili sa palengke o magpa-pabili sa rider.">Order food, book a tricycle, send a parcel, shop the market or send a rider on a pabili.</p><a href="#waitForm" data-en="Join the waitlist →" data-fil="Sumali sa waitlist →">Join the waitlist →</a><span class="store" aria-label="Coming to Google Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3l10 9-10 9z" fill="currentColor" opacity=".9"/><path d="M14 12l3-3 4 2.3c.9.5.9 1.4 0 1.9L17 15z" fill="currentColor"/></svg><span>Coming to<b>Google Play</b></span></span></div></div>
+        <div class="appcard" data-app="driver"><img src="assets/brand/driver-icon.svg" width="88" height="88" alt="PAGAR Driver app icon"><div><b>PAGAR Driver</b><span class="who b" data-en="For riders and drivers" data-fil="Para sa rider at driver">For riders and drivers</span><p data-en="Go online, take ride and delivery jobs near you, and see what you earn." data-fil="Mag-online, tumanggap ng sakay at delivery malapit sa iyo, at tingnan ang kita mo.">Go online, take ride and delivery jobs near you, and see what you earn.</p><a href="partners.html" data-en="Apply as a Hero →" data-fil="Mag-apply bilang Hero →">Apply as a Hero →</a><span class="store" aria-label="Coming to Google Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3l10 9-10 9z" fill="currentColor" opacity=".9"/><path d="M14 12l3-3 4 2.3c.9.5.9 1.4 0 1.9L17 15z" fill="currentColor"/></svg><span>Coming to<b>Google Play</b></span></span></div></div>
+        <div class="appcard" data-app="merchant"><img src="assets/brand/merchant-icon.svg" width="88" height="88" alt="PAGAR Merchant app icon"><div><b>PAGAR Merchant</b><span class="who g" data-en="For restaurants and shops" data-fil="Para sa restawran at tindahan">For restaurants and shops</span><p data-en="Take orders, keep your menu or products up to date, and set your opening hours." data-fil="Tumanggap ng order, panatilihing updated ang menu o paninda, at itakda ang oras ng pagbukas.">Take orders, keep your menu or products up to date, and set your opening hours.</p><a href="partners.html" data-en="Sell on Pagar →" data-fil="Magbenta sa Pagar →">Sell on Pagar →</a><span class="store" aria-label="Coming to Google Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3l10 9-10 9z" fill="currentColor" opacity=".9"/><path d="M14 12l3-3 4 2.3c.9.5.9 1.4 0 1.9L17 15z" fill="currentColor"/></svg><span>Coming to<b>Google Play</b></span></span></div></div>
+      </div>
+      <!-- Shown by assets/getapp.js once a download link is set there; hidden until then. -->
+      <div class="install" id="install" hidden>
+        <div class="inhead">
+          <div class="eyebrow" data-en="Get the app now">Get the app now</div>
+          <h3 data-en="How to install on Android">How to install on Android</h3>
+          <p data-en="While we wait for Google Play, Android phones can install Pagar straight from this page.">While we wait for Google Play, Android phones can install Pagar straight from this page.</p>
+          <p class="ios" data-en-html="On iPhone? Pagar for iPhone is on its way. &lt;a href=&quot;#waitForm&quot;&gt;Join the waitlist&lt;/a&gt; and we&#39;ll tell you when it&#39;s ready.">On iPhone? Pagar for iPhone is on its way. <a href="#waitForm">Join the waitlist</a> and we'll tell you when it's ready.</p>
+        </div>
+        <ol class="insteps">
+          <li data-en="Tap Download. If your phone asks whether to allow installs from your browser, choose Allow.">Tap Download. If your phone asks whether to allow installs from your browser, choose Allow.</li>
+          <li data-en="Open the downloaded file and tap Install.">Open the downloaded file and tap Install.</li>
+          <li data-en="Open the app and create your account.">Open the app and create your account.</li>
+          <li data-en="Only install Pagar from this page, and soon from Google Play. New versions are posted here.">Only install Pagar from this page, and soon from Google Play. New versions are posted here.</li>
+        </ol>
       </div>
     </div>
   </section>
@@ -1012,6 +1048,7 @@
 <script src="assets/nav.js"></script>
 <script src="assets/journey.js"></script>
 <script src="assets/home.js"></script>
+<script src="assets/getapp.js"></script>
 <script>
 /* Hero depth: on desktop the floating service tiles and the phone shift slightly with the mouse. */
 (function(){

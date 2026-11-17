@@ -20,6 +20,7 @@ preserved faithfully here.
 | `assets/nav.js` | Phone menu (below 900px, cloned from the header links) + one-time Sarimanok flight; loaded by all six pages |
 | `assets/journey.js` | Homepage "ride along" scroll story (#how) |
 | `assets/home.js` | Homepage motion: count-ups, launch ticker, card light/tilt, coverage map routes |
+| `assets/getapp.js` | "Get the app": put an APK link (with version and size) at the top and that app card gets a "Download for Android" button and the install steps appear. Empty links change nothing |
 | `assets/scene.js` | Scroll scene for step sections on About, Safety, Coverage and Partners |
 | `assets/motion.css` | Motion layer for all six pages (partners.html too): page transitions, button hover, scroll scene, card light, smooth FAQs |
 
