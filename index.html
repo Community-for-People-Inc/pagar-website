@@ -252,56 +252,96 @@
   .ticker div{display:inline-block;animation:kaTick 40s linear infinite}
   .ticker span{margin:0 16px}.ticker i{font-style:normal;color:var(--ka-gold)}
   @keyframes kaTick{to{transform:translateX(-50%)}}
-  /* "Ride along" journey (#how) — see assets/journey.js */
-  .journey{position:relative;background:var(--ka-ink);color:#fff}
+  /* "Ride along" journey (#how) — see assets/journey.js.
+     Light version (17 Nov 2026): on the page's cream so the homepage flows, with a faint Marawi
+     skyline and Lake Lanao behind the road. */
+  .journey{position:relative;background:var(--ka-cream);color:var(--ka-ink)}
   .journey.live{height:480vh}
   .jstage{position:relative;overflow:hidden;background:
-    radial-gradient(800px 500px at calc(10% + var(--p,0) * 80%) 85%,rgba(238,0,0,.28),rgba(238,0,0,0) 70%),
-    radial-gradient(600px 400px at 85% 10%,rgba(244,182,14,.12),rgba(244,182,14,0) 70%),
-    linear-gradient(180deg,#121b2d,#17233a 40%,#0d1422)}
-  .jstage::before{content:"";position:absolute;inset:0;opacity:.05;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='80' viewBox='0 0 100 40'%3E%3Cpath d='M2 38 C2 14 22 4 40 14 C50 20 46 34 36 32 C28 30 30 20 38 22 M50 38 C50 12 74 2 92 16 C100 22 96 36 86 32' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/200px 80px;pointer-events:none}
+    radial-gradient(700px 420px at calc(8% + var(--p,0) * 84%) 70%,rgba(238,0,0,.10),rgba(238,0,0,0) 70%),
+    radial-gradient(600px 380px at 85% 12%,rgba(244,182,14,.16),rgba(244,182,14,0) 70%),
+    var(--ka-cream)}
+  .jstage::before{content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='80' viewBox='0 0 100 40'%3E%3Cpath d='M2 38 C2 14 22 4 40 14 C50 20 46 34 36 32 C28 30 30 20 38 22 M50 38 C50 12 74 2 92 16 C100 22 96 36 86 32' fill='none' stroke='%23ee0000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/220px 88px;
+    -webkit-mask:linear-gradient(#000,transparent 70%);mask:linear-gradient(#000,transparent 70%)}
+  .jscene{position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none}
+  .jscene svg{position:absolute;left:0;width:100%}
+  .jscene .sky{bottom:42%;height:46%;opacity:.55}
+  .jscene .lake{bottom:0;height:46%}
   .journey.live .jstage{position:sticky;top:0;height:100vh;height:100svh}
   .jhead{position:relative;z-index:2;padding-top:84px}
-  .jhead .sec{color:#fff;max-width:20ch}
-  .jmeta{display:flex;align-items:center;gap:14px;margin-top:14px;font:700 12.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;color:rgba(255,255,255,.65)}
-  .jcount b{color:#ffd765;font-size:15px}
-  .jbar{width:140px;height:4px;border-radius:4px;background:rgba(255,255,255,.14);overflow:hidden}
-  .jbar i{display:block;height:100%;background:linear-gradient(90deg,#ee0000,#ffd765);transform-origin:left;transform:scaleX(0)}
+  .jhead .sec{color:var(--ka-ink);max-width:20ch}
+  .jhead .eyebrow{color:var(--ka-red)!important}
+  .jmeta{display:flex;align-items:center;gap:14px;margin-top:14px;font:700 12.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;color:var(--ka-ink-soft)}
+  .jcount b{color:var(--ka-red);font-size:15px}
+  .jbar{width:140px;height:4px;border-radius:4px;background:rgba(23,35,58,.12);overflow:hidden}
+  .jbar i{display:block;height:100%;background:linear-gradient(90deg,#ee0000,#f4b60e);transform-origin:left;transform:scaleX(0)}
   .jhint{text-transform:uppercase}
   .journey.arrived .jhint{opacity:0}
-  .jroad{position:absolute;inset:0;width:100%;height:100%}
-  .jroad .edge{fill:none;stroke:#0a101c;stroke-width:46;stroke-linecap:round}
-  .jroad .road{fill:none;stroke:#2a3550;stroke-width:36;stroke-linecap:round}
-  .jroad .lane{fill:none;stroke:#ffd765;stroke-opacity:.55;stroke-width:2.5;stroke-dasharray:10 14}
-  .jroad .done{fill:none;stroke:#ee0000;stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(238,0,0,.9))}
-  .jroad .pin circle{fill:#17233a;stroke:rgba(255,255,255,.35);stroke-width:2;transition:fill .3s,stroke .3s}
-  .jroad .pin text{fill:rgba(255,255,255,.7);font:900 13px Archivo,system-ui,sans-serif}
+  .jroad{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+  .jroad .edge{fill:none;stroke:#fff;stroke-width:50;stroke-linecap:round;filter:drop-shadow(0 10px 18px rgba(23,35,58,.18))}
+  .jroad .road{fill:none;stroke:#2f3a52;stroke-width:36;stroke-linecap:round}
+  .jroad .lane{fill:none;stroke:#f4b60e;stroke-opacity:.8;stroke-width:2.5;stroke-dasharray:10 14}
+  .jroad .done{fill:none;stroke:#ee0000;stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(238,0,0,.7))}
+  .jroad .pin circle{fill:#fff;stroke:#2f3a52;stroke-width:2.5;transition:fill .3s,stroke .3s}
+  .jroad .pin text{fill:#2f3a52;font:900 13px Archivo,system-ui,sans-serif}
   .jroad .pin.passed circle{fill:#ee0000;stroke:#fff}
   .jroad .pin.passed text{fill:#fff}
-  .jroad .pin.here circle{stroke:#ffd765;stroke-width:3}
-  .jcard{position:absolute;z-index:3;width:300px;padding:20px 20px 18px;border-radius:22px;color:#fff;
-    background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.18);
-    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);
+  .jroad .pin.here circle{stroke:#f4b60e;stroke-width:4}
+  .jroad .lamp{opacity:.6}
+  .jcard{position:absolute;z-index:3;width:300px;padding:20px 20px 18px;border-radius:22px;color:var(--ka-ink);
+    background:rgba(255,255,255,.92);border:1px solid var(--ka-line);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 30px 60px -28px rgba(23,35,58,.45);
     opacity:0;transform:translateY(16px) scale(.96);transition:opacity .35s,transform .35s;pointer-events:none}
   .jcard.on{opacity:1;transform:none}
-  .jcard .jn{position:absolute;top:18px;right:20px;font:700 12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:rgba(255,255,255,.5)}
-  .jcard .jic{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:rgba(238,0,0,.18);color:#ff8a8a;margin-bottom:14px}
+  .jcard .jn{position:absolute;top:18px;right:20px;font:700 12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ka-ink-soft)}
+  .jcard .jic{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#fdeaea;color:#ee0000;margin-bottom:14px}
   .jcard .jic svg{width:24px;height:24px}
   .jcard .jic.tile{overflow:hidden;position:relative;background:none}
   .jcard .jic.tile img{position:absolute;width:136.4%;height:136.4%;max-width:none;left:-18.2%;top:-18.2%}
   .jcard h3{font-weight:900;font-size:21px;letter-spacing:-.02em}
-  .jcard p{margin-top:4px;font-size:14.5px;color:rgba(255,255,255,.78)}
+  .jcard p{margin-top:4px;font-size:14.5px;color:var(--ka-ink-soft)}
   .jcard .arr{display:inline-block;margin-top:12px;background:var(--ka-green);color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:6px 12px;opacity:0;transform:scale(.8);transition:opacity .3s,transform .3s}
   .journey.arrived .jcard .arr{opacity:1;transform:none}
-  @media(max-width:759px){.jhead{padding-top:76px}.jhead .sec{font-size:28px}.jcard{padding:16px}.jcard h3{font-size:19px}.jmeta .jhint{display:none}}
+  @media(max-width:759px){.jhead{padding-top:76px}.jhead .sec{font-size:28px}.jcard{padding:16px}.jcard h3{font-size:19px}.jmeta .jhint{display:none}.jscene{height:26%}}
   /* list fallback: no JS, or reduced motion */
   .journey.static,.journey:not(.live){padding:64px 0}
   .journey:not(.live) .jhead{padding-top:0}
-  .journey:not(.live) .jroad{display:none}
+  .journey:not(.live) .jroad,.journey:not(.live) .jscene{display:none}
   .journey:not(.live) .jmeta{display:none}
   .journey:not(.live) .jcards{max-width:var(--maxw);margin:28px auto 0;padding:0 20px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
   .journey:not(.live) .jcard{position:relative;width:auto;opacity:1;transform:none}
   .journey:not(.live) .jcard .arr{opacity:1;transform:none}
+  /* Ride-along "wow" layer: camera, 3D card deck, bursts, flowing lanes, Sarimanok finale */
+  .jworld{position:absolute;inset:0;transform-origin:0 0;will-change:transform}
+  .jworld .jroad{z-index:auto}
+  .journey:not(.live) .jworld{display:none}
+  .jcards{position:absolute;inset:0;z-index:4;pointer-events:none;perspective:1100px;perspective-origin:80% 10%}
+  .journey:not(.live) .jcards{position:static;perspective:none}
+  .journey.live .jcard{transform-origin:50% 100%;transform:translate3d(0,70px,0) rotateX(-40deg) scale(.94);
+    transition:transform .7s cubic-bezier(.2,.9,.25,1.15),opacity .45s,filter .45s}
+  .journey.live .jcard.on{opacity:1;transform:none;filter:none}
+  .journey.live .jcard.past{opacity:calc(.75 - var(--d) * .18);filter:blur(calc(var(--d) * .6px));transform-origin:50% 0;
+    transform:translate3d(calc(var(--d) * -10px),calc(var(--d) * -14px),calc(var(--d) * -40px)) scale(calc(1 - var(--d) * .05)) rotateZ(calc(var(--d) * -2deg))}
+  .journey.live .jcard.on .jic{animation:kaIcon .7s .15s both}
+  @keyframes kaIcon{0%{transform:scale(.4) rotate(-20deg);opacity:0}70%{transform:scale(1.15) rotate(6deg);opacity:1}100%{transform:none}}
+  .spark{position:absolute;z-index:5;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;pointer-events:none;animation:kaSpark .85s cubic-bezier(.15,.7,.3,1) forwards}
+  @keyframes kaSpark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+  .jroad .pin .ring{fill:none;stroke:#ee0000;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+  .jroad .pin.here .ring{animation:kaRingPin 1.6s ease-out infinite}
+  @keyframes kaRingPin{0%{transform:scale(1);opacity:.8}100%{transform:scale(2.6);opacity:0}}
+  .jstage.moving .jroad .lane{animation:kaLaneFlow .5s linear infinite}
+  @keyframes kaLaneFlow{to{stroke-dashoffset:-24}}
+  .jbird{position:absolute;z-index:6;width:130px;height:130px;left:-180px;top:12%;pointer-events:none;opacity:0;
+    filter:drop-shadow(0 16px 22px rgba(23,35,58,.3));transition:left 1.1s cubic-bezier(.3,.7,.3,1),top 1.1s cubic-bezier(.3,.7,.3,1),opacity .3s,transform 1.1s}
+  .journey.arrived .jbird{opacity:1;transform:rotate(0)}
+  .journey:not(.arrived) .jbird{transform:rotate(-12deg)}
+  @media(max-width:759px){.jbird{width:96px;height:96px}.journey.live .jcard.past{opacity:0}}
+  .journey:not(.live) .jbird{display:none}
+  /* page flow: one cream ground; the "Coming soon" strip becomes a soft pill (same words) */
+  #apps{background:var(--ka-cream)}
+  main > section[style*="#fff7e6"]{background:transparent!important;border:0!important;padding:8px 0 0}
+  main > section[style*="#fff7e6"] > .wrap{width:max-content;max-width:calc(100% - 40px);background:#fff7e6;border:1px solid #f3ddad;border-radius:999px;padding:12px 22px!important;box-shadow:0 14px 28px -20px rgba(122,91,18,.5)}
   #apps .appcard{flex-direction:column;gap:14px;border-radius:26px;padding:26px;border:1px solid var(--ka-line)}
   #apps .appcard img{width:76px;height:76px}
   .store{display:flex;align-items:center;gap:10px;width:max-content;margin-top:14px;background:var(--ka-ink);color:#fff;border-radius:12px;padding:8px 14px;font-size:11.5px;line-height:1.2}
@@ -651,6 +691,24 @@
         <h2 class="sec">One order, from your spot to your door.</h2>
         <div class="jmeta" aria-hidden="true"><span class="jcount">Stop <b>1</b> / 6</span><span class="jbar"><i></i></span><span class="jhint">Scroll to ride along</span></div>
       </div>
+      <div class="jworld">
+      <div class="jscene" aria-hidden="true">
+        <svg class="sky" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMax slice"><g fill="#e3cfc0">
+          <rect x="140" y="70" width="8" height="50"/><circle cx="144" cy="66" r="6"/>
+          <path d="M180 120v-34a26 26 0 0 1 52 0v34z"/><circle cx="206" cy="58" r="4"/>
+          <rect x="250" y="76" width="8" height="44"/><circle cx="254" cy="72" r="6"/>
+          <path d="M420 120c0-20 10-30 26-30s26 10 26 30z"/><path d="M380 120c10-40 30-50 40-56-4 14-2 30 4 56z"/>
+          <path d="M640 120v-28h120v28z"/><path d="M660 92a40 40 0 0 1 80 0z"/><rect x="696" y="40" width="8" height="12"/><circle cx="700" cy="36" r="5"/>
+          <rect x="626" y="56" width="9" height="64"/><circle cx="630" cy="52" r="7"/><rect x="765" y="56" width="9" height="64"/><circle cx="769" cy="52" r="7"/>
+          <path d="M960 120c8-36 28-48 38-54-3 14-1 28 4 54z"/><path d="M1000 120c6-30 22-40 30-44-2 12 0 24 3 44z"/>
+          <path d="M1180 120v-30a22 22 0 0 1 44 0v30z"/><rect x="1236" y="74" width="7" height="46"/><circle cx="1239" cy="70" r="5"/>
+        </g></svg>
+        <svg class="lake" viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <defs><linearGradient id="jlake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcd3ea"/><stop offset=".55" stop-color="#d9e6f3"/><stop offset="1" stop-color="#f8f4f4"/></linearGradient></defs>
+          <path d="M0 22C180 6 360 30 540 20s360-22 540-6 270 14 360 4V120H0z" fill="url(#jlake)" opacity=".8"/>
+          <path d="M120 54h140M420 70h90M760 50h180M1100 74h120M300 96h120M900 98h160" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+        </svg>
+      </div>
       <svg class="jroad" aria-hidden="true" preserveAspectRatio="none">
         <defs>
           <radialGradient id="jlamp"><stop offset="0" stop-color="#ffd765" stop-opacity=".55"/><stop offset="1" stop-color="#ffd765" stop-opacity="0"/></radialGradient>
@@ -670,6 +728,8 @@
           <circle cx="18" cy="0" r="2.6" fill="#ffd765"/>
         </g>
       </svg>
+      </div>
+      <svg class="jbird" viewBox="0 0 240 240" aria-hidden="true"><use href="#sarimanok-flutter"></use></svg>
       <div class="jcards">
         <article class="jcard"><span class="jn">01</span><span class="jic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg></span><h3>Pin your spot</h3><p>Pagar knows the streets, gates and barangays.</p></article>
         <article class="jcard"><span class="jn">02</span><span class="jic tile"><img src="assets/services/food.svg" alt=""></span><h3>Pick a service</h3><p>Food, a tricycle, a parcel, the market or a pabili.</p></article>
