@@ -465,6 +465,7 @@
   #services .svc span:not(.tilebox){display:block;margin-top:2px;font-size:14.5px;color:var(--ka-ink-soft)}
   #services .svc .bar{position:absolute;left:18px;right:18px;bottom:0;height:3px;border-radius:3px;background:var(--c);transform:scaleX(0);transform-origin:left}
   #services .svctabs.auto .svc[aria-selected="true"] .bar{animation:kaBar 3.5s linear forwards}
+  #services .svctabs:not(.auto) .svc[aria-selected="true"] .bar{transform:scaleX(1);transition:transform .3s}
   @keyframes kaBar{to{transform:scaleX(1)}}
   #services .svcstage{position:relative;border-radius:32px;min-height:620px;display:grid;place-items:center;overflow:hidden;border:1px solid var(--ka-line);
     background:radial-gradient(circle at 50% 45%,var(--g,#dcf2d6) 0,rgba(255,255,255,0) 62%),radial-gradient(rgba(23,35,58,.14) 1px,transparent 1.2px) 0 0/18px 18px,#fff;transition:background .5s}
@@ -1090,10 +1091,12 @@
 <script>
 /* Services showcase (17 Nov 2026, second pass).
    Wide screens (900px+ wide, 640px+ tall): a scroll scene. The tabs and phone stick to the screen
-   while you scroll through the section; each stretch of scroll shows the next service, the tab's bar
-   and the side rail fill with the scroll, and a large outlined service name drifts behind the phone.
-   Clicking a tab (or arrow keys) scrolls to that service.
-   Narrow screens: tap/swipe tabs, plus the 3.5s auto-advance while on screen (stops once you tap).
+   while you scroll through the section; each stretch of scroll shows the next service, the side rail
+   fills with the scroll, and a large outlined service name drifts behind the phone. Clicking a tab
+   (or arrow keys) scrolls to that service.
+   Every screen size: hovering a service (mouse) shows it and pauses; the 3.5s timer moves on to the
+   next service while the section is on screen, the tab's bar filling as it counts. Tapping stops the
+   timer; on wide screens scrolling on to another service starts it again.
    Reduced motion: no scroll scene, no auto-advance, no screen animation. Without JS: the Food screen
    and every tab's words still show. */
 (function(){
@@ -1127,19 +1130,18 @@
     var chip=stage.querySelector(".stagechip span"), on=stage.querySelector('.scrn[data-s="'+k+'"]');
     if(chip&&on){ chip.textContent=on.getAttribute("data-chip"); chip.parentNode.classList.remove("pop"); void chip.offsetWidth; chip.parentNode.classList.add("pop"); }
     if(phone&&prev>=0&&!calm){ phone.classList.remove("kick","kickb"); void phone.offsetWidth; phone.classList.add(back?"kickb":"kick"); }
-    if(!scrolly){ var bar=t.querySelector(".bar"); if(bar){ bar.style.transform=""; bar.style.animation="none"; void bar.offsetWidth; bar.style.animation=""; } }
+    var bar=t.querySelector(".bar"); if(bar){ bar.style.transform=""; bar.style.animation="none"; void bar.offsetWidth; bar.style.animation=""; }
     if(focus) t.focus({preventScroll:scrolly});
     if(window.innerWidth<900 && !focus && list.scrollWidth>list.clientWidth) list.scrollTo({left:t.offsetLeft-20,behavior:calm?"auto":"smooth"});
   }
 
   /* ---- scroll scene ---- */
-  var stickTop=0, wrapH=0, runLen=0, ticking=false;
+  var stickTop=0, wrapH=0, runLen=0, ticking=false, lastSeg=-1;
   function measure(){
     var want=!calm && window.innerWidth>=900 && window.innerHeight>=640;
     if(want!==scrolly){
       scrolly=want; sec.classList.toggle("scrolly",scrolly);
-      if(scrolly){ clearTimeout(timer); list.classList.remove("auto"); }
-      else { tabs.forEach(function(x){ var b=x.querySelector(".bar"); if(b){ b.style.transform=""; b.style.animation=""; } }); if(!stopped&&!calm){ list.classList.add("auto"); tick(); } }
+      lastSeg=-1; tick();
     }
     if(!scrolly){ wrap.style.top=""; run.style.height=""; return; }
     wrapH=wrap.offsetHeight;
@@ -1155,8 +1157,9 @@
     requestAnimationFrame(function(){
       ticking=false; if(!scrolly) return;
       var p=progress(), f=p*N, i=Math.min(N-1,Math.floor(f)), local=Math.min(1,f-i);
-      show(i);
-      tabs.forEach(function(x,j){ var b=x.querySelector(".bar"); if(b){ b.style.animation="none"; b.style.transform="scaleX("+(j===i?local:0)+")"; } });
+      /* scrolling into the next stretch shows that service and restarts the timer from it;
+         within a stretch, hover and the timer can move on without the scroll fighting them */
+      if(i!==lastSeg){ lastSeg=i; show(i); resume(); }
       rail.firstChild.style.transform="scaleY("+p+")";
       word.style.translate=(30-60*local)+"px 0";
       if(phone) phone.style.setProperty("--tilt",(local-.5)*6+"deg");
@@ -1173,14 +1176,16 @@
   window.addEventListener("load",measure);
 
   /* ---- tabs: click, hover (mouse, outside the scroll scene), keys ---- */
-  function tick(){ clearTimeout(timer); if(scrolly||stopped||!inView||calm||hovering) return; timer=setTimeout(function(){ show(cur+1); tick(); },3500); }
+  /* the 3.5s timer runs on every screen size; the tab's bar fills as its countdown */
+  function tick(){ clearTimeout(timer); if(stopped||!inView||calm||hovering) return; timer=setTimeout(function(){ show(cur+1); tick(); },3500); }
   function stop(){ stopped=true; clearTimeout(timer); list.classList.remove("auto"); }
+  function resume(){ if(calm||hovering) return; stopped=false; list.classList.add("auto"); var b=tabs[cur]&&tabs[cur].querySelector(".bar"); if(b){ b.style.animation="none"; void b.offsetWidth; b.style.animation=""; } tick(); }
   tabs.forEach(function(t,i){ t.addEventListener("click",function(){ clearTimeout(hoverT); stop(); if(scrolly) goTo(i); else show(i); }); });
   function isMouse(e){ return e.pointerType ? e.pointerType==="mouse" : true; }
   var hasPointer="PointerEvent" in window, enterEv=hasPointer?"pointerenter":"mouseenter", leaveEv=hasPointer?"pointerleave":"mouseleave";
-  tabs.forEach(function(t,i){ t.addEventListener(enterEv,function(e){ if(scrolly||!isMouse(e)) return; clearTimeout(hoverT); hoverT=setTimeout(function(){ if(i!==cur) show(i); },120); }); });
-  list.addEventListener(enterEv,function(e){ if(scrolly||!isMouse(e)) return; hovering=true; clearTimeout(timer); list.classList.remove("auto"); });
-  list.addEventListener(leaveEv,function(e){ if(scrolly||!isMouse(e)) return; hovering=false; clearTimeout(hoverT); if(!stopped&&!calm){ list.classList.add("auto"); tick(); } });
+  tabs.forEach(function(t,i){ t.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; clearTimeout(hoverT); hoverT=setTimeout(function(){ if(i!==cur) show(i); },120); }); });
+  list.addEventListener(enterEv,function(e){ if(!isMouse(e)) return; hovering=true; clearTimeout(timer); list.classList.remove("auto"); });
+  list.addEventListener(leaveEv,function(e){ if(!isMouse(e)) return; hovering=false; clearTimeout(hoverT); if(!stopped&&!calm){ list.classList.add("auto"); tick(); } });
   list.addEventListener("keydown",function(e){
     var k=e.key, n=k==="ArrowDown"||k==="ArrowRight"?1:k==="ArrowUp"||k==="ArrowLeft"?-1:0;
     if(k==="Enter"||k===" "){ e.preventDefault(); stop(); return; }
