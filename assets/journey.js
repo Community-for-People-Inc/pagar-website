@@ -23,7 +23,7 @@
   var road = svg.querySelector(".road"), edge = svg.querySelector(".edge"), lane = svg.querySelector(".lane"), done = svg.querySelector(".done");
   var rider = svg.querySelector(".rider"), lamp = svg.querySelector(".lamp"), pinsG = svg.querySelector(".pins");
   var cards = [].slice.call(sec.querySelectorAll(".jcard"));
-  var count = sec.querySelector(".jcount b"), bar = sec.querySelector(".jbar i"), bird = sec.querySelector(".jbird");
+  var bar = sec.querySelector(".jbar i"), bird = sec.querySelector(".jbird");
   var N = cards.length, len = 0, stopLen = [], W = 0, H = 0, mobile = false, pins = [], last = -1, ticking = false, flowT = 0;
   var COLORS = ["#ee0000", "#f4b60e", "#0eb046", "#0058a1"];
 
@@ -118,7 +118,7 @@
         c.setAttribute("aria-hidden", i === at ? "false" : "true");
       });
       if (last !== -1 && at > last && pins[at]) burst(pins[at], false);
-      count.textContent = at + 1; last = at;
+      last = at;
     }
     var arrived = s > .985;
     if (arrived && !sec.classList.contains("arrived")) {
