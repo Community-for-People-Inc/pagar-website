@@ -3,7 +3,6 @@
    - The "100%" in Why Pagar counts up when it scrolls into view.
    - The launch band ("Coming soon. Public launch November 2026.") becomes a moving ticker. The
      original words stay first and are the only copy screen readers hear; the repeats are hidden.
-   - Cards: a soft light follows the cursor and the card tilts slightly (mouse only).
    - The coverage map draws its routes when it scrolls into view.
    With reduced motion none of this runs and the page stays as written. The hero's opening
    animation is pure CSS, switched on by the "motion" class set in the page head. */
@@ -59,25 +58,6 @@
     var track = document.createElement("div"); track.className = "tktrack"; track.appendChild(group);
     for (var c = 0; c < 3; c++) { var g = group.cloneNode(true); g.setAttribute("aria-hidden", "true"); track.appendChild(g); }
     wrap.appendChild(track); band.classList.add("ticking");
-  }
-
-  /* ---- cursor light + tilt on cards (mouse only) ---- */
-  var fine = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if (fine) {
-    [].forEach.call(document.querySelectorAll("main .card, main .appcard"), function (card) {
-      if (card.closest(".journey, .hero")) return;
-      card.classList.add("glow");
-      var raf = 0, ev = null;
-      card.addEventListener("pointermove", function (e) {
-        ev = e; if (raf) return;
-        raf = requestAnimationFrame(function () {
-          raf = 0; var r = card.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
-          card.style.setProperty("--mx", (x * 100).toFixed(1) + "%"); card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
-          card.style.transform = "perspective(900px) translateY(-4px) rotateX(" + ((.5 - y) * 5).toFixed(2) + "deg) rotateY(" + ((x - .5) * 5).toFixed(2) + "deg)";
-        });
-      });
-      card.addEventListener("pointerleave", function () { card.style.transform = ""; });
-    });
   }
 
   /* ---- coverage routes ---- */

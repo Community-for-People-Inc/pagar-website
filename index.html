@@ -31,6 +31,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/styles.css" />
+<link rel="stylesheet" href="assets/motion.css" />
 <style>
   @keyframes kaFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
   @keyframes kaFly{0%{transform:translate(-24vw,42vh) rotate(-8deg) scale(.7);opacity:0}12%{opacity:1}28%{transform:translate(20vw,14vh) rotate(4deg) scale(1)}52%{transform:translate(50vw,40vh) rotate(-3deg) scale(1.05)}76%{transform:translate(80vw,12vh) rotate(5deg) scale(1)}92%{opacity:1}100%{transform:translate(122vw,36vh) rotate(-6deg) scale(.72);opacity:0}}
@@ -148,6 +149,15 @@
   .ap .bt b{font-weight:900;font-size:13px;line-height:1}
   .ap .bt span{background:#fff;color:var(--ka-ink);font-weight:800;font-size:6.5px;border-radius:4px;padding:2px 4px;align-self:flex-start}
   .ap .bm{background:radial-gradient(circle at 50% 46%,#e2b54a 0 15%,transparent 16%),linear-gradient(#d9c08a,#d9c08a) 50% 72%/70% 32% no-repeat,linear-gradient(180deg,#506c96,#c5d1e3)}
+  .ap .bnr{background:#f4b60e}
+  .ap .bt{clip-path:polygon(0 0,100% 0,90% 100%,0 100%);position:relative;z-index:1}
+  .ap .bm{clip-path:polygon(12% 0,100% 0,100% 100%,2% 100%);margin-left:-12px}
+  .ap .bm svg{display:block;width:100%;height:100%}
+  .ap .bfrom{display:flex;align-items:center;justify-content:space-between;margin:-4px 10px 0;background:#fff;border:1px solid #e3dedd;border-top:0;border-radius:0 0 10px 10px;padding:6px 8px}
+  .ap .bfrom span{display:flex;align-items:center;gap:3px;border:1px solid #f0c9c9;border-radius:5px;padding:2px 5px;color:#ee0000;font-weight:900;font-size:6.5px;letter-spacing:.08em}
+  .ap .bfrom .mk{width:10px;height:10px;filter:none}
+  .ap .bfrom em{font-style:normal;color:#ee0000;font-weight:800;font-size:8px}
+  .ap .bnr{border-radius:10px 10px 0 0}
   .ap .bnav{margin-top:auto;display:grid;grid-template-columns:repeat(7,1fr);background:#fff;border-top:1px solid #ebe6e5;padding:6px 2px 14px}
   .ap .bnav span{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:6.5px;font-weight:700;color:#5b5f73}
   .ap .bnav svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
@@ -251,7 +261,7 @@
   @media(max-width:899px){.stagechip{left:auto;right:12px;top:auto;bottom:16px;font-size:12px}}
   @media(max-width:560px){.stagechip{display:none}}
   @media(prefers-reduced-motion:reduce){.stagechip.pop{animation:none}}
-  @media(max-width:899px){.herostage .ap .t5 div{font-size:6.5px}.herostage .ap .bnr{display:none}}
+  @media(max-width:899px){.herostage .ap .t5 div{font-size:6.5px}.herostage .ap .bnr,.herostage .ap .bfrom{display:none}}
   .float{position:absolute;z-index:4;background:#fff;color:var(--ka-ink);border-radius:18px;padding:11px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 24px 40px -18px rgba(0,0,0,.55);font-size:12.5px;line-height:1.3;max-width:240px;animation:kaFloat 6s ease-in-out infinite}
   .float b{display:block;font-size:14px}
   .float .dot{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:#fff;font-weight:900}
@@ -530,15 +540,8 @@
   .launchband .tkdot:nth-of-type(3n+2){background:var(--ka-gold)}.launchband .tkdot:nth-of-type(3n){background:var(--ka-green)}
   @keyframes kaTick{to{transform:translateX(-25%)}}
 
-  /* cards: cursor light + tilt (home.js adds .glow, mouse only) */
-  .glow{position:relative;isolation:isolate;transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;will-change:transform}
-  .glow::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;
-    background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(238,0,0,.09),rgba(244,182,14,.06) 40%,transparent 70%)}
-  .glow:hover::after{opacity:1}
-  .glow:hover{box-shadow:0 34px 60px -30px rgba(23,35,58,.5)}
+  /* cards: cursor light + tilt come from nav.js and styles.css (.glow); homepage extras below */
   .whygrid .card.lead.glow::after{background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.14),transparent 70%)}
-  .glow .ic{transition:transform .4s cubic-bezier(.3,1.5,.5,1)}
-  .glow:hover .ic{transform:translateY(-3px) rotate(-6deg) scale(1.08)}
   #apps .appcard img{transition:transform .5s cubic-bezier(.3,1.5,.5,1),filter .5s}
   #apps .appcard:hover img{transform:translateY(-6px) rotate(-5deg) scale(1.06);filter:drop-shadow(0 16px 18px rgba(23,35,58,.3))}
 
@@ -670,8 +673,9 @@
             </div>
             <div class="srch"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#5b8ad6" stroke-width="2.4"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5" stroke-linecap="round"/></svg>Search for food, shops…</div>
             <div class="t5"><div><img src="assets/services/food.svg" alt="">Food</div><div><img src="assets/services/ride.svg" alt="">Ride</div><div><img src="assets/services/package.svg" alt="">Package</div><div><img src="assets/services/market.svg" alt="">Market</div><div><img src="assets/services/pabili.svg" alt="">Pabili</div></div>
-            <div class="bnr"><div class="bt"><b>Help Build a Mosque</b><span>communityforpeople.org</span></div><div class="bm"></div></div><div class="act"><div class="ah2"><b>Recent activity</b><em>See all</em></div><div class="ac"><div><small>FOOD</small><b>Order #1042</b><span>Chicken Kabsa · ₱250</span></div><i>Delivered</i></div></div>
-            <div class="bnav"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
+            <div class="bnr"><div class="bt"><b>Help Build a Mosque</b><span>communityforpeople.org</span></div><div class="bm"><svg viewBox="0 0 100 70" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="bmSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f4f7f"/><stop offset=".65" stop-color="#c98f5a"/><stop offset="1" stop-color="#f1c27d"/></linearGradient><linearGradient id="bmGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#c9921c"/></linearGradient></defs><rect width="100" height="70" fill="url(#bmSky)"/><rect x="14" y="16" width="5" height="46" fill="#efe1bb"/><path d="M13 16l3.5-9 3.5 9z" fill="url(#bmGold)"/><rect x="81" y="16" width="5" height="46" fill="#efe1bb"/><path d="M80 16l3.5-9 3.5 9z" fill="url(#bmGold)"/><path d="M34 40a16 16 0 0 1 32 0z" fill="url(#bmGold)"/><path d="M50 22v-4" stroke="#c9921c" stroke-width="1.2"/><path d="M22 62V44l10-6h36l10 6v18z" fill="#f3e6c4"/><path d="M28 44l22-9 22 9" fill="none" stroke="#8a5a1c" stroke-width="1.6"/><g fill="#5a3b1a"><path d="M30 62v-9a3 3 0 0 1 6 0v9z"/><path d="M40 62v-11a4 4 0 0 1 8 0v11z" transform="translate(2 0)"/><path d="M58 62v-9a3 3 0 0 1 6 0v9z"/></g><rect y="61" width="100" height="9" fill="#3b3a2e"/></svg></div></div>
+            <div class="bfrom"><span><svg class="mk" viewBox="0 0 240 240" aria-hidden="true"><use href="#sarimanok"></use></svg>FROM PAGAR EXPRESS</span><em>Learn More</em></div><div class="act"><div class="ah2"><b>Recent activity</b><em>See all</em></div><div class="ac"><div><small>FOOD</small><b>Order #1042</b><span>Chicken Kabsa · ₱250</span></div><i>Delivered</i></div></div>
+            <div class="bnav"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v8h14v-8M10 21v-5h4v5"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
           </div>
         </div></div>
       </div>
@@ -759,7 +763,7 @@
               <div class="li"><i></i><div><b>Chicken Adobo Rice</b><small>Halal kitchen · ordered 8×</small></div><span>₱180.00</span></div>
               <div class="li"><i></i><div><b>Chicken Kabsa</b><small>Halal kitchen · ordered 8×</small></div><span>₱250.00</span></div>
               <div class="li"><i></i><div><b>Fresh Buko Juice</b><small>Halal kitchen · ordered 6×</small></div><span>₱65.00</span></div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span class="on"><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span class="on"><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v8h14v-8M10 21v-5h4v5"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="ride" data-chip="Upfront fare · no surge" aria-hidden="true">
@@ -780,7 +784,7 @@
                 <div class="fem"><i></i>Prefer a female driver</div>
                 <p class="disc">Student, PWD or Senior Citizen? Your fare discount applies once your ID is verified.</p>
               </div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span class="on"><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span class="on"><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v8h14v-8M10 21v-5h4v5"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="package" data-chip="Same day, across the city" aria-hidden="true">
@@ -796,7 +800,7 @@
                 <b class="h2">Drop-off details</b>
               </div>
               <div class="next">Continue →</div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span class="on"><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span class="on"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v8h14v-8M10 21v-5h4v5"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="market" data-chip="From local sellers" aria-hidden="true">
@@ -809,7 +813,7 @@
               <div class="cats"><span class="on"><svg viewBox="0 0 24 24" fill="#fff"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>All</span><span><svg viewBox="0 0 24 24" fill="#ee0000"><path d="M8 3l-5 4 3 4 2-1v11h8V10l2 1 3-4-5-4c-1 2-5 2-8 0z"/></svg>Fashion</span><span><svg viewBox="0 0 24 24" fill="#0eb046"><path d="M3 11l9-8 9 8h-3v10H6V11z"/></svg>Home</span><span><svg viewBox="0 0 24 24" fill="#124a28"><path d="M3 9h18l-2 11H5zM8 9l4-6 4 6"/></svg>Grocery</span><span><svg viewBox="0 0 24 24" fill="#0a7a34"><path d="M3 4h18v6H3zM5 10h14v10H5z"/></svg>Sari-sari</span></div>
               <b class="ttl">Popular now</b>
               <div class="pcs"><div class="pc"><div class="pt">CO</div><b>Cooking Oil (1L)</b><small>Local store</small><span>₱95.00</span></div><div class="pc"><div class="pt">JR</div><b>Jasmine Rice (5kg)</b><small>Local store</small><span>₱285.00</span></div></div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span class="on"><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>Package</span><span class="on"><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v8h14v-8M10 21v-5h4v5"/></svg>Market</span><span><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
           <div class="scrn" data-s="pabili" data-chip="A rider buys it for you" aria-hidden="true">
@@ -824,7 +828,7 @@
                 <span class="add"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z" fill="#ee0000"/><circle cx="12" cy="11" r="2.6" fill="#fff"/></svg> Pin the store on the map</span>
                 <div class="lb">Where should we deliver?</div><div class="fld r">Banggolo Mosque, Marawi City</div>
               </div>
-              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h5l3 3v3h-8z"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M4 9h16v11H4z"/></svg>Market</span><span class="on"><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
+              <div class="bnav"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24"><path d="M7 2v20M4 2v6a3 3 0 0 0 6 0V2M17 2c-2 2-3 5-3 8h3v12"/></svg>Food</span><span><svg viewBox="0 0 24 24"><path d="M5 16l1.5-6h11L19 16zM4 16h16v4H4z"/></svg>Ride</span><span><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>Package</span><span><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v8h14v-8M10 21v-5h4v5"/></svg>Market</span><span class="on"><svg viewBox="0 0 24 24"><path d="M6 7h12l1 14H5zM9 7a3 3 0 0 1 6 0"/></svg>Pabili</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Me</span></div>
             </div>
           </div>
         </div></div>

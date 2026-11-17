@@ -80,11 +80,33 @@
     });
   }
 
+  /* Cards on every page: a soft light follows the cursor and the card tilts slightly. Mouse only,
+     and off for reduced motion. The light and lift styles are .glow in styles.css. */
+  function cardLight() {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+    [].forEach.call(document.querySelectorAll("main .card, main .appcard, main .phase .p, main .cov .city, main ol.steps li"), function (card) {
+      if (card.closest(".journey, .hero")) return;
+      card.classList.add("glow");
+      var raf = 0, ev = null;
+      card.addEventListener("pointermove", function (e) {
+        ev = e; if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0; var r = card.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+          card.style.setProperty("--mx", (x * 100).toFixed(1) + "%"); card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+          card.style.transform = "perspective(900px) translateY(-4px) rotateX(" + ((.5 - y) * 5).toFixed(2) + "deg) rotateY(" + ((x - .5) * 5).toFixed(2) + "deg)";
+        });
+      });
+      card.addEventListener("pointerleave", function () { card.style.transform = ""; });
+    });
+  }
+
   function init() {
     var st = document.createElement("style");
     st.textContent = css;
     document.head.appendChild(st);
     reveal();
+    cardLight();
 
     var header = document.querySelector("header.site");
     if (header && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) {
