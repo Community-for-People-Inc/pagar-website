@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<!-- Content security policy (17 Nov 2026): the browser only lets this page load from, and send to, the places listed. Form details can only go to the Pagar app server (connect-src). Adding a new outside service? Add its address here on all six pages. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://unpkg.com https://tile.openstreetmap.org; media-src 'self'; connect-src 'self' https://delivery-app-ub1c.onrender.com; frame-src https://challenges.cloudflare.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="index, follow" />
 <title>Coverage — Pagar starts in Marawi, rising across Mindanao</title>
@@ -30,13 +32,32 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/styles.css" />
+<link rel="stylesheet" href="assets/motion.css" />
 <style>
   .cov{display:grid;gap:14px} @media(min-width:640px){.cov{grid-template-columns:1fr 1fr}}
   .cov .city{background:#fff;border:1px solid var(--ka-line);border-radius:14px;padding:18px 20px;box-shadow:var(--sh-sm);display:flex;justify-content:space-between;align-items:center;gap:12px}
   .cov .city h4{font-weight:800;font-size:17px} .cov .city p{color:var(--ka-ink-soft);font-size:13.5px;margin-top:2px}
   .status{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:6px 11px;border-radius:99px;white-space:nowrap}
   .status.live{background:#e7f6ec;color:var(--ka-green-deep)} .status.next{background:#eaf2fb;color:var(--ka-blue-deep)} .status.soon{background:#f3f2f2;color:var(--ka-ink-soft)}
+
+  /* modern layer (17 Nov 2026): live dot, roadmap cards with a three-step tracker */
+  .eyebrow.green{display:inline-flex;align-items:center;gap:8px}
+  .eyebrow.green::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ka-green);box-shadow:0 0 0 0 rgba(14,176,70,.5);animation:kaLive 2s infinite}
+  @keyframes kaLive{70%{box-shadow:0 0 0 10px rgba(14,176,70,0)}100%{box-shadow:0 0 0 0 rgba(14,176,70,0)}}
+  .cov{gap:16px}
+  .cov .city{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px 12px;border-radius:22px;padding:22px 22px 18px;box-shadow:var(--sh);transition:transform .25s,box-shadow .25s}
+  .cov .city:hover{transform:translateY(-3px);box-shadow:0 26px 46px -26px rgba(23,35,58,.45)}
+  .cov .city h4{font-size:20px;font-weight:900;letter-spacing:-.02em}
+  .track{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-style:normal}
+  .track i{height:6px;border-radius:6px;background:#ece6e4}
+  .track.t-next i.on{background:linear-gradient(90deg,#3f7fd6,#0058a1)}
+  .track.t-soon i.on{background:#b9b2b0}
+  .track.t-live i.on{background:var(--ka-green)}
+  .track em{font-style:normal;font-size:11px;font-weight:700;color:var(--ka-ink-soft);letter-spacing:.02em}
+  .track.t-next em:nth-of-type(2),.track.t-soon em:nth-of-type(1){color:var(--ka-ink);font-weight:800}
+  @media(prefers-reduced-motion:reduce){.eyebrow.green::before{animation:none}}
 </style>
+<script>/* skipped page transitions are harmless; keep them out of the error console */addEventListener("pagereveal",function(e){var v=e.viewTransition;if(v)[v.ready,v.finished,v.updateCallbackDone].forEach(function(p){p&&p.catch&&p.catch(function(){})})});addEventListener("unhandledrejection",function(e){var r=e.reason;if(r&&r.name==="InvalidStateError"&&/Transition was aborted/.test(r.message))e.preventDefault()});</script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true">
@@ -100,6 +121,13 @@
 <main>
   <section class="hero ink">
     <div class="okir-bg" aria-hidden="true"><svg><use href="#okir"></use></svg><svg class="two"><use href="#okir"></use></svg></div>
+    <div class="heroart radar" aria-hidden="true">
+      <i class="r1"></i><i class="r2"></i><i class="r3"></i>
+      <span class="city main"><b></b>Marawi</span>
+      <span class="city c1"><b></b>Iligan</span>
+      <span class="city c2"><b></b>Cagayan de Oro</span>
+      <span class="city c3"><b></b>Cotabato</span>
+    </div>
     <div class="wrap inner">
       <div class="eyebrow" style="color:#fff;opacity:.85" data-en="Coverage" data-fil="Saklaw">Coverage</div>
       <h1 class="archivo-black" style="max-width:16ch" data-en="Starting in Marawi. Rising across Mindanao." data-fil="Nagsisimula sa Marawi. Aakyat sa buong Mindanao.">Starting in Marawi. Rising across Mindanao.</h1>
@@ -121,10 +149,10 @@
       <div class="eyebrow" style="margin-top:38px" data-en="Rolling out next" data-fil="Susunod na ilulunsad">Rolling out next</div>
       <h2 class="sec" data-en="Where to next?" data-fil="Saan susunod?">Where to next?</h2>
       <div class="cov mt22">
-        <div class="city"><div><h4>Iligan</h4><p data-en="Lanao del Norte" data-fil="Lanao del Norte">Lanao del Norte</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span></div>
-        <div class="city"><div><h4>Cagayan de Oro</h4><p data-en="Misamis Oriental" data-fil="Misamis Oriental">Misamis Oriental</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span></div>
-        <div class="city"><div><h4>Cotabato City</h4><p data-en="BARMM" data-fil="BARMM">BARMM</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span></div>
-        <div class="city"><div><h4>Pagadian</h4><p data-en="Zamboanga del Sur" data-fil="Zamboanga del Sur">Zamboanga del Sur</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span></div>
+        <div class="city"><div><h4 aria-level="3">Iligan</h4><p data-en="Lanao del Norte" data-fil="Lanao del Norte">Lanao del Norte</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span><span class="track t-next" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
+        <div class="city"><div><h4 aria-level="3">Cagayan de Oro</h4><p data-en="Misamis Oriental" data-fil="Misamis Oriental">Misamis Oriental</p></div><span class="status next" data-en="Rolling out" data-fil="Ilulunsad">Rolling out</span><span class="track t-next" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
+        <div class="city"><div><h4 aria-level="3">Cotabato City</h4><p data-en="BARMM" data-fil="BARMM">BARMM</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span><span class="track t-soon" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
+        <div class="city"><div><h4 aria-level="3">Pagadian</h4><p data-en="Zamboanga del Sur" data-fil="Zamboanga del Sur">Zamboanga del Sur</p></div><span class="status soon" data-en="On the horizon" data-fil="Paparating">On the horizon</span><span class="track t-soon" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i><em>Planned</em><em>Rolling out</em><em>Live</em></span></div>
       </div>
     </div>
   </section>
@@ -147,21 +175,25 @@
 <footer class="site">
   <div class="wrap cols">
     <div><div class="brand" style="margin-bottom:10px"><img class="brandicon" src="assets/brand/pagar-icon.svg" width="36" height="36" alt="Pagar"><span class="word">Pagar</span></div><p style="max-width:32ch" data-en="Built by Maranaos for Marawi and all of Mindanao." data-fil="Gawa ng mga Maranao para sa Marawi at buong Mindanao.">Built by Maranaos for Marawi and all of Mindanao.</p></div>
-    <div><h5 data-en="Company" data-fil="Kompanya">Company</h5><a href="about.html" data-en="About" data-fil="Tungkol">About</a><a href="coverage.html" data-en="Coverage" data-fil="Saklaw">Coverage</a><a href="partners.html" data-en="Partner with us" data-fil="Maging partner">Partner with us</a></div>
-    <div><h5 data-en="Support" data-fil="Suporta">Support</h5><a href="safety.html" data-en="Safety" data-fil="Kaligtasan">Safety</a><a href="help.html" data-en="Help & Legal" data-fil="Tulong at Legal">Help &amp; Legal</a><a href="mailto:marketing@communityforpeople.org?subject=PAGAR%20EXPRESS%20enquiry">marketing@communityforpeople.org</a></div>
+    <div><h5 aria-level="2" data-en="Company" data-fil="Kompanya">Company</h5><a href="about.html" data-en="About" data-fil="Tungkol">About</a><a href="coverage.html" data-en="Coverage" data-fil="Saklaw">Coverage</a><a href="partners.html" data-en="Partner with us" data-fil="Maging partner">Partner with us</a></div>
+    <div><h5 aria-level="2" data-en="Support" data-fil="Suporta">Support</h5><a href="safety.html" data-en="Safety" data-fil="Kaligtasan">Safety</a><a href="help.html" data-en="Help & Legal" data-fil="Tulong at Legal">Help &amp; Legal</a><a href="mailto:marketing@communityforpeople.org?subject=PAGAR%20EXPRESS%20enquiry">marketing@communityforpeople.org</a></div>
   </div>
   <div class="wrap legal"><span>© 2026 Pagar · Community For People Inc</span></div>
 </footer>
 <script src="assets/pagar.js"></script>
 <script src="assets/hash-target.js"></script>
+<script src="assets/nav.js"></script>
 <script>
 /* City-interest capture.
    Same defect as the homepage waitlist: an empty endpoint acknowledged the request and threw the
    city and contact away, while the copy above the form says "We use this only to gauge demand and
    notify you at launch." Neither gauging nor notifying was possible — nothing was kept.
    With no city-interest table to POST to, an empty endpoint now hands the details to the
-   visitor's mail app addressed to a mailbox that is read. Set CITY_ENDPOINT when one exists. */
-var CITY_ENDPOINT = "https://communityforpeople.org/api/pagar-signup";
+   visitor's mail app addressed to a mailbox that is read. Set CITY_ENDPOINT when one exists.
+   17 Nov 2026: now the app's own server (POST /api/waitlist, kind "coverage"), which keeps each vote and
+   emails the marketing mailbox; the old communityforpeople.org address was refused by every browser
+   (no CORS header). A 400 is shown on the form; any other failure still falls back to the mail app. */
+var CITY_ENDPOINT = "https://delivery-app-ub1c.onrender.com/api/waitlist";
 var CITY_MAILBOX = "marketing@communityforpeople.org";
 (function(){
   var f=document.getElementById('cityForm');
@@ -172,24 +204,32 @@ var CITY_MAILBOX = "marketing@communityforpeople.org";
     var city=document.getElementById('cCity').value.trim(), contact=document.getElementById('cContact').value.trim();
     if(!city){ document.getElementById('cFine').textContent=(window.PagarLang&&window.PagarLang.get()==="fil")?"Pakilagay ang siyudad.":"Please enter your city."; return; }
     var ok=(window.PagarLang&&window.PagarLang.get()==="fil")?"Salamat! Naitala na ang "+city+".":"Thanks! We've counted "+city+" in.";
-    function ack(){ f.innerHTML='<p class="okmsg" style="color:#fff">'+ok+'</p>'; }
+    /* Done: the form loses its white pill (white text on it was invisible) and the note under it
+       goes back to its own words, so an earlier error message does not linger. */
+    function done(html){ f.classList.add('done'); f.innerHTML='<p class="okmsg">'+html+'</p>';
+      var n=document.getElementById('cFine'); if(n){ var fil=(window.PagarLang&&window.PagarLang.get()==="fil"); n.textContent=(fil&&n.getAttribute('data-fil'))||n.getAttribute('data-en')||''; } }
+    function ack(){ done(ok); }
     function handoff(){
       var fil=(window.PagarLang&&window.PagarLang.get()==="fil");
       var subject="PAGAR EXPRESS — bring Pagar to "+city;
       var body=(fil?"Gusto ko pong dumating ang Pagar sa lugar namin.":"I would like Pagar to come to my area.")
         +"\n\n"+(fil?"Lungsod":"City")+": "+city+"\nContact: "+contact+"\n";
       window.location.href="mailto:"+CITY_MAILBOX+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-      f.innerHTML='<p class="okmsg" style="color:#fff">'
+      done(''
         +(fil?"Bubuksan namin ang email app mo na may nakalagay na detalye — i-send lang."
-             :"We have opened your email app with your details filled in — send it and we will count your city.")
-        +'</p>';
+             :"We have opened your email app with your details filled in — send it and we will count your city."));
     }
     if(!CITY_ENDPOINT){ handoff(); return; }
     fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"coverage",city:city,contact:contact})})
-        .then(function(r){ if(!r.ok) throw new Error("bad status"); ack(); })
+        .then(function(r){
+          if(r.ok){ ack(); return; }
+          if(r.status===400) return r.json().then(function(j){ document.getElementById('cFine').textContent=(j&&j.error)||"Please check your details."; });
+          throw new Error("bad status");
+        })
         .catch(function(){ handoff(); });
   });
 })();
 </script>
+<script src="assets/scene.js"></script>
 </body>
 </html>

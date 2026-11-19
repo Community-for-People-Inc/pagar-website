@@ -12,6 +12,8 @@
   On submit: POST JSON to {API_BASE}/api/recruit per docs/recruitment-api.md.
 -->
 <meta charset="utf-8" />
+<!-- Content security policy (17 Nov 2026): the browser only lets this page load from, and send to, the places listed. Form details can only go to the Pagar app server (connect-src). Adding a new outside service? Add its address here on all six pages. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://unpkg.com https://tile.openstreetmap.org; media-src 'self'; connect-src 'self' https://delivery-app-ub1c.onrender.com; frame-src https://challenges.cloudflare.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="index, follow" />
 <title>Partner with Pagar — Drive or sell in Marawi</title>
@@ -47,13 +49,13 @@
     --ka-bg:#f3f2f2; --ka-cream:#f8f4f4; --ka-ink:#17233a; --ka-ink-soft:#5b5654; --ka-forest:#124a28; --ka-gold:#f4b60e;
     --ka-line:#e7e2e0; --ka-blue:#0058a1; --ka-blue-deep:#003f74;
     --ka-green:#0eb046; --ka-green-deep:#0a7a34; --ka-red:#ee0000; --ka-red-deep:#c00000;
-    --sh: 6px 6px 0 rgba(17,29,45,.85);
-    --sh-sm: 4px 4px 0 rgba(17,29,45,.85);
+    --sh: 0 18px 40px -22px rgba(23,35,58,.38); /* soft, as assets/styles.css (17 Nov 2026) */
+    --sh-sm: 0 8px 22px -14px rgba(23,35,58,.34);
     --maxw: 1120px;
     font-synthesis: none;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
-  html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; scroll-padding-top:72px; } /* as assets/styles.css: the sticky 65px header must not cover #apply */
+  html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; scroll-padding-top:76px; } /* as assets/styles.css: the sticky 67px header must not cover #apply */
   body { font-family:"Archivo", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--ka-ink); background:var(--ka-cream); line-height:1.5; -webkit-font-smoothing:antialiased; }
   svg.sprite { position:absolute; width:0; height:0; overflow:hidden; }
   .wrap { width:100%; max-width:var(--maxw); margin:0 auto; padding:0 20px; }
@@ -62,15 +64,17 @@
   .eyebrow { text-transform:uppercase; letter-spacing:.14em; font-size:12px; font-weight:800; color:var(--ka-red); }
 
   /* header */
-  header.site { position:sticky; top:0; z-index:50; background:var(--ka-cream); border-bottom:1px solid var(--ka-line); }
-  .bar { display:flex; align-items:center; gap:14px; height:64px; }
+  header.site { position:sticky; top:0; z-index:50; background:rgba(248,244,244,.86); -webkit-backdrop-filter:saturate(1.5) blur(14px); backdrop-filter:saturate(1.5) blur(14px); border-bottom:1px solid rgba(23,35,58,.07); } /* as assets/styles.css */
+  .bar { display:flex; align-items:center; gap:14px; height:66px; }
   .brand { display:flex; align-items:center; gap:11px; text-decoration:none; }
   .brand .word { font-weight:800; font-size:23px; letter-spacing:-.02em; color:var(--ka-ink); }
   .brand .seg { color:var(--ka-red); font-weight:800; font-size:12px; letter-spacing:.14em; padding-left:14px; border-left:1px solid var(--ka-line); }
-  nav.main { margin-left:auto; display:flex; align-items:center; gap:22px; }
-  nav.main a.navlink { text-decoration:none; color:var(--ka-ink); font-weight:600; font-size:14.5px; }
-  nav.main a.navlink[aria-current] { color:var(--ka-red); }
-  .applybtn { background:var(--ka-red); color:#fff; text-decoration:none; font-weight:800; font-size:14px; padding:11px 18px; border-radius:11px; box-shadow:var(--sh-sm); }
+  nav.main { margin-left:auto; display:flex; align-items:center; gap:2px; }
+  nav.main a.navlink { text-decoration:none; color:var(--ka-ink); font-weight:600; font-size:14.5px; padding:8px 12px; border-radius:999px; transition:background .15s,color .15s; }
+  nav.main a.navlink:hover { color:var(--ka-red); background:rgba(238,0,0,.06); }
+  nav.main a.navlink[aria-current] { color:var(--ka-red); background:rgba(238,0,0,.09); }
+  .applybtn { margin-left:10px; background:var(--ka-red); color:#fff; text-decoration:none; font-weight:800; font-size:14px; padding:12px 20px; border-radius:999px; box-shadow:0 10px 22px -10px rgba(238,0,0,.75); transition:transform .15s,box-shadow .15s; }
+  .applybtn:hover { transform:translateY(-1px); box-shadow:0 14px 26px -10px rgba(238,0,0,.85); }
   .langtoggle { display:inline-flex; border:2px solid var(--ka-ink); border-radius:10px; overflow:hidden; }
   .langtoggle button { border:0; background:#fff; padding:7px 11px; font-weight:800; font-size:12px; cursor:pointer; color:var(--ka-ink); font-family:inherit; }
   .langtoggle button[aria-pressed="true"] { background:var(--ka-forest); color:#fff; }
@@ -219,8 +223,75 @@
   .approute .nolink { display:block; margin-top:9px; font-size:13px; font-weight:700; color:var(--ka-ink); }
   .approute .dl { display:inline-block; margin-top:11px; background:var(--ka-red); color:#fff; font-weight:800; font-size:14px; padding:11px 18px; border-radius:11px; text-decoration:none; }
   .hidden { display:none !important; }
+
+  /* ===== Modern layer (17 Nov 2026), as assets/styles.css. Same content and form. ===== */
+  .hero { background:
+    radial-gradient(900px 520px at 88% -10%,rgba(14,176,70,.32),rgba(14,176,70,0) 60%),
+    radial-gradient(700px 480px at -5% 110%,rgba(238,0,0,.22),rgba(238,0,0,0) 60%),
+    linear-gradient(150deg,#124a28 0%,#0d3b20 55%,#0a2a17 100%); }
+  .herogrid { padding-top:64px; padding-bottom:72px; }
+  .hero { overflow:clip; } /* clip, not hidden: hidden would turn off the sticky column below */
+  @media (min-width:960px){ .herogrid > :first-child { position:sticky; top:96px; align-self:start; } }
+  .hero h1 { letter-spacing:-.04em; line-height:.95; }
+  .roletabs { border-radius:999px; }
+  .roletabs button { border-radius:999px; transition:background .2s,color .2s; }
+  .stats { gap:10px; }
+  .stats .stat, .stats .stat:last-child { border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.1); border-radius:16px; padding:12px 18px; margin:0; }
+  .formcard { border-radius:26px; box-shadow:0 40px 80px -36px rgba(0,0,0,.6); }
+  .field input, .field select { border-width:1.5px; border-radius:14px; background:#fbf9f8; transition:border-color .15s,background .15s,box-shadow .15s; }
+  .field input:focus, .field select:focus { border-color:var(--ka-red); background:#fff; box-shadow:0 0 0 4px rgba(238,0,0,.1); }
+  .field .opts .opt { border-width:1.5px; border-radius:14px; transition:border-color .15s,background .15s; }
+  .field .opts .opt.on { border-color:var(--ka-red); background:#fff5f5; }
+  .field .whybox { border-radius:14px; }
+  .btn { border-radius:999px; transition:transform .15s,box-shadow .15s; }
+  .btn:hover:not(:disabled) { transform:translateY(-1px); }
+  .btn-red { box-shadow:0 12px 24px -12px rgba(238,0,0,.8); }
+  section.block { padding:76px 0; }
+  @media (max-width:640px){ section.block { padding:56px 0; } }
+  h2.sec { font-size:clamp(30px,4.6vw,46px); letter-spacing:-.03em; line-height:1.02; }
+  .card { border-radius:22px; padding:24px; transition:transform .25s,box-shadow .25s; }
+  .card:hover { transform:translateY(-3px); box-shadow:0 26px 46px -26px rgba(23,35,58,.45); }
+  .card .ic { border-radius:14px; }
+  ol.steps { gap:16px; }
+  ol.steps li { position:relative; border-radius:22px; padding:22px; }
+  ol.steps li::before { width:38px; height:38px; border-radius:12px; background:linear-gradient(140deg,#ee0000,#b8000b); box-shadow:0 10px 18px -10px rgba(238,0,0,.8); margin-bottom:14px; }
+  ul.reqs li { border-radius:16px; padding:16px 18px; }
+  ul.reqs .tick { border-radius:50%; }
+  .bigcta { border-radius:999px; box-shadow:0 12px 24px -12px rgba(238,0,0,.8); }
+  .note { border-radius:16px; padding:15px 18px; }
+  .tcard { border-radius:24px; }
+  details.faq { border-radius:18px; padding:2px 22px; margin-bottom:12px; transition:border-color .2s,box-shadow .2s; }
+  details.faq summary { font-size:16px; padding:18px 0; }
+  details.faq[open] { border-color:rgba(238,0,0,.35); box-shadow:0 22px 40px -26px rgba(23,35,58,.4); }
+  details.faq .chev { display:grid; place-items:center; width:28px; height:28px; border-radius:50%; background:#fdecec; flex:none; }
+  footer.site { padding:60px 0 36px; }
+  footer.site .cols{display:grid;gap:22px 40px;grid-template-columns:1fr}
+  @media (min-width:720px){footer.site .cols{grid-template-columns:1.4fr 1fr 1fr}}
+  footer.site .word{font-size:22px}
+  footer.site h5{color:#fff;font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+  footer.site .cols a{display:block;padding:3px 0}
+  footer.site .legal{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:12.5px;color:rgba(255,255,255,.55)}
+  @media (max-width:899px){footer.site .legal a{display:inline-flex;align-items:center;min-height:36px}}
+  /* merchant view: the "Already have the Pagar app?" box sits on top of the form, both in the right column */
+  @media (min-width:960px){
+    .herogrid { grid-template-rows:auto 1fr; }
+    .herogrid > :first-child { grid-row:1 / span 2; }
+    .herogrid > .approute, .herogrid > .formcard { grid-column:2; }
+    .herogrid > .approute:not([hidden]) + .formcard { margin-top:-26px; }
+  }
+  .approute { border-radius:22px; }
+  /* options size to their label, so no label spills out of its box */
+  .field .opts:not(.col) .opt { flex:1 1 auto; min-width:max-content; padding:10px 14px; font-size:14.5px; white-space:nowrap; }
+  .field .opts .opt input { width:17px; height:17px; }
+  /* hero stats: equal tiles, calmer numbers */
+  .stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); max-width:520px; }
+  .stats .n { font-size:clamp(19px,2.2vw,24px); white-space:nowrap; }
+  .stats .l { font-size:11px; }
+  @media (max-width:560px){ .stats { gap:8px; } .stats .stat, .stats .stat:last-child { padding:10px 12px; } .stats .n { font-size:17px; white-space:normal; line-height:1.1; } }
 </style>
-<style>@keyframes kaFly{0%{transform:translate(-24vw,42vh) rotate(-8deg) scale(.7);opacity:0}12%{opacity:1}28%{transform:translate(20vw,14vh) rotate(4deg) scale(1)}52%{transform:translate(50vw,40vh) rotate(-3deg) scale(1.05)}76%{transform:translate(80vw,12vh) rotate(5deg) scale(1)}92%{opacity:1}100%{transform:translate(122vw,36vh) rotate(-6deg) scale(.72);opacity:0}}.flybird{position:fixed;top:0;left:0;width:118px;height:118px;z-index:70;pointer-events:none;opacity:0;animation:kaFly 5.6s cubic-bezier(.4,0,.6,1) .4s infinite}@media(prefers-reduced-motion:reduce){.flybird{display:none}}</style></head>
+<style>@keyframes kaFly{0%{transform:translate(-24vw,42vh) rotate(-8deg) scale(.7);opacity:0}12%{opacity:1}28%{transform:translate(20vw,14vh) rotate(4deg) scale(1)}52%{transform:translate(50vw,40vh) rotate(-3deg) scale(1.05)}76%{transform:translate(80vw,12vh) rotate(5deg) scale(1)}92%{opacity:1}100%{transform:translate(122vw,36vh) rotate(-6deg) scale(.72);opacity:0}}.flybird{position:fixed;top:0;left:0;width:118px;height:118px;z-index:70;pointer-events:none;opacity:0;animation:kaFly 5.6s cubic-bezier(.4,0,.6,1) .4s infinite}@media(prefers-reduced-motion:reduce){.flybird{display:none}}</style><link rel="stylesheet" href="assets/motion.css" />
+<script>/* skipped page transitions are harmless; keep them out of the error console */addEventListener("pagereveal",function(e){var v=e.viewTransition;if(v)[v.ready,v.finished,v.updateCallbackDone].forEach(function(p){p&&p.catch&&p.catch(function(){})})});addEventListener("unhandledrejection",function(e){var r=e.reason;if(r&&r.name==="InvalidStateError"&&/Transition was aborted/.test(r.message))e.preventDefault()});</script>
+</head>
 <body>
 
 <!-- ===== SVG sprite: Sarimanok (Maranao bird) + okir motif — reused verbatim from marketing's site ===== -->
@@ -315,7 +386,7 @@
 
       <!-- APP ROUTE — merchant only. `roleview` is toggled by renderRole(), so this hides for drivers. -->
       <div class="approute roleview hidden" data-role="merchant">
-        <h3 data-i18n="appRouteH">Already have the Pagar app?</h3>
+        <h3 aria-level="2" data-i18n="appRouteH">Already have the Pagar app?</h3>
         <p data-i18n="appRouteP"></p>
         <div data-approute-cta></div>
       </div>
@@ -359,6 +430,9 @@
       <div class="eyebrow" data-i18n="drvBenEy">Why drive with Pagar</div>
       <h2 class="sec" data-i18n="drvBenH">Your hours. Your earnings.</h2>
       <div class="grid c4" style="margin-top:22px" data-benefits="driver"></div>
+      <!-- Earnings calculator (assets/tools.js): the ₱30 city fare, kept whole by the rider. -->
+      <h3 class="tooltitle" style="margin-top:34px">See what you keep</h3>
+      <div data-tool="earnings" style="margin-top:14px"></div>
     </div>
     <div class="wrap roleview hidden" data-role="merchant">
       <div class="eyebrow" data-i18n="mchBenEy">Why sell on Pagar</div>
@@ -406,22 +480,17 @@
 </main>
 
 <footer class="site">
-  <div class="wrap row">
-    <span style="display:flex;align-items:center;gap:10px"><img class="brandicon" src="assets/brand/pagar-icon.svg" width="36" height="36" alt="Pagar"><span class="word">Pagar</span></span>
-    <span data-i18n="footTag">Built by Maranaos for Marawi and all of Mindanao.</span>
-    <span style="margin-left:auto">
-      <a href="help.html#privacy" data-i18n="footPrivacy">Privacy</a> ·
-      <a href="help.html#terms" data-i18n="footTerms">Terms</a> ·
-      <a href="mailto:marketing@communityforpeople.org?subject=PAGAR%20EXPRESS%20enquiry">marketing@communityforpeople.org</a> ·
-      <a href="index.html">PAGAR EXPRESS</a>
-    </span>
+  <div class="wrap cols">
+    <div><div class="brand" style="margin-bottom:10px"><img class="brandicon" src="assets/brand/pagar-icon.svg" width="36" height="36" alt="Pagar"><span class="word">Pagar</span></div><p style="max-width:32ch" data-i18n="footTag">Built by Maranaos for Marawi and all of Mindanao.</p></div>
+    <div><h5 aria-level="2" data-i18n="footCompany">Company</h5><a href="about.html" data-i18n="footAbout">About</a><a href="coverage.html" data-i18n="footCoverage">Coverage</a><a href="partners.html" data-i18n="footPartner">Partner with us</a></div>
+    <div><h5 aria-level="2" data-i18n="footSupport">Support</h5><a href="safety.html" data-i18n="footSafety">Safety</a><a href="help.html" data-i18n="footHelp">Help &amp; Legal</a><a href="mailto:marketing@communityforpeople.org?subject=PAGAR%20EXPRESS%20enquiry">marketing@communityforpeople.org</a></div>
   </div>
   <!--
     Every other page carries this line; partners.html did not, and never named the company
     anywhere. This is the page where someone signs up to drive or to put their restaurant on the
     platform, so it is the page where knowing who they are contracting with matters most.
   -->
-  <div class="wrap legal"><span>© 2026 Pagar · Community For People Inc</span></div>
+  <div class="wrap legal"><span>© 2026 Pagar · Community For People Inc</span><span class="legalinks"><a href="help.html#privacy" data-i18n="footPrivacy">Privacy</a> · <a href="help.html#terms" data-i18n="footTerms">Terms</a> · <a href="index.html">PAGAR EXPRESS</a></span></div>
 </footer>
 
 <script>
@@ -478,6 +547,7 @@ var T = {
     agree:"I confirm my details are correct and agree to be contacted by the Pagar onboarding team. I accept the Privacy Policy and Terms.",
     okH:"Application received!", okP:"We’ll call this number to help you finish onboarding — in your language.",
     footTag:"Built by Maranaos for Marawi and all of Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
+    footCompany:"Company", footSupport:"Support", footAbout:"About", footCoverage:"Coverage", footPartner:"Partner with us", footSafety:"Safety", footHelp:"Help & Legal",
     heroTitle:"Be a Pagar Hero. Drive, deliver, earn.",
     heroTitleM:"Sell on Pagar. Reach more of Marawi.",
     heroLeadM:"Restaurants, home kitchens, grocers and sellers of local goods — put what you sell in front of thousands searching every day. No joining fee, payouts straight to your bank or GCash, and we set your store up with you.",
@@ -517,6 +587,7 @@ var T = {
     agree:"Kinukumpirma kong tama ang detalye ko at pumapayag akong kontakin ng Pagar onboarding team. Sang-ayon ako sa Privacy Policy at Terms.",
     okH:"Natanggap ang aplikasyon!", okP:"Tatawagan namin ang numerong ito para tulungan kang tapusin ang onboarding — sa wika mo.",
     footTag:"Gawa ng mga Maranao para sa Marawi at buong Mindanao.", footPrivacy:"Privacy", footTerms:"Terms",
+    footCompany:"Kompanya", footSupport:"Suporta", footAbout:"Tungkol", footCoverage:"Saklaw", footPartner:"Maging partner", footSafety:"Kaligtasan", footHelp:"Tulong at Legal",
     heroTitle:"Maging Pagar Hero. Magmaneho, maghatid, kumita.",
     heroTitleM:"Magbenta sa Pagar. Maabot ang buong Marawi.",
     heroLeadM:"Restaurant, home kitchen, grocery at mga nagtitinda ng lokal na produkto — ipakita ang paninda mo sa libo-libong naghahanap araw-araw. Walang bayad sa pagsali, diretso sa bank o GCash ang bayad, at tutulungan ka naming i-set up ang tindahan mo.",
@@ -728,7 +799,7 @@ function renderRole(){
   var bw=$('[data-benefits="'+role+'"]');
   if(bw) bw.innerHTML=d.benefits.map(function(b){ return '<div class="card"><div class="ic">'+IC[b.ic]+'</div><h3>'+tx(b.h)+'</h3><p>'+tx(b.p)+'</p></div>'; }).join("");
   // steps
-  $("[data-steps]").innerHTML=d.steps.map(function(s){ return '<li><h4>'+tx(s.h)+'</h4><p>'+tx(s.p)+'</p></li>'; }).join("");
+  $("[data-steps]").innerHTML=d.steps.map(function(s){ return '<li><h4 aria-level="3">'+tx(s.h)+'</h4><p>'+tx(s.p)+'</p></li>'; }).join("");
   // reqs
   $("[data-reqs]").innerHTML=d.reqs.map(function(r){ return '<li>'+tickHtml()+'<span><b>'+tx(r.b)+'</b><span>'+tx(r.s)+'</span></span></li>'; }).join("");
   $("[data-reqh]").textContent = t(role==="driver"?"reqDrvH":"reqMchH");
@@ -802,7 +873,7 @@ function loadPlaces(){
 function fieldHtml(f){
   var lab=tx(f.label), ph=f.ph?tx(f.ph):"", v=form[f.k]||"", input;
   if(f.type==="choice"){
-    input='<div class="opts'+(f.col?' col':'')+'" role="radiogroup">'+f.opts.map(function(o){
+    input='<div class="opts'+(f.col?' col':'')+'" role="radiogroup" aria-label="'+esc(lab)+'">'+f.opts.map(function(o){
       var ov=optVal(o), on=v===ov;
       return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+f.k+'" data-k="'+f.k+'" data-opt value="'+esc(ov)+'"'+(on?' checked':'')+' /><span>'+esc(optLab(o))+'</span></label>';
     }).join("")+'</div>';
@@ -818,12 +889,14 @@ function fieldHtml(f){
   }
   else {
     var list=f.suggest?' list="dl_'+f.k+'" autocomplete="off"':'';
-    input='<input type="'+(f.type==="suggest"?"text":f.type)+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+(f.numeric?' inputmode="numeric"':'')+list+' />'
+    input='<input type="'+(f.type==="suggest"?"text":f.type)+'" id="fld_'+f.k+'" data-k="'+f.k+'" placeholder="'+esc(ph)+'" value="'+esc(v)+'"'+(f.phone?' inputmode="tel"':'')+(f.numeric?' inputmode="numeric"':'')+list+' />'
       +(f.suggest?'<datalist id="dl_'+f.k+'" data-suggest="'+f.suggest+'"></datalist>':'');
   }
   var hint=f.hint?'<div class="hint">'+esc(tx(f.hint))+'</div>':"";
   var why=f.why?'<div class="whybox"><b>'+esc(tx(WHY.h))+'</b>'+WHY.p.map(function(pp){ return '<p>'+esc(tx(pp))+'</p>'; }).join("")+'</div>':"";
-  return '<div class="field" data-field="'+f.k+'"><label>'+esc(lab)+'</label>'+input+hint+why+'<div class="errmsg">'+t("reqFix")+'</div></div>';
+  /* a plain input's label points at it, so screen readers announce the field's name */
+  var plain=f.type!=="choice"&&f.type!=="dmy"&&f.type!=="map";
+  return '<div class="field" data-field="'+f.k+'"><label'+(plain?' for="fld_'+f.k+'"':'')+'>'+esc(lab)+'</label>'+input+hint+why+'<div class="errmsg">'+t("reqFix")+'</div></div>';
 }
 function clearErr(el){ var fl=el.closest(".field"); if(fl) fl.classList.remove("err"); }
 function renderFields(){
@@ -1031,5 +1104,8 @@ function init(){
 if(document.readyState!=="loading") init(); else document.addEventListener("DOMContentLoaded",init);
 </script>
 <script src="assets/hash-target.js"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/scene.js"></script>
+<script src="assets/tools.js"></script>
 </body>
 </html>
