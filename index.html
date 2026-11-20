@@ -395,6 +395,10 @@
   #apps .appcard .dl a.dlbtn small{font-weight:600;opacity:.85;font-size:12.5px}
   #apps .appcard[data-app="driver"]{--dl:#0058a1}#apps .appcard[data-app="merchant"]{--dl:#0e7a3a}
   #apps .appcard .dlmeta{font-size:12.5px;color:var(--ka-ink-soft)}
+  /* QR of the download link: only where a phone is not the device in hand (mouse + wide screen) */
+  #apps .appcard .dlqr{display:none;align-items:center;gap:12px;margin-top:6px;font-size:12.5px;line-height:1.35;color:var(--ka-ink-soft)}
+  #apps .appcard .dlqr img{width:96px;height:96px;flex:none;border-radius:10px;background:#fff;padding:4px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+  @media (hover:hover) and (pointer:fine) and (min-width:900px){#apps .appcard .dlqr{display:flex}}
   .install{margin-top:22px;border-radius:28px;padding:28px 22px;background:radial-gradient(120% 140% at 100% 0%,#1d6b3d 0%,var(--ka-forest) 55%);color:#fff;display:grid;gap:26px;box-shadow:0 30px 50px -34px rgba(18,74,40,.8);position:relative;overflow:hidden}
   .install::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;border:56px solid rgba(255,215,101,.06);pointer-events:none}
   .install[hidden]{display:none}
