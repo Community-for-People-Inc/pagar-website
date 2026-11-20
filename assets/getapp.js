@@ -7,9 +7,16 @@
    does today. Without JavaScript nothing changes either. Only link to builds signed with the
    release key (the same key Google Play will use), and update version and size with each build. */
 (function () {
+  /* The APKs live on this repository's GitHub Release "apps", one file per app with a fixed name.
+     A new build replaces the file in that release (gh release upload apps <file> --clobber), so the
+     link and its QR code never change; only version and size here need updating.
+     qr: a QR code of the same link, shown beside the button on computers so a visitor can scan it
+     with their Android phone. Make one with the qrcode package if the link ever changes. */
+  var REL = "https://github.com/Community-for-People-Inc/pagar-website/releases/download/apps/";
   var APPS = {
-    express:  { apk: "", version: "", size: "" },  // e.g. apk: "https://…/pagar-express-1.0.14.apk", version: "1.0.14", size: "48 MB"
-    driver:   { apk: "", version: "", size: "" },
+    express:  { apk: "", version: "", size: "" },  // e.g. apk: REL + "pagar-express.apk", version: "1.0.15", size: "94 MB", qr: "assets/qr/express-apk.svg"
+    // 20 Nov 2026: 1.0.15 (267), built from the same code as Play Store build 268 and signed with the same release key
+    driver:   { apk: REL + "pagar-driver.apk", version: "1.0.15", size: "92 MB", qr: "assets/qr/driver-apk.svg" },
     merchant: { apk: "", version: "", size: "" }
   };
 
@@ -35,7 +42,9 @@
       box.innerHTML =
         '<a class="dlbtn" href="' + esc(a.apk) + '" download aria-label="Download ' + esc(name) + ' for Android (APK)">' + ANDROID +
         '<span>Download for Android <small>(APK)</small></span></a>' +
-        '<span class="dlmeta">' + esc(meta.join(" · ")) + "</span>";
+        '<span class="dlmeta">' + esc(meta.join(" · ")) + "</span>" +
+        (a.qr ? '<span class="dlqr"><img src="' + esc(a.qr) + '" width="96" height="96" alt="QR code to download ' + esc(name) + ' for Android">' +
+          '<span>On a computer? Scan with your Android phone to download.</span></span>' : "");
       var store = card.querySelector(".store");
       store.parentNode.insertBefore(box, store);
       card.classList.add("hasdl");
