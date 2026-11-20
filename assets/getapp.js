@@ -14,10 +14,11 @@
      with their Android phone. Make one with the qrcode package if the link ever changes. */
   var REL = "https://github.com/Community-for-People-Inc/pagar-website/releases/download/apps/";
   var APPS = {
-    express:  { apk: "", version: "", size: "" },  // e.g. apk: REL + "pagar-express.apk", version: "1.0.15", size: "94 MB", qr: "assets/qr/express-apk.svg"
-    // 20 Nov 2026: 1.0.15 (267), built from the same code as Play Store build 268 and signed with the same release key
-    driver:   { apk: REL + "pagar-driver.apk", version: "1.0.15", size: "92 MB", qr: "assets/qr/driver-apk.svg" },
-    merchant: { apk: "", version: "", size: "" }
+    // 20 Nov 2026: all three are 1.0.15 (267), built from the same code as the Play Store builds and
+    // signed with each app's release upload key (Google Play signs its copies with its own key)
+    express:  { apk: REL + "pagar-express.apk",  version: "1.0.15", size: "94 MB", qr: "assets/qr/express-apk.svg" },
+    driver:   { apk: REL + "pagar-driver.apk",   version: "1.0.15", size: "92 MB", qr: "assets/qr/driver-apk.svg" },
+    merchant: { apk: REL + "pagar-merchant.apk", version: "1.0.15", size: "92 MB", qr: "assets/qr/merchant-apk.svg" }
   };
 
   var ANDROID = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7.2 9h9.6c.4 0 .7.3.7.7V17c0 .6-.4 1-1 1h-.9v2.3a1.2 1.2 0 0 1-2.4 0V18h-2.4v2.3a1.2 1.2 0 0 1-2.4 0V18h-.9c-.6 0-1-.4-1-1V9.7c0-.4.3-.7.7-.7zM4.6 9.2c.7 0 1.2.5 1.2 1.2v5a1.2 1.2 0 0 1-2.4 0v-5c0-.7.5-1.2 1.2-1.2zm14.8 0c.7 0 1.2.5 1.2 1.2v5a1.2 1.2 0 0 1-2.4 0v-5c0-.7.5-1.2 1.2-1.2zM15.6 3.4l1-1.5a.3.3 0 0 0-.5-.3l-1 1.6A6.3 6.3 0 0 0 12 2.5c-1.1 0-2.2.3-3.1.7l-1-1.6a.3.3 0 0 0-.5.3l1 1.5A5.3 5.3 0 0 0 6.5 8h11a5.3 5.3 0 0 0-1.9-4.6zM9.6 6.1a.6.6 0 1 1 0-1.2.6.6 0 0 1 0 1.2zm4.8 0a.6.6 0 1 1 0-1.2.6.6 0 0 1 0 1.2z"/></svg>';
