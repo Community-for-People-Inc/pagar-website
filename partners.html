@@ -1057,6 +1057,7 @@ function buildPayload(){
     if(p.role==="restaurant"){ p.address=(form.address||"").trim(); p.cuisineType=form.cuisineType||""; }
     if(hasPin()){ p.latitude=form.latitude; p.longitude=form.longitude; }
   }
+  var code=window.pagarLinkCode&&window.pagarLinkCode(); if(code) p.channel=code; /* assets/link-code.js */
   p.captchaToken=turnstileToken(); return p;
 }
 function refFromId(id){ return "PGR-"+String(id).padStart(5,"0"); }
@@ -1103,6 +1104,7 @@ function init(){
 }
 if(document.readyState!=="loading") init(); else document.addEventListener("DOMContentLoaded",init);
 </script>
+<script src="assets/link-code.js"></script>
 <script src="assets/hash-target.js"></script>
 <script src="assets/nav.js"></script>
 <script src="assets/scene.js"></script>
