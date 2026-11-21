@@ -181,6 +181,7 @@
   <div class="wrap legal"><span>© 2026 Pagar · Community For People Inc</span></div>
 </footer>
 <script src="assets/pagar.js"></script>
+<script src="assets/link-code.js"></script>
 <script src="assets/hash-target.js"></script>
 <script src="assets/nav.js"></script>
 <script>
@@ -220,7 +221,7 @@ var CITY_MAILBOX = "marketing@communityforpeople.org";
              :"We have opened your email app with your details filled in — send it and we will count your city."));
     }
     if(!CITY_ENDPOINT){ handoff(); return; }
-    fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"coverage",city:city,contact:contact})})
+    fetch(CITY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"coverage",city:city,contact:contact,channel:(window.pagarLinkCode&&window.pagarLinkCode())||undefined})})
         .then(function(r){
           if(r.ok){ ack(); return; }
           if(r.status===400) return r.json().then(function(j){ document.getElementById('cFine').textContent=(j&&j.error)||"Please check your details."; });
